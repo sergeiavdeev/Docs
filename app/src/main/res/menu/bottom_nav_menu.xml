@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_task"
+        android:icon="@drawable/ic_task_black_24dp"
+        android:title="@string/title_task" />
+
+    <item
+        android:id="@+id/navigation_doc_in"
+        android:icon="@drawable/ic_doc_in_black_24dp"
+        android:title="@string/title_doc_in" />
+
+    <item
+        android:id="@+id/navigation_doc_out"
+        android:icon="@drawable/ic_doc_out_black_24dp"
+        android:title="@string/title_doc_out" />
+
+    <item
+        android:id="@+id/navigation_doc_inner"
+        android:icon="@drawable/ic_doc_inner_black_24dp"
+        android:title="@string/title_doc_inner" />
+
+</menu>

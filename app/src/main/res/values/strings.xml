@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Docs</string>
+    <string name="title_task">Задачи</string>
+    <string name="title_doc_in">Входящие</string>
+    <string name="title_doc_out">Исходящие</string>
+    <string name="title_doc_inner">Внутренние</string>
+    <string name="title_activity_login">Авторизация</string>
+    <string name="title_login">Имя пользователя</string>
+    <string name="title_password">Пароль</string>
+    <string name="title_auth">Войти</string>
+    <string name="title_auth_error">Не верное имя пользователя или пароль</string>
+    <string name="title_settings">Настройки</string>
+    <string name="title_exit">Выход</string>
+</resources>

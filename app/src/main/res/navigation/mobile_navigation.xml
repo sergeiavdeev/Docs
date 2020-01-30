@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_task">
+
+    <fragment
+        android:id="@+id/navigation_task"
+        android:name="com.avdeev.docs.ui.task.TaskFragment"
+        android:label="@string/title_task"
+        tools:layout="@layout/fragment_task" />
+
+    <fragment
+        android:id="@+id/navigation_doc_in"
+        android:name="com.avdeev.docs.ui.docIn.DocInFragment"
+        android:label="@string/title_doc_in"
+        tools:layout="@layout/fragment_doc_in" />
+
+    <fragment
+        android:id="@+id/navigation_doc_out"
+        android:name="com.avdeev.docs.ui.docOut.DocOutFragment"
+        android:label="@string/title_doc_out"
+        tools:layout="@layout/fragment_doc_out" />
+
+    <fragment
+        android:id="@+id/navigation_doc_inner"
+        android:name="com.avdeev.docs.ui.docInner.DocInnerFragment"
+        android:label="@string/title_doc_inner"
+        tools:layout="@layout/fragment_doc_inner" />
+
+</navigation>
