@@ -3,6 +3,7 @@ package com.avdeev.docs.ui.docInner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,13 +13,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.DocFragment;
 import com.avdeev.docs.core.Document;
-import com.avdeev.docs.ui.docInner.DocInnerViewModel;
+import com.avdeev.docs.ui.docDetail.DocDetailActivity;
 import com.avdeev.docs.ui.ext.DocListAdapter;
 
 public class DocInnerFragment extends DocFragment {
@@ -69,6 +70,17 @@ public class DocInnerFragment extends DocFragment {
             public void onRefresh() {
 
                 docInnerViewModel.updateList();
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Document doc = (Document) adapterView.getItemAtPosition(i);
+                Intent intent = new Intent(getActivity(), DocDetailActivity.class);
+                intent.putExtra("id", doc.getId());
+                startActivity(intent);
             }
         });
 

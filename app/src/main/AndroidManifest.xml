@@ -17,6 +17,10 @@
             android:label="@string/title_activity_login">
         </activity>
         <activity
+            android:name=".ui.docDetail.DocDetailActivity"
+            android:label="@string/title_doc_inner">
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
             <intent-filter>

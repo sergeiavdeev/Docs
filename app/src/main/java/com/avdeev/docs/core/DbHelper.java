@@ -19,6 +19,20 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE DocIn (id text primary key, title text, author text, type text, number text, updated_at NUMERIC)");
         db.execSQL("CREATE TABLE DocOut (id text primary key, title text, author text, type text, number text, updated_at NUMERIC)");
         db.execSQL("CREATE TABLE DocInner (id text primary key, title text, author text, type text, number text, updated_at NUMERIC)");
+        db.execSQL("CREATE TABLE Task (" +
+                "id TEXT primary key, " +
+                "title TEXT, " +
+                "author TEXT, " +
+                "priority NUMERIC, " +
+                "type TEXT, " +
+                "number TEXT, " +
+                "assignee TEXT, " +
+                "document_type TEXT, " +
+                "description TEXT, " +
+                "date_due NUMERIC, " +
+                "date NUMERIC, " +
+                "updated_at NUMERIC)");
+        db.execSQL("CREATE TABLE TaskFile (id TEXT, task TEXT, name TEXT, type TEXT, size NUMERIC)");
     }
 
     @Override
