@@ -59,7 +59,7 @@ public class DocListAdapter extends ArrayAdapter<Document> implements Filterable
             viewHolder = (ViewHolder)convertView.getTag();
         }
 
-        viewHolder.nameView.setText(documents.get(position).getName());
+        viewHolder.nameView.setText(documents.get(position).getTitle());
         viewHolder.authorView.setText(documents.get(position).getAuthor());
 
         return convertView;
@@ -100,7 +100,7 @@ public class DocListAdapter extends ArrayAdapter<Document> implements Filterable
 
                 for (int i = 0; i < filterList.size(); i++) {
 
-                    if (filterList.get(i).getName().toUpperCase().contains(search) || filterList.get(i).getAuthor().toUpperCase().contains(search)) {
+                    if (filterList.get(i).getTitle().toUpperCase().contains(search) || filterList.get(i).getAuthor().toUpperCase().contains(search)) {
                         filters.add(new Document(filterList.get(i)));
                     }
                 }

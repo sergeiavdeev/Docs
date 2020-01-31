@@ -14,13 +14,18 @@ import org.json.JSONObject;
 
 import java.net.URL;
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
+import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.internal.http2.Header;
+import okhttp3.internal.http2.Http2Reader;
 
 public class User {
 
@@ -136,7 +141,7 @@ public class User {
         }
 
         dbR = dbHelper.getReadableDatabase();
-        Cursor c = dbR.rawQuery("SELECT id, title, author FROM DocIn", null);
+        Cursor c = dbR.rawQuery("SELECT * FROM DocIn", null);
 
         docsIn = new Document[0];
 
@@ -147,10 +152,7 @@ public class User {
 
             do {
 
-                docsIn[i] = new Document(
-                        c.getString(c.getColumnIndex("id")),
-                        c.getString(c.getColumnIndex("title")),
-                        c.getString(c.getColumnIndex("author")));
+                docsIn[i] = new Document(c);
                 i++;
             }
             while (c.moveToNext());
@@ -170,7 +172,7 @@ public class User {
         }
 
         dbR = dbHelper.getReadableDatabase();
-        Cursor c = dbR.rawQuery("SELECT id, title, author FROM DocOut", null);
+        Cursor c = dbR.rawQuery("SELECT * FROM DocOut", null);
 
         docsOut = new Document[0];
 
@@ -181,10 +183,7 @@ public class User {
 
             do {
 
-                docsOut[i] = new Document(
-                        c.getString(c.getColumnIndex("id")),
-                        c.getString(c.getColumnIndex("title")),
-                        c.getString(c.getColumnIndex("author")));
+                docsOut[i] = new Document(c);
                 i++;
             }
             while (c.moveToNext());
@@ -204,7 +203,7 @@ public class User {
         }
 
         dbR = dbHelper.getReadableDatabase();
-        Cursor c = dbR.rawQuery("SELECT id, title, author FROM DocInner", null);
+        Cursor c = dbR.rawQuery("SELECT * FROM DocInner", null);
 
         docsInner = new Document[0];
 
@@ -215,10 +214,7 @@ public class User {
 
             do {
 
-                docsInner[i] = new Document(
-                        c.getString(c.getColumnIndex("id")),
-                        c.getString(c.getColumnIndex("title")),
-                        c.getString(c.getColumnIndex("author")));
+                docsInner[i] = new Document(c);
                 i++;
             }
             while (c.moveToNext());
@@ -239,17 +235,6 @@ public class User {
 
             OkHttpClient client = new OkHttpClient();
 
-            String date = String.valueOf(new Date().getTime());
-
-            MessageDigest hash = MessageDigest.getInstance("SHA-1");
-            MessageDigest pHash = MessageDigest.getInstance("SHA-1");
-
-            hash.update(deviceKey.getBytes("UTF-8"));
-            hash.update(date.getBytes("UTF-8"));
-            hash.update(passwordHash.getBytes("UTF-8"));
-
-            String token = getHex(hash.digest());
-
             long maxTime = getMaxDocTime(type);
 
             String query = "documents?chapter=" + type;
@@ -258,12 +243,14 @@ public class User {
                 query = query + "&timestamp=" + maxTime;
             }
 
+            ArrayList<Header> headers = getHeaders();
+
             Request request = new Request.Builder()
                     .url(apiPath + query)
                     .get()
-                    .addHeader("X-Auth-Key", deviceKey)
-                    .addHeader("X-Auth-Timestamp", date)
-                    .addHeader("X-Auth-Token", token)
+                    .addHeader(headers.get(0).name.utf8(), headers.get(0).value.utf8())
+                    .addHeader(headers.get(1).name.utf8(), headers.get(1).value.utf8())
+                    .addHeader(headers.get(2).name.utf8(), headers.get(2).value.utf8())
                     .build();
 
             Response response = client.newCall(request).execute();
@@ -279,7 +266,7 @@ public class User {
             dbW = dbHelper.getWritableDatabase();
 
             dbW.beginTransaction();
-            String sql = "INSERT OR REPLACE INTO " + tableName + " VALUES(?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT OR REPLACE INTO " + tableName + " VALUES(?, ?, ?, ?, ?, ?, ?)";
             SQLiteStatement insert = dbW.compileStatement(sql);
 
             try {
@@ -294,6 +281,7 @@ public class User {
                     insert.bindString(4, doc.getString("type"));
                     insert.bindString(5, doc.getString("number"));
                     insert.bindLong(6, doc.getLong("updated_at"));
+                    insert.bindLong(7, 0);
                     insert.execute();
 
                     addRows++;
@@ -315,6 +303,41 @@ public class User {
         }
 
         return addRows;
+    }
+
+    public Document updateDocument(Document document, String type) {
+
+        Document doc = new Document(document);
+
+        OkHttpClient client = new OkHttpClient();
+
+
+        String query = "documents/details?chapter=" + type + "&id=" + document.getId();
+
+        ArrayList<Header> headers = getHeaders();
+
+        Request request = new Request.Builder()
+                .url(apiPath + query)
+                .get()
+                .addHeader(headers.get(0).name.utf8(), headers.get(0).value.utf8())
+                .addHeader(headers.get(1).name.utf8(), headers.get(1).value.utf8())
+                .addHeader(headers.get(2).name.utf8(), headers.get(2).value.utf8())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            String jsonData = response.body().string();
+
+            JSONObject jsonObject = new JSONObject(jsonData).getJSONObject("document");
+
+            doc.fromJson(jsonObject);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return doc;
     }
 
     @NotNull
@@ -381,6 +404,33 @@ public class User {
         }
 
         return maxTime;
+    }
+
+    private ArrayList<Header> getHeaders() {
+
+        ArrayList<Header> headers = new ArrayList();
+
+        String date = String.valueOf(new Date().getTime());
+
+        try {
+            MessageDigest hash = MessageDigest.getInstance("SHA-1");
+
+            hash.update(deviceKey.getBytes("UTF-8"));
+            hash.update(date.getBytes("UTF-8"));
+            hash.update(passwordHash.getBytes("UTF-8"));
+
+            String token = getHex(hash.digest());
+
+            headers.add(new Header("X-Auth-Key", deviceKey));
+            headers.add(new Header("X-Auth-Timestamp", date));
+            headers.add(new Header("X-Auth-Token", token));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return headers;
+
     }
 
     @Contract(pure = true) private String getTableName(@NotNull String type) {

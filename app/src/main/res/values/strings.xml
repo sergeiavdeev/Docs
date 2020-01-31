@@ -11,4 +11,13 @@
     <string name="title_auth_error">Не верное имя пользователя или пароль</string>
     <string name="title_settings">Настройки</string>
     <string name="title_exit">Выход</string>
+    <string name="title_reg_number">Рег. номер</string>
+    <string name="title_reg_date">Рег. дата</string>
+    <string name="void_string">(не указано)</string>
+    <string name="title_description">Описание</string>
+    <string name="title_status">Статус</string>
+    <string name="title_author">Автор</string>
+    <string name="title_recipient">Адресат</string>
+    <string name="title_signer">Подписант</string>
+    <string name="title_files">Файлы</string>
 </resources>

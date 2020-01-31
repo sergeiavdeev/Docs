@@ -16,9 +16,9 @@ public class DbHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE User (token text, apiPath text)");
         db.execSQL("CREATE TABLE ApiHistory (apiPath text)");
-        db.execSQL("CREATE TABLE DocIn (id text primary key, title text, author text, type text, number text, updated_at NUMERIC)");
-        db.execSQL("CREATE TABLE DocOut (id text primary key, title text, author text, type text, number text, updated_at NUMERIC)");
-        db.execSQL("CREATE TABLE DocInner (id text primary key, title text, author text, type text, number text, updated_at NUMERIC)");
+        db.execSQL("CREATE TABLE DocIn (id text primary key, title text, author text, type text, number text, updated_at NUMERIC, date NUMERIC)");
+        db.execSQL("CREATE TABLE DocOut (id text primary key, title text, author text, type text, number text, updated_at NUMERIC, date NUMERIC)");
+        db.execSQL("CREATE TABLE DocInner (id text primary key, title text, author text, type text, number text, updated_at NUMERIC, date NUMERIC)");
         db.execSQL("CREATE TABLE Task (" +
                 "id TEXT primary key, " +
                 "title TEXT, " +

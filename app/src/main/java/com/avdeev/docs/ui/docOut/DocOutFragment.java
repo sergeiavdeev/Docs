@@ -1,9 +1,11 @@
 package com.avdeev.docs.ui.docOut;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.DocFragment;
 import com.avdeev.docs.core.Document;
+import com.avdeev.docs.ui.docDetail.DocDetailActivity;
 import com.avdeev.docs.ui.docOut.DocOutViewModel;
 import com.avdeev.docs.ui.ext.DocListAdapter;
 
@@ -64,6 +67,19 @@ public class DocOutFragment extends DocFragment {
             public void onRefresh() {
 
                 docOutViewModel.updateList();
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Document doc = (Document) adapterView.getItemAtPosition(i);
+                Intent intent = new Intent(getActivity(), DocDetailActivity.class);
+                intent.putExtra("id", doc);
+                intent.putExtra("type", "outbox");
+                intent.putExtra("caption", "Исходящие");
+                startActivity(intent);
             }
         });
 

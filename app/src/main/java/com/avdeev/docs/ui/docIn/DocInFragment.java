@@ -1,9 +1,12 @@
 package com.avdeev.docs.ui.docIn;
 
+import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -21,6 +24,7 @@ import com.avdeev.docs.MainActivity;
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.DocFragment;
 import com.avdeev.docs.core.Document;
+import com.avdeev.docs.ui.docDetail.DocDetailActivity;
 import com.avdeev.docs.ui.ext.DocListAdapter;
 
 public class DocInFragment extends DocFragment {
@@ -66,6 +70,19 @@ public class DocInFragment extends DocFragment {
             public void onRefresh() {
 
                 docInViewModel.updateList();
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Document doc = (Document) adapterView.getItemAtPosition(i);
+                Intent intent = new Intent(getActivity(), DocDetailActivity.class);
+                intent.putExtra("id", doc);
+                intent.putExtra("type", "inbox");
+                intent.putExtra("caption", "Входящие");
+                startActivity(intent);
             }
         });
 

@@ -79,7 +79,9 @@ public class DocInnerFragment extends DocFragment {
 
                 Document doc = (Document) adapterView.getItemAtPosition(i);
                 Intent intent = new Intent(getActivity(), DocDetailActivity.class);
-                intent.putExtra("id", doc.getId());
+                intent.putExtra("id", doc);
+                intent.putExtra("type", "internal");
+                intent.putExtra("caption", "Внутренние");
                 startActivity(intent);
             }
         });
