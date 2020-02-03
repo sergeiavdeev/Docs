@@ -1,12 +1,15 @@
 package com.avdeev.docs.core;
 
 import android.database.Cursor;
+import android.text.format.DateFormat;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Document extends Object implements Serializable {
 
@@ -85,6 +88,13 @@ public class Document extends Object implements Serializable {
 
     public long getUpdated_at() {
         return updated_at;
+    }
+
+    public String dateFromLong(long l) {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(l * 1000L);
+        return  DateFormat.format("dd.MM.yyyy", calendar).toString();
     }
 
     public long getDate() {

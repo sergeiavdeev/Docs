@@ -33,12 +33,9 @@ public class DocDetailActivity extends AppCompatActivity {
 
         final Document doc = (Document)getIntent().getExtras().getSerializable("id");
 
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.setTimeInMillis(doc.getUpdated_at() * 1000L);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getIntent().getStringExtra("caption"));
-        actionBar.setSubtitle(doc.getType() + " №" + doc.getNumber() + " от " + DateFormat.format("dd.MM.yyyy", calendar));
+        actionBar.setSubtitle(doc.getType() + " №" + doc.getNumber() + " от " + doc.dateFromLong(doc.getUpdated_at()));
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
@@ -51,6 +48,8 @@ public class DocDetailActivity extends AppCompatActivity {
         final TextView author = findViewById(R.id.author);
         final TextView recipient = findViewById(R.id.recipient);
         final TextView signer = findViewById(R.id.signer);
+        final TextView number = findViewById(R.id.number);
+        final TextView date = findViewById(R.id.date);
         final RecyclerView fileList = findViewById(R.id.list_file);
 
         fileList.setLayoutManager(new LinearLayoutManager(this));
@@ -65,6 +64,8 @@ public class DocDetailActivity extends AppCompatActivity {
                 author.setText(document.getAuthor());
                 recipient.setText(document.getRecipient());
                 signer.setText(document.getSigner());
+                number.setText(document.getNumber());
+                date.setText(document.dateFromLong(document.getDate()));
                 fileList.setAdapter(new FileListAdapter(getBaseContext(), document.getFiles()));
             }
         });
