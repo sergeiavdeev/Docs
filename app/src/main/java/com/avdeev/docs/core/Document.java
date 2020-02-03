@@ -2,9 +2,11 @@ package com.avdeev.docs.core;
 
 import android.database.Cursor;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Document extends Object implements Serializable {
 
@@ -23,6 +25,8 @@ public class Document extends Object implements Serializable {
     private String signer;
     private String department;
 
+    private ArrayList<File> files;
+
     public Document(String id, String title, String author) {
 
         this.id = id;
@@ -32,6 +36,7 @@ public class Document extends Object implements Serializable {
         type = "";
         updated_at = 0;
         date = 0;
+        files = new ArrayList<>();
     }
 
     public Document(@NotNull Document document) {
@@ -43,6 +48,7 @@ public class Document extends Object implements Serializable {
         number = document.getNumber();
         date = document.getDate();
         updated_at = document.getUpdated_at();
+        files = new ArrayList<>();
     }
 
     public Document(@NotNull Cursor cursor) {
@@ -54,6 +60,7 @@ public class Document extends Object implements Serializable {
         type = cursor.getString(cursor.getColumnIndex("type"));
         updated_at = cursor.getLong(cursor.getColumnIndex("updated_at"));
         date = cursor.getLong(cursor.getColumnIndex("date"));
+        files = new ArrayList<>();
     }
 
     public String getTitle() {
@@ -104,6 +111,14 @@ public class Document extends Object implements Serializable {
         return department;
     }
 
+    public ArrayList<File> getFiles() {
+        return files;
+    }
+
+    public void setFiles(ArrayList<File> files) {
+        this.files = files;
+    }
+
     public void fromJson(JSONObject object) {
 
         try {
@@ -113,6 +128,14 @@ public class Document extends Object implements Serializable {
             status = object.getString("status");
             signer = object.getString("signee");
             department = object.getString("department");
+
+            JSONArray jsonFiles = object.getJSONArray("files");
+
+            for (int i = 0; i < jsonFiles.length(); i++) {
+                JSONObject file = jsonFiles.getJSONObject(i);
+
+                files.add(new File(file));
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

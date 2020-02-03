@@ -78,6 +78,8 @@ public class DocInFragment extends DocFragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 Document doc = (Document) adapterView.getItemAtPosition(i);
+                long id = adapterView.getItemIdAtPosition(i);
+                long count = adapterView.getCount();
                 Intent intent = new Intent(getActivity(), DocDetailActivity.class);
                 intent.putExtra("id", doc);
                 intent.putExtra("type", "inbox");

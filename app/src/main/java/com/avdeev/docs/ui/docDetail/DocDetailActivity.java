@@ -13,9 +13,12 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.Document;
+import com.avdeev.docs.ui.ext.FileListAdapter;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -46,6 +49,11 @@ public class DocDetailActivity extends AppCompatActivity {
         final TextView status = findViewById(R.id.status);
         final TextView description = findViewById(R.id.description);
         final TextView author = findViewById(R.id.author);
+        final TextView recipient = findViewById(R.id.recipient);
+        final TextView signer = findViewById(R.id.signer);
+        final RecyclerView fileList = findViewById(R.id.list_file);
+
+        fileList.setLayoutManager(new LinearLayoutManager(this));
 
         model.getDocument().observe(this, new Observer<Document>() {
             @Override
@@ -55,6 +63,9 @@ public class DocDetailActivity extends AppCompatActivity {
                 status.setText(document.getStatus());
                 description.setText(document.getDescription());
                 author.setText(document.getAuthor());
+                recipient.setText(document.getRecipient());
+                signer.setText(document.getSigner());
+                fileList.setAdapter(new FileListAdapter(getBaseContext(), document.getFiles()));
             }
         });
 

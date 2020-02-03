@@ -29,6 +29,13 @@ public class DocListAdapter extends ArrayAdapter<Document> implements Filterable
 
     private LayoutInflater inflater;
 
+    @Nullable
+    @Override
+    public Document getItem(int position) {
+
+        return documents.get(position);
+    }
+
     @Override
     public int getCount() {
         return documents.size();

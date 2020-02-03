@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/file_type_icon"
+            android:src="@drawable/ic_file_black_24dp"
+            android:contentDescription="@string/void_string"
+            android:layout_weight="0"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_file_name"
+                android:textSize="14dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/void_string"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_file_size"
+                android:text="@string/void_string"
+                android:textSize="10dp"
+                android:textColor="@color/colorPrimary"/>
+        </LinearLayout>
+
+    <ImageView
+        android:id="@+id/file_dowload_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="end"
+        android:src="@drawable/ic_file_download_24dp"
+        android:contentDescription="@string/void_string"
+        android:layout_weight="0"/>
+
+</LinearLayout>
