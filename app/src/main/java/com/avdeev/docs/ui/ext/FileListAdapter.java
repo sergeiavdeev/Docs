@@ -61,7 +61,7 @@ public class FileListAdapter extends RecyclerView.Adapter <FileListAdapter.FileH
             fileSize = itemView.findViewById(R.id.text_file_size);
         }
 
-        public void bind(File file) {
+        private void bind(File file) {
 
             fileName.setText(file.getName());
             fileSize.setText(Long.toString(file.getSize()) + " KB");

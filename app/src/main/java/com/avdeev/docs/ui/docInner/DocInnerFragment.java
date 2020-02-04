@@ -43,7 +43,7 @@ public class DocInnerFragment extends DocFragment {
 
         final ListView listView = root.findViewById(R.id.doc_list);
         //final ProgressBar progressBar = root.findViewById(R.id.progress_bar);
-        final SwipeRefreshLayout refreshLayout = root.findViewById(R.id.resresh);
+        final SwipeRefreshLayout refreshLayout = root.findViewById(R.id.refresh);
 
         docInnerViewModel.getDocList().observe(this, new Observer<Document[]>() {
             @Override

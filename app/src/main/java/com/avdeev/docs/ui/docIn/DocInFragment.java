@@ -1,26 +1,18 @@
 package com.avdeev.docs.ui.docIn;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
-import android.widget.Toast;
-
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.avdeev.docs.MainActivity;
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.DocFragment;
 import com.avdeev.docs.core.Document;
@@ -43,7 +35,7 @@ public class DocInFragment extends DocFragment {
 
         final ListView listView = root.findViewById(R.id.doc_list);
         //final ProgressBar progressBar = root.findViewById(R.id.progress_bar);
-        final SwipeRefreshLayout refreshLayout = root.findViewById(R.id.resresh);
+        final SwipeRefreshLayout refreshLayout = root.findViewById(R.id.refresh);
 
         docInViewModel.getDocList().observe(this, new Observer<Document[]>() {
             @Override

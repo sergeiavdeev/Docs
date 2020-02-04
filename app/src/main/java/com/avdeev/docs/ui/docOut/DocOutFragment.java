@@ -7,12 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -21,7 +17,6 @@ import com.avdeev.docs.R;
 import com.avdeev.docs.core.DocFragment;
 import com.avdeev.docs.core.Document;
 import com.avdeev.docs.ui.docDetail.DocDetailActivity;
-import com.avdeev.docs.ui.docOut.DocOutViewModel;
 import com.avdeev.docs.ui.ext.DocListAdapter;
 
 public class DocOutFragment extends DocFragment {
@@ -40,7 +35,7 @@ public class DocOutFragment extends DocFragment {
 
         final ListView listView = root.findViewById(R.id.doc_list);
         //final ProgressBar progressBar = root.findViewById(R.id.progress_bar);
-        final SwipeRefreshLayout refreshLayout = root.findViewById(R.id.resresh);
+        final SwipeRefreshLayout refreshLayout = root.findViewById(R.id.refresh);
 
         docOutViewModel.getDocList().observe(this, new Observer<Document[]>() {
             @Override

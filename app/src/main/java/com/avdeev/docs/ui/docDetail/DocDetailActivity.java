@@ -1,16 +1,19 @@
 package com.avdeev.docs.ui.docDetail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.format.DateFormat;
 import android.view.MenuItem;
 
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.Document;
+import com.avdeev.docs.ui.action.ActionsActivity;
 import com.avdeev.docs.ui.ext.FileListAdapter;
 
 import java.util.Calendar;
@@ -25,13 +29,17 @@ import java.util.Locale;
 
 public class DocDetailActivity extends AppCompatActivity {
 
+    private Document doc;
+    private String docType;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_doc_detail);
 
-        final Document doc = (Document)getIntent().getExtras().getSerializable("id");
+        doc = (Document)getIntent().getExtras().getSerializable("id");
+        docType = getIntent().getStringExtra("type");
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getIntent().getStringExtra("caption"));
@@ -70,7 +78,7 @@ public class DocDetailActivity extends AppCompatActivity {
             }
         });
 
-        model.updateDocument(getIntent().getStringExtra("type"));
+        model.updateDocument(docType);
     }
 
     @Override
@@ -84,5 +92,45 @@ public class DocDetailActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onHistoryClick(View view) {
+
+        Intent intent = new Intent(this, ActionsActivity.class);
+        intent.putExtra("id", doc.getId());
+        intent.putExtra("type", docType);
+        intent.putExtra("caption", "История");
+        intent.putExtra("request", "history");
+        startActivity(intent);
+    }
+
+    public void onVisaClick(View view) {
+
+        Intent intent = new Intent(this, ActionsActivity.class);
+        intent.putExtra("id", doc.getId());
+        intent.putExtra("type", docType);
+        intent.putExtra("caption", "Визы");
+        intent.putExtra("request", "visas");
+        startActivity(intent);
+    }
+
+    public void onResolutionClick(View view) {
+
+        Intent intent = new Intent(this, ActionsActivity.class);
+        intent.putExtra("id", doc.getId());
+        intent.putExtra("type", docType);
+        intent.putExtra("caption", "Резолюции");
+        intent.putExtra("request", "resolutions");
+        startActivity(intent);
+    }
+
+    public void onMailerClick(View view) {
+
+        Intent intent = new Intent(this, ActionsActivity.class);
+        intent.putExtra("id", doc.getId());
+        intent.putExtra("type", docType);
+        intent.putExtra("caption", "Рассылка");
+        intent.putExtra("request", "mailing");
+        startActivity(intent);
     }
 }

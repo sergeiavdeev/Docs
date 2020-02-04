@@ -21,4 +21,8 @@
     <string name="title_signer">Подписант</string>
     <string name="title_files">Файлы</string>
     <string name="title_more">Ещё</string>
+    <string name="title_history">История</string>
+    <string name="title_visa">Визы</string>
+    <string name="title_resolution">Резолюции</string>
+    <string name="title_mailer">Рассылка</string>
 </resources>

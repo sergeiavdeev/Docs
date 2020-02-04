@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone" />
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/resresh"
+            android:id="@+id/refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >

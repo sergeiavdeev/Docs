@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
@@ -15,6 +16,7 @@ import org.json.JSONObject;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -450,5 +452,51 @@ public class User {
         }
 
         return tableName;
+    }
+
+    public ArrayList<Action> getActions(String type, String id, String method) {
+
+        ArrayList<Action> actions = new ArrayList<>();
+
+        OkHttpClient client = new OkHttpClient();
+
+
+        String query = method + "?chapter=" + type + "&iddocument=" + id;
+
+        ArrayList<Header> headers = getHeaders();
+
+        Request request = new Request.Builder()
+                .url(apiPath + query)
+                .get()
+                .addHeader(headers.get(0).name.utf8(), headers.get(0).value.utf8())
+                .addHeader(headers.get(1).name.utf8(), headers.get(1).value.utf8())
+                .addHeader(headers.get(2).name.utf8(), headers.get(2).value.utf8())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            String jsonData = response.body().string();
+
+            JSONArray jsonActions = new JSONObject(jsonData).getJSONArray(method);
+
+            for (int i = 0; i < jsonActions.length(); i++) {
+
+                actions.add(new Action(jsonActions.getJSONObject(i)));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return actions;
+    }
+
+    @NotNull
+    public static String dateFromLong(long l) {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(l * 1000L);
+        return  DateFormat.format("dd.MM.yyyy", calendar).toString();
     }
 }
