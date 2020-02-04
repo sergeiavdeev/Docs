@@ -35,6 +35,7 @@ public class ActionsActivity extends AppCompatActivity {
 
         final RecyclerView actionList = findViewById(R.id.action_list);
         actionList.setLayoutManager(new LinearLayoutManager(this));
+        actionList.setAdapter(new ActionListAdapter(getBaseContext(), new ArrayList<Action>()));
 
         final SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh);
 
