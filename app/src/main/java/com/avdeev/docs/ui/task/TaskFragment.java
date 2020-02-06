@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,14 +14,25 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.DocFragment;
+import com.avdeev.docs.core.Task;
+import com.avdeev.docs.ui.docDetail.DocDetailActivity;
+import com.avdeev.docs.ui.ext.TaskListAdapter;
 import com.avdeev.docs.ui.login.LoginActivity;
+import com.avdeev.docs.ui.task.detail.TaskActivity;
+
+import java.util.ArrayList;
 
 public class TaskFragment extends DocFragment {
 
     private TaskViewModel taskViewModel;
+
+    private TaskListAdapter.ItemClickListener itemClickListener;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -28,13 +40,28 @@ public class TaskFragment extends DocFragment {
         taskViewModel =
                 ViewModelProviders.of(this).get(TaskViewModel.class);
         View root = inflater.inflate(R.layout.fragment_task, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
-        taskViewModel.getText().observe(this, new Observer<String>() {
+
+        final RecyclerView listView = root.findViewById(R.id.task_list);
+        final SwipeRefreshLayout refreshLayout = root.findViewById(R.id.refresh);
+
+        itemClickListener = new TaskListAdapter.ItemClickListener() {
             @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+            public void onItemClick(Task task) {
+
+                Intent intent = new Intent(getActivity(), TaskActivity.class);
+                intent.putExtra("task", task);
+                intent.putExtra("type", "inbox");
+                intent.putExtra("caption", "Входящие");
+                startActivity(intent);
+
             }
-        });
+        };
+        //listView.getItemAnimator().set
+        listView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        TaskListAdapter adapter = new TaskListAdapter(getContext(), new ArrayList<Task>());
+        adapter.setOnItemClickListener(itemClickListener);
+        listView.setAdapter(adapter);
 
         taskViewModel.isAuth().observe(this, new Observer<Boolean>() {
             @Override
@@ -48,11 +75,40 @@ public class TaskFragment extends DocFragment {
             }
         });
 
+        taskViewModel.getTaskList().observe(this, new Observer<ArrayList<Task>>() {
+            @Override
+            public void onChanged(ArrayList<Task> tasks) {
+
+                TaskListAdapter adapter = new TaskListAdapter(getContext(), tasks);
+                adapter.setOnItemClickListener(itemClickListener);
+                listView.setAdapter(adapter);
+            }
+        });
+
+        taskViewModel.isWaiting().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean wait) {
+
+                refreshLayout.setRefreshing(wait);
+            }
+        });
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                taskViewModel.updateList();
+            }
+        });
+
+        taskViewModel.getList();
+
         return root;
     }
 
     @Override
     public void onSearch(String searchText) {
+
 
         Toast.makeText(getActivity(), "Task search: " + searchText, Toast.LENGTH_LONG).show();
     }

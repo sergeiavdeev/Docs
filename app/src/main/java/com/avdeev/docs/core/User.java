@@ -42,6 +42,7 @@ public class User {
     private Document[] docsIn;
     private Document[] docsOut;
     private Document[] docsInner;
+    private ArrayList<Task> taskList;
 
     public User(Context context) {
 
@@ -53,6 +54,7 @@ public class User {
         docsIn = new Document[0];
         docsOut = new Document[0];
         docsInner = new Document[0];
+        taskList = new ArrayList<>();
 
         apiPath = "https://sed.rudn.ru/BGU_DEMO/hs/DGU_APP_Mobile_Client/";
 
@@ -229,6 +231,36 @@ public class User {
         return docsInner;
     }
 
+    public ArrayList<Task> getTaskList() throws Exception {
+
+        if (taskList.size() == 0) {
+
+            dbR = dbHelper.getReadableDatabase();
+            Cursor c = dbR.rawQuery("SELECT * FROM Task", null);
+            Cursor cFiles;
+
+            if (c.moveToFirst()) {
+
+                do {
+
+                    cFiles = dbR.rawQuery(
+                    "SELECT * FROM TaskFile WHERE task='" +
+                            c.getString(c.getColumnIndex("id")) + "'",
+                            null)
+                    ;
+                    taskList.add(new Task(c, cFiles));
+                }
+                while (c.moveToNext());
+            }
+
+            if (dbR.isOpen()) {
+                dbR.close();
+            }
+        }
+
+        return taskList;
+    }
+
     public int updateDocList(String type) {
 
         int addRows = 0;
@@ -342,6 +374,112 @@ public class User {
         return doc;
     }
 
+    public int updateTaskList() {
+
+        int addRows = 0;
+
+        try {
+
+            OkHttpClient client = new OkHttpClient();
+
+            long maxTime = getMaxTaskTime();
+
+            String query = "tasks";
+
+            if (maxTime > 0) {
+                query = query + "?timestamp=" + maxTime;
+            }
+
+            ArrayList<Header> headers = getHeaders();
+
+            Request request = new Request.Builder()
+                    .url(apiPath + query)
+                    .get()
+                    .addHeader(headers.get(0).name.utf8(), headers.get(0).value.utf8())
+                    .addHeader(headers.get(1).name.utf8(), headers.get(1).value.utf8())
+                    .addHeader(headers.get(2).name.utf8(), headers.get(2).value.utf8())
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            String jsonData = response.body().string();
+
+            JSONObject jsonObject = new JSONObject(jsonData);
+
+            JSONArray docs = jsonObject.getJSONArray("tasks");
+
+            dbW = dbHelper.getWritableDatabase();
+
+            dbW.beginTransaction();
+            String sql = "INSERT OR REPLACE INTO Task VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            SQLiteStatement insert = dbW.compileStatement(sql);
+
+            String sql_files = "INSERT OR REPLACE INTO TaskFile VALUES(?, ?, ?, ?, ?)";
+            SQLiteStatement insert_files = dbW.compileStatement(sql_files);
+
+            try {
+
+                for (int i = 0; i < docs.length(); i++) {
+
+                    JSONObject doc = docs.getJSONObject(i);
+
+                    insert.bindString(1, doc.getString("id"));
+                    insert.bindString(2, doc.getString("title"));
+                    insert.bindString(3, doc.getString("author"));
+                    insert.bindLong(4, doc.getLong("priority"));
+                    insert.bindString(5, doc.getString("type"));
+                    insert.bindString(6, doc.getString("number"));
+                    insert.bindString(7, doc.getString("assignee"));
+                    insert.bindString(8, doc.getString("document_type"));
+                    insert.bindString(9, doc.getString("description"));
+                    insert.bindLong(10, doc.getLong("date_due"));
+                    if (doc.has("date")) {
+                        insert.bindLong(11, doc.getLong("date"));
+                    } else {
+                        insert.bindLong(11, 0);
+                    }
+                    insert.bindLong(12, doc.getLong("updated_at"));
+                    insert.execute();
+
+                    JSONArray files = doc.getJSONArray("files");
+
+                    for (int j = 0; j < files.length(); j++) {
+
+                        JSONObject file = files.getJSONObject(j);
+
+                        insert_files.bindString(1, file.getString("id"));
+                        insert_files.bindString(2, doc.getString("id"));
+                        insert_files.bindString(3, file.getString("name"));
+                        insert_files.bindString(4, file.getString("type"));
+                        insert_files.bindLong(5, file.getLong("size"));
+                        insert_files.execute();
+                    }
+
+
+                    addRows++;
+                }
+                dbW.setTransactionSuccessful();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }finally {
+                dbW.endTransaction();
+            }
+
+            if (dbW.isOpen()) {
+                dbW.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (dbW.isOpen()) {
+                dbW.close();
+            }
+        }
+
+        return addRows;
+    }
+
     @NotNull
     private String getHex(@NotNull byte [] bytes) {
 
@@ -399,6 +537,25 @@ public class User {
 
                 maxTime = cursor.getLong(cursor.getColumnIndex("updated_at"));
             }
+        }
+
+        if (dbR.isOpen()) {
+            dbR.close();
+        }
+
+        return maxTime;
+    }
+
+    private long getMaxTaskTime() {
+
+        long maxTime = 0;
+
+        dbR = dbHelper.getReadableDatabase();
+        Cursor cursor = dbR.rawQuery("select max(updated_at) as updated_at from Task", null);
+
+        if (cursor.moveToFirst()) {
+
+            maxTime = cursor.getLong(cursor.getColumnIndex("updated_at"));
         }
 
         if (dbR.isOpen()) {

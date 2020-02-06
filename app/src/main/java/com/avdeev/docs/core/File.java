@@ -1,8 +1,13 @@
 package com.avdeev.docs.core;
 
+import android.database.Cursor;
+
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
-public class File extends Object {
+import java.io.Serializable;
+
+public class File extends Object implements Serializable {
 
     private String name;
     private String type;
@@ -17,12 +22,20 @@ public class File extends Object {
         size = 0;
     }
 
-    public File(JSONObject object) throws Exception {
+    public File(@NotNull JSONObject object) throws Exception {
 
         id = object.getString("id");
         name = object.getString("name");
         type = object.getString("type");
         size = object.getLong("size");
+    }
+
+    public File(Cursor cursor) {
+
+        id = cursor.getString(cursor.getColumnIndex("id"));
+        name = cursor.getString(cursor.getColumnIndex("name"));
+        type = cursor.getString(cursor.getColumnIndex("type"));
+        size = cursor.getLong(cursor.getColumnIndex("size"));
     }
 
     public String getName() {
