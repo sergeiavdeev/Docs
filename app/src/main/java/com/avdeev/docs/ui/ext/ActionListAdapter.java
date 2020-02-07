@@ -21,6 +21,7 @@ public class ActionListAdapter extends RecyclerView.Adapter<ActionListAdapter.Ac
 
     private ArrayList<Action> actions;
     private LayoutInflater inflater;
+    //private ActionListAdapter.ActionHolder actionHolder;
 
     public ActionListAdapter(Context context, ArrayList<Action> actions) {
 

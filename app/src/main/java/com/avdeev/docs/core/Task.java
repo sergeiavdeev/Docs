@@ -25,6 +25,97 @@ public class Task extends Object implements Serializable {
     private long updated_at;
     private ArrayList<File> files;
 
+    public Task() {
+
+        id = "";
+        title = "";
+        author = "";
+        priority = 0;
+        type = "";
+        number = "";
+        assignee = "";
+        document_type = "";
+        description = "";
+        date_due = 0;
+        date = 0;
+        updated_at = 0;
+        files = new ArrayList<File>();
+    }
+
+    public Task(Task task) {
+
+        id = task.getId();
+        title = task.getTitle();
+        author = task.getAuthor();
+        priority = task.getPriority();
+        type = task.getType();
+        number = task.getNumber();
+        assignee = task.getAssignee();
+        document_type = task.getDocument_type();
+        description = task.getDescription();
+        date_due = task.getDate_due();
+        date = task.getDate();
+        updated_at = task.getUpdated_at();
+        files = new ArrayList<File>();
+
+        ArrayList<File> f = task.getFiles();
+        for (int i = 0; i < f.size(); i++) {
+            files.add(new File(f.get(i)));
+        }
+    }
+
+    public Task(@NotNull JSONObject task) throws Exception {
+
+        id = task.getString("id");
+        title = task.getString("title");
+        author = task.getString("author");
+        priority = task.getLong("priority");
+        type = task.getString("type");
+        number = task.getString("number");
+        assignee = task.getString("assignee");
+        document_type = task.getString("document_type");
+        description = task.getString("description");
+        date_due = task.getLong("date_due");
+        date = task.getLong("date");
+        updated_at = task.getLong("updated_at");
+
+        JSONArray jFiles = task.getJSONArray("files");
+
+        files = new ArrayList<>();
+
+        for (int i = 0; i < jFiles.length(); i++) {
+
+            files.add(new File(jFiles.getJSONObject(i)));
+        }
+    }
+
+    public Task(@NotNull Cursor cursor, @NotNull Cursor cFiles) throws Exception {
+
+        id = cursor.getString(cursor.getColumnIndex("id"));
+        title = cursor.getString(cursor.getColumnIndex("title"));
+        author = cursor.getString(cursor.getColumnIndex("author"));
+        priority = cursor.getLong(cursor.getColumnIndex("priority"));
+        type = cursor.getString(cursor.getColumnIndex("type"));
+        number = cursor.getString(cursor.getColumnIndex("number"));
+        assignee = cursor.getString(cursor.getColumnIndex("assignee"));
+        document_type = cursor.getString(cursor.getColumnIndex("document_type"));
+        description = cursor.getString(cursor.getColumnIndex("description"));
+        date_due = cursor.getLong(cursor.getColumnIndex("date_due"));
+        date = cursor.getLong(cursor.getColumnIndex("date"));
+        updated_at = cursor.getLong(cursor.getColumnIndex("updated_at"));
+
+        files = new ArrayList<>();
+
+        if (cFiles.moveToFirst()) {
+
+            do {
+                files.add(new File(cFiles));
+
+            }
+            while (cFiles.moveToNext());
+        }
+    }
+
     public String getId() {
         return id;
     }
@@ -127,74 +218,5 @@ public class Task extends Object implements Serializable {
 
     public void setFiles(ArrayList<File> files) {
         this.files = files;
-    }
-
-    public Task() {
-
-        id = "";
-        title = "";
-        author = "";
-        priority = 0;
-        type = "";
-        number = "";
-        assignee = "";
-        document_type = "";
-        description = "";
-        date_due = 0;
-        date = 0;
-        updated_at = 0;
-        files = new ArrayList<File>();
-    }
-
-    public Task(@NotNull JSONObject task) throws Exception {
-
-        id = task.getString("id");
-        title = task.getString("title");
-        author = task.getString("author");
-        priority = task.getLong("priority");
-        type = task.getString("type");
-        number = task.getString("number");
-        assignee = task.getString("assignee");
-        document_type = task.getString("document_type");
-        description = task.getString("description");
-        date_due = task.getLong("date_due");
-        date = task.getLong("date");
-        updated_at = task.getLong("updated_at");
-
-        JSONArray jFiles = task.getJSONArray("files");
-
-        files = new ArrayList<>();
-
-        for (int i = 0; i < jFiles.length(); i++) {
-
-            files.add(new File(jFiles.getJSONObject(i)));
-        }
-    }
-
-    public Task(@NotNull Cursor cursor, Cursor cFiles) throws Exception {
-
-        id = cursor.getString(cursor.getColumnIndex("id"));
-        title = cursor.getString(cursor.getColumnIndex("title"));
-        author = cursor.getString(cursor.getColumnIndex("author"));
-        priority = cursor.getLong(cursor.getColumnIndex("priority"));
-        type = cursor.getString(cursor.getColumnIndex("type"));
-        number = cursor.getString(cursor.getColumnIndex("number"));
-        assignee = cursor.getString(cursor.getColumnIndex("assignee"));
-        document_type = cursor.getString(cursor.getColumnIndex("document_type"));
-        description = cursor.getString(cursor.getColumnIndex("description"));
-        date_due = cursor.getLong(cursor.getColumnIndex("date_due"));
-        date = cursor.getLong(cursor.getColumnIndex("date"));
-        updated_at = cursor.getLong(cursor.getColumnIndex("updated_at"));
-
-        files = new ArrayList<>();
-
-        if (cFiles.moveToFirst()) {
-
-            do {
-                files.add(new File(cFiles));
-
-            }
-            while (cFiles.moveToNext());
-        }
     }
 }

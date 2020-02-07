@@ -3,11 +3,13 @@ package com.avdeev.docs.ui.task.detail;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.avdeev.docs.R;
@@ -32,6 +34,28 @@ public class TaskActivity extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
 
         TaskDetailViewModel taskViewModel = ViewModelProviders.of(this).get(TaskDetailViewModel.class);
+
+        final TextView title = findViewById(R.id.title);
+        final TextView type = findViewById(R.id.type);
+        final TextView description = findViewById(R.id.description);
+        final TextView author = findViewById(R.id.author);
+        final TextView executor = findViewById(R.id.executor);
+        final TextView date_due = findViewById(R.id.date_due);
+
+        taskViewModel.getTask().observe(this, new Observer<Task>() {
+            @Override
+            public void onChanged(Task task) {
+
+                title.setText(task.getTitle());
+                type.setText(task.getType());
+                description.setText(task.getDescription());
+                author.setText(task.getAuthor());
+                executor.setText(task.getAssignee());
+                date_due.setText(User.dateFromLong(task.getDate_due()));
+            }
+        });
+
+        taskViewModel.setTask(task);
     }
 
     @Override

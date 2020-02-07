@@ -17,8 +17,6 @@ import com.avdeev.docs.core.Document;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
 
 public class DocListAdapter extends ArrayAdapter<Document> implements Filterable {
 

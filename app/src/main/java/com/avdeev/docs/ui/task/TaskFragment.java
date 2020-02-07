@@ -93,6 +93,17 @@ public class TaskFragment extends DocFragment {
             }
         });
 
+        taskViewModel.getSearchText().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String searchText) {
+
+                refreshLayout.setRefreshing(true);
+                TaskListAdapter adapter = (TaskListAdapter) listView.getAdapter();
+                adapter.getFilter().filter(searchText);
+                refreshLayout.setRefreshing(false);
+            }
+        });
+
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -109,7 +120,6 @@ public class TaskFragment extends DocFragment {
     @Override
     public void onSearch(String searchText) {
 
-
-        Toast.makeText(getActivity(), "Task search: " + searchText, Toast.LENGTH_LONG).show();
+        taskViewModel.search(searchText);
     }
 }

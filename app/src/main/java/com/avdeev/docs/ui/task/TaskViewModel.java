@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class TaskViewModel extends DocAppModel {
 
     private MutableLiveData<ArrayList<Task>> mTaskList;
+    private MutableLiveData<String> mSearchText;
 
     public TaskViewModel(Application app) {
 
@@ -23,10 +24,17 @@ public class TaskViewModel extends DocAppModel {
 
         mTaskList = new MutableLiveData<>();
         mTaskList.setValue(new ArrayList<Task>());
+
+        mSearchText = new MutableLiveData<>();
+        mSearchText.setValue("");
     }
 
     public LiveData<ArrayList<Task>> getTaskList() {
         return mTaskList;
+    }
+
+    public LiveData<String> getSearchText() {
+        return mSearchText;
     }
 
     public void getList() {
@@ -97,4 +105,8 @@ public class TaskViewModel extends DocAppModel {
         }.execute();
     }
 
+    public void search(String searchText) {
+
+        mSearchText.setValue(searchText);
+    }
 }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.Action;
+import com.avdeev.docs.core.Document;
 import com.avdeev.docs.core.Task;
 import com.avdeev.docs.core.User;
 
@@ -18,12 +21,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class TaskListAdapter extends RecyclerView.Adapter <TaskListAdapter.TaskHolder> {
+public class TaskListAdapter extends RecyclerView.Adapter <TaskListAdapter.TaskHolder>
+implements Filterable {
 
     private ArrayList<Task> tasks;
+    private ArrayList<Task> constTasks;
     private LayoutInflater inflater;
 
-    public ItemClickListener itemClickListener;
+    private ItemClickListener itemClickListener;
+
+    private TaskFilter taskFilter;
 
     @NonNull
     @Override
@@ -49,6 +56,7 @@ public class TaskListAdapter extends RecyclerView.Adapter <TaskListAdapter.TaskH
     public TaskListAdapter(@NotNull Context context, ArrayList<Task> tasks) {
 
         this.tasks = tasks;
+        constTasks = new ArrayList<>(tasks);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -57,7 +65,17 @@ public class TaskListAdapter extends RecyclerView.Adapter <TaskListAdapter.TaskH
         this.itemClickListener = listener;
     }
 
-    public class TaskHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    @Override
+    public Filter getFilter() {
+
+        if (taskFilter == null) {
+            taskFilter = new TaskFilter();
+        }
+
+        return taskFilter;
+    }
+
+    protected class TaskHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView title;
         private TextView author;
@@ -115,6 +133,62 @@ public class TaskListAdapter extends RecyclerView.Adapter <TaskListAdapter.TaskH
 
     public interface ItemClickListener {
 
-        public void onItemClick(Task task);
+        void onItemClick(Task task);
+    }
+
+    private class TaskFilter extends Filter {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence searchText) {
+
+            FilterResults results = new FilterResults();
+
+            results.count = constTasks.size();
+            results.values = constTasks;
+
+            if (searchText != null && searchText.length() > 0) {
+
+                ArrayList<Task> filterTasks = new ArrayList<>();
+
+                searchText = searchText.toString().toUpperCase();
+
+                for (int i = 0; i < constTasks.size(); i++) {
+
+                    Task task = constTasks.get(i);
+                    if (findText(task, searchText)) {
+
+                        filterTasks.add(new Task(task));
+                    }
+                }
+
+                results.count = filterTasks.size();
+                results.values = filterTasks;
+            }
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+
+            tasks = (ArrayList<Task>)filterResults.values;
+            notifyDataSetChanged();
+        }
+
+        private boolean findText(Task task, CharSequence text) {
+
+            boolean result = false;
+
+            if (
+                task.getTitle().toUpperCase().contains(text) ||
+                task.getAuthor().toUpperCase().contains(text) ||
+                task.getNumber().toUpperCase().contains(text)
+            ) {
+
+                result = true;
+            }
+
+            return result;
+        }
     }
 }

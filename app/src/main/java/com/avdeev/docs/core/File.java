@@ -22,6 +22,14 @@ public class File extends Object implements Serializable {
         size = 0;
     }
 
+    public File(File file) {
+
+        name = file.getName();
+        type = file.getType();
+        id = file.getId();
+        size = file.getSize();
+    }
+
     public File(@NotNull JSONObject object) throws Exception {
 
         id = object.getString("id");

@@ -25,4 +25,7 @@
     <string name="title_visa">Визы</string>
     <string name="title_resolution">Резолюции</string>
     <string name="title_mailer">Рассылка</string>
+    <string name="title_executor">Исполнитель</string>
+    <string name="title_date_due">Выполнить до</string>
+    <string name="title_task_one">Задача</string>
 </resources>
