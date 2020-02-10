@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.File;
+import com.avdeev.docs.core.interfaces.ItemClickListener;
 
 import java.util.ArrayList;
 
@@ -19,6 +20,8 @@ public class FileListAdapter extends RecyclerView.Adapter <FileListAdapter.FileH
 
     private ArrayList<File> files;
     private LayoutInflater inflater;
+
+    private ItemClickListener itemClickListener;
 
     public FileListAdapter(Context context, ArrayList<File> files) {
 
@@ -47,7 +50,12 @@ public class FileListAdapter extends RecyclerView.Adapter <FileListAdapter.FileH
         holder.bind(file);
     }
 
-    protected class FileHolder extends RecyclerView.ViewHolder {
+    public void setOnItemClickListener(ItemClickListener itemClickListener) {
+
+        this.itemClickListener = itemClickListener;
+    }
+
+    protected class FileHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView fileIcon;
         private TextView fileName;
@@ -65,6 +73,33 @@ public class FileListAdapter extends RecyclerView.Adapter <FileListAdapter.FileH
 
             fileName.setText(file.getName());
             fileSize.setText(Long.toString(file.getSize()) + " KB");
+
+            fileIcon.setImageResource(getFileIcon(file.getType()));
+        }
+
+        private int getFileIcon(String type) {
+
+            int result = R.mipmap.ic_txt;
+
+            if (type.equals("xls") || type.equals("xlsx") || type.equals("csv")) {
+                result = R.mipmap.ic_xls;
+            } else if (type.equals("doc") || type.equals("docx")) {
+                result = R.mipmap.ic_doc;
+            } else if (type.equals("pdf")) {
+                result = R.mipmap.ic_pdf;
+            }
+
+            return result;
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            if (itemClickListener != null) {
+
+                File file = files.get(getAdapterPosition());
+                itemClickListener.onItemClick(file);
+            }
         }
     }
 }

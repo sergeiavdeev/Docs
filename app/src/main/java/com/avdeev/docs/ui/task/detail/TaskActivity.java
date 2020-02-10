@@ -3,6 +3,8 @@ package com.avdeev.docs.ui.task.detail;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -11,13 +13,18 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.Task;
 import com.avdeev.docs.core.User;
+import com.avdeev.docs.ui.ext.FileListAdapter;
 import com.avdeev.docs.ui.ext.TaskListAdapter;
 
 public class TaskActivity extends AppCompatActivity {
+
+    private TaskDetailViewModel taskViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,7 +40,7 @@ public class TaskActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
-        TaskDetailViewModel taskViewModel = ViewModelProviders.of(this).get(TaskDetailViewModel.class);
+        taskViewModel = ViewModelProviders.of(this).get(TaskDetailViewModel.class);
 
         final TextView title = findViewById(R.id.title);
         final TextView type = findViewById(R.id.type);
@@ -41,6 +48,13 @@ public class TaskActivity extends AppCompatActivity {
         final TextView author = findViewById(R.id.author);
         final TextView executor = findViewById(R.id.executor);
         final TextView date_due = findViewById(R.id.date_due);
+
+        final ImageView fileArrow = findViewById(R.id.image_files);
+        final ImageView historyArrow = findViewById(R.id.image_history);
+
+        final RecyclerView fileList = findViewById(R.id.list_file);
+        fileList.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        fileList.setAdapter(new FileListAdapter(getBaseContext(), task.getFiles()));
 
         taskViewModel.getTask().observe(this, new Observer<Task>() {
             @Override
@@ -52,6 +66,25 @@ public class TaskActivity extends AppCompatActivity {
                 author.setText(task.getAuthor());
                 executor.setText(task.getAssignee());
                 date_due.setText(User.dateFromLong(task.getDate_due()));
+
+                FileListAdapter fileListAdapter = new FileListAdapter(getBaseContext(), task.getFiles());
+                fileList.setAdapter(fileListAdapter);
+            }
+        });
+
+        taskViewModel.getFilesVisible().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean visible) {
+
+                if (visible) {
+                    fileList.setVisibility(View.VISIBLE);
+                    fileArrow.setImageResource(R.drawable.ic_collapse_up_black_24dp);
+                } else {
+                    fileList.setVisibility(View.GONE);
+                    fileArrow.setImageResource(R.drawable.ic_collapse_down_black_24dp);
+                }
+
+
             }
         });
 
@@ -69,5 +102,10 @@ public class TaskActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onFilesClick(View view) {
+
+        taskViewModel.changeFileVisible();
     }
 }

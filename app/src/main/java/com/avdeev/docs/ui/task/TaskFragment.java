@@ -9,9 +9,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
+
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,10 +22,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.DocFragment;
 import com.avdeev.docs.core.Task;
-import com.avdeev.docs.ui.docDetail.DocDetailActivity;
 import com.avdeev.docs.ui.ext.TaskListAdapter;
 import com.avdeev.docs.ui.login.LoginActivity;
 import com.avdeev.docs.ui.task.detail.TaskActivity;
+import com.avdeev.docs.core.interfaces.ItemClickListener;
 
 import java.util.ArrayList;
 
@@ -32,7 +33,7 @@ public class TaskFragment extends DocFragment {
 
     private TaskViewModel taskViewModel;
 
-    private TaskListAdapter.ItemClickListener itemClickListener;
+    private ItemClickListener itemClickListener;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -44,12 +45,12 @@ public class TaskFragment extends DocFragment {
         final RecyclerView listView = root.findViewById(R.id.task_list);
         final SwipeRefreshLayout refreshLayout = root.findViewById(R.id.refresh);
 
-        itemClickListener = new TaskListAdapter.ItemClickListener() {
+        itemClickListener = new ItemClickListener() {
             @Override
-            public void onItemClick(Task task) {
+            public void onItemClick(Object task) {
 
                 Intent intent = new Intent(getActivity(), TaskActivity.class);
-                intent.putExtra("task", task);
+                intent.putExtra("task", (Task)task);
                 intent.putExtra("type", "inbox");
                 intent.putExtra("caption", "Входящие");
                 startActivity(intent);

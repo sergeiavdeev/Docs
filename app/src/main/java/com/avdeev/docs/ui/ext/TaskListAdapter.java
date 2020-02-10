@@ -12,10 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.avdeev.docs.R;
-import com.avdeev.docs.core.Action;
-import com.avdeev.docs.core.Document;
 import com.avdeev.docs.core.Task;
 import com.avdeev.docs.core.User;
+import com.avdeev.docs.core.interfaces.ItemClickListener;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -60,7 +59,7 @@ implements Filterable {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public void setOnItemClickListener(final ItemClickListener listener) {
+    public void setOnItemClickListener(ItemClickListener listener) {
 
         this.itemClickListener = listener;
     }
@@ -129,11 +128,6 @@ implements Filterable {
                 itemClickListener.onItemClick(task);
             }
         }
-    }
-
-    public interface ItemClickListener {
-
-        void onItemClick(Task task);
     }
 
     private class TaskFilter extends Filter {
