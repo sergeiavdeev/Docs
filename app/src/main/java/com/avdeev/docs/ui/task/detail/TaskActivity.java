@@ -6,21 +6,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.Task;
 import com.avdeev.docs.core.User;
+import com.avdeev.docs.ui.action.ActionsActivity;
 import com.avdeev.docs.ui.ext.FileListAdapter;
-import com.avdeev.docs.ui.ext.TaskListAdapter;
 
 public class TaskActivity extends AppCompatActivity {
 
@@ -40,7 +39,8 @@ public class TaskActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
-        taskViewModel = ViewModelProviders.of(this).get(TaskDetailViewModel.class);
+        taskViewModel = ViewModelProvider.AndroidViewModelFactory
+                .getInstance(getApplication()).create(TaskDetailViewModel.class);
 
         final TextView title = findViewById(R.id.title);
         final TextView type = findViewById(R.id.type);
@@ -83,8 +83,6 @@ public class TaskActivity extends AppCompatActivity {
                     fileList.setVisibility(View.GONE);
                     fileArrow.setImageResource(R.drawable.ic_collapse_down_black_24dp);
                 }
-
-
             }
         });
 
@@ -107,5 +105,18 @@ public class TaskActivity extends AppCompatActivity {
     public void onFilesClick(View view) {
 
         taskViewModel.changeFileVisible();
+    }
+
+    public void onHistoryClick(View view) {
+
+        Task task = taskViewModel.getTask().getValue();
+
+        Intent intent = new Intent(this, ActionsActivity.class);
+        intent.putExtra("id", task.getId());
+        intent.putExtra("type", "inbox");
+        intent.putExtra("caption", "История");
+        intent.putExtra("request", "history");
+        intent.putExtra("task", true);
+        startActivity(intent);
     }
 }

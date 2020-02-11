@@ -39,12 +39,12 @@ public class DocListAdapter extends ArrayAdapter<Document> implements Filterable
         return documents.size();
     }
 
-    public DocListAdapter(Context context, Document[] values) {
+    public DocListAdapter(Context context, ArrayList<Document> values) {
         super(context, R.layout.doc_list_row, values);
 
         this.context = context;
-        this.documents = new ArrayList<Document>(Arrays.asList(values));
-        filterList = new ArrayList<Document>(Arrays.asList(values));
+        this.documents = values;
+        filterList = values;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 

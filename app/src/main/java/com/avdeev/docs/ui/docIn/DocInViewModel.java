@@ -9,17 +9,19 @@ import androidx.lifecycle.MutableLiveData;
 import com.avdeev.docs.core.DocAppModel;
 import com.avdeev.docs.core.Document;
 
+import java.util.ArrayList;
+
 public class DocInViewModel extends DocAppModel {
 
-    private MutableLiveData<Document[]> mDocList;
+    private MutableLiveData<ArrayList<Document>> mDocList;
 
     public DocInViewModel(Application app) {
         super(app);
         mDocList = new MutableLiveData<>();
-        mDocList.setValue(new Document[0]);
+        mDocList.setValue(new ArrayList<Document>());
     }
 
-    public LiveData<Document[]> getDocList() {
+    public LiveData<ArrayList<Document>> getDocList() {
         return mDocList;
     }
 
@@ -31,8 +33,8 @@ public class DocInViewModel extends DocAppModel {
             @Override
             protected Object doInBackground(Object[] objects) {
 
-                Document[] documents = user.getDocInList();
-                if (documents.length == 0) {
+                ArrayList<Document> documents = user.getDocInList();
+                if (documents.size() == 0) {
                     user.updateDocList("inbox");
                     documents = user.getDocInList();
                 }
@@ -45,7 +47,7 @@ public class DocInViewModel extends DocAppModel {
                 super.onPostExecute(result);
 
                 wait.setValue(false);
-                mDocList.setValue((Document[])result);
+                mDocList.setValue((ArrayList<Document>)result);
             }
 
         }.execute();
@@ -68,7 +70,7 @@ public class DocInViewModel extends DocAppModel {
                 super.onPostExecute(result);
 
                 wait.setValue(false);
-                mDocList.setValue((Document[])result);
+                mDocList.setValue((ArrayList<Document>) result);
             }
 
         }.execute();

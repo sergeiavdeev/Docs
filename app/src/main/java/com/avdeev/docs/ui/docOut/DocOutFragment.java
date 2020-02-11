@@ -1,5 +1,6 @@
 package com.avdeev.docs.ui.docOut;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -18,6 +20,8 @@ import com.avdeev.docs.core.DocFragment;
 import com.avdeev.docs.core.Document;
 import com.avdeev.docs.ui.docDetail.DocDetailActivity;
 import com.avdeev.docs.ui.ext.DocListAdapter;
+
+import java.util.ArrayList;
 
 public class DocOutFragment extends DocFragment {
 
@@ -29,30 +33,28 @@ public class DocOutFragment extends DocFragment {
 
         super.onCreateView(inflater, container, savedInstanceState);
 
-        docOutViewModel =
-                ViewModelProviders.of(this).get(DocOutViewModel.class);
+        Application app = getActivity().getApplication();
+
+        docOutViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(app).create(DocOutViewModel.class);
         final View root = inflater.inflate(R.layout.fragment_doc_out, container, false);
 
         final ListView listView = root.findViewById(R.id.doc_list);
         //final ProgressBar progressBar = root.findViewById(R.id.progress_bar);
         final SwipeRefreshLayout refreshLayout = root.findViewById(R.id.refresh);
 
-        docOutViewModel.getDocList().observe(this, new Observer<Document[]>() {
+        docOutViewModel.getDocList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Document>>() {
             @Override
-            public void onChanged(Document[] documents) {
+            public void onChanged(ArrayList<Document> documents) {
 
                 listAdapter = new DocListAdapter(getContext(), documents);
                 listView.setAdapter(listAdapter);
             }
         });
 
-        docOutViewModel.isWaiting().observe(this, new Observer<Boolean>() {
+        docOutViewModel.isWaiting().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean wait) {
 
-                //int visible = (wait ? View.VISIBLE : View.GONE);
-
-                //progressBar.setVisibility(visible);
                 refreshLayout.setRefreshing(wait);
             }
         });
@@ -89,6 +91,5 @@ public class DocOutFragment extends DocFragment {
         if (listAdapter != null) {
             listAdapter.getFilter().filter(searchText);
         }
-        //Toast.makeText(getActivity(), "Doc In Search: " + searchText, Toast.LENGTH_LONG).show();
     }
 }

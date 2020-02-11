@@ -3,6 +3,7 @@ package com.avdeev.docs.ui.login;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.view.Menu;
@@ -36,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         final Button btn = findViewById(R.id.button_login);
         final TextView textError = findViewById(R.id.text_error);
 
-        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        loginViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(LoginViewModel.class);
 
         loginViewModel.isAuth().observe(this, new Observer<Boolean>() {
             @Override

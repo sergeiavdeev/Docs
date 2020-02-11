@@ -1,8 +1,10 @@
 package com.avdeev.docs.ui.docInner;
 
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -22,6 +24,8 @@ import com.avdeev.docs.core.Document;
 import com.avdeev.docs.ui.docDetail.DocDetailActivity;
 import com.avdeev.docs.ui.ext.DocListAdapter;
 
+import java.util.ArrayList;
+
 public class DocInnerFragment extends DocFragment {
 
     private DocInnerViewModel docInnerViewModel;
@@ -37,24 +41,26 @@ public class DocInnerFragment extends DocFragment {
 
         super.onCreateView(inflater, container, savedInstanceState);
 
+        Application app = getActivity().getApplication();
+
         docInnerViewModel =
-                ViewModelProviders.of(this).get(DocInnerViewModel.class);
+                ViewModelProvider.AndroidViewModelFactory.getInstance(app).create(DocInnerViewModel.class);
         final View root = inflater.inflate(R.layout.fragment_doc_inner, container, false);
 
         final ListView listView = root.findViewById(R.id.doc_list);
         //final ProgressBar progressBar = root.findViewById(R.id.progress_bar);
         final SwipeRefreshLayout refreshLayout = root.findViewById(R.id.refresh);
 
-        docInnerViewModel.getDocList().observe(this, new Observer<Document[]>() {
+        docInnerViewModel.getDocList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Document>>() {
             @Override
-            public void onChanged(Document[] documents) {
+            public void onChanged(ArrayList<Document> documents) {
 
                 listAdapter = new DocListAdapter(getContext(), documents);
                 listView.setAdapter(listAdapter);
             }
         });
 
-        docInnerViewModel.isWaiting().observe(this, new Observer<Boolean>() {
+        docInnerViewModel.isWaiting().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean wait) {
 
@@ -97,6 +103,5 @@ public class DocInnerFragment extends DocFragment {
         if (listAdapter != null) {
             listAdapter.getFilter().filter(searchText);
         }
-        //Toast.makeText(getActivity(), "Doc In Search: " + searchText, Toast.LENGTH_LONG).show();
     }
 }

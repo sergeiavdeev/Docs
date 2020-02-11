@@ -1,5 +1,6 @@
 package com.avdeev.docs.ui.docIn;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -17,7 +19,10 @@ import com.avdeev.docs.R;
 import com.avdeev.docs.core.DocFragment;
 import com.avdeev.docs.core.Document;
 import com.avdeev.docs.ui.docDetail.DocDetailActivity;
+import com.avdeev.docs.ui.docInner.DocInnerViewModel;
 import com.avdeev.docs.ui.ext.DocListAdapter;
+
+import java.util.ArrayList;
 
 public class DocInFragment extends DocFragment {
 
@@ -29,24 +34,26 @@ public class DocInFragment extends DocFragment {
 
         super.onCreateView(inflater, container, savedInstanceState);
 
-        docInViewModel =
-                ViewModelProviders.of(this).get(DocInViewModel.class);
+        Application app = getActivity().getApplication();
+
+        docInViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(app).create(DocInViewModel.class);
+
         final View root = inflater.inflate(R.layout.fragment_doc_in, container, false);
 
         final ListView listView = root.findViewById(R.id.doc_list);
         //final ProgressBar progressBar = root.findViewById(R.id.progress_bar);
         final SwipeRefreshLayout refreshLayout = root.findViewById(R.id.refresh);
 
-        docInViewModel.getDocList().observe(this, new Observer<Document[]>() {
+        docInViewModel.getDocList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Document>>() {
             @Override
-            public void onChanged(Document[] documents) {
+            public void onChanged(ArrayList<Document> documents) {
 
                 listAdapter = new DocListAdapter(getContext(), documents);
                 listView.setAdapter(listAdapter);
             }
         });
 
-        docInViewModel.isWaiting().observe(this, new Observer<Boolean>() {
+        docInViewModel.isWaiting().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean wait) {
 
@@ -70,8 +77,6 @@ public class DocInFragment extends DocFragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 Document doc = (Document) adapterView.getItemAtPosition(i);
-                long id = adapterView.getItemIdAtPosition(i);
-                long count = adapterView.getCount();
                 Intent intent = new Intent(getActivity(), DocDetailActivity.class);
                 intent.putExtra("id", doc);
                 intent.putExtra("type", "inbox");
@@ -91,6 +96,5 @@ public class DocInFragment extends DocFragment {
         if (listAdapter != null) {
             listAdapter.getFilter().filter(searchText);
         }
-        //Toast.makeText(getActivity(), "Doc In Search: " + searchText, Toast.LENGTH_LONG).show();
     }
 }

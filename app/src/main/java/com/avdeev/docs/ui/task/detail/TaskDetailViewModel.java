@@ -38,4 +38,5 @@ public class TaskDetailViewModel extends DocAppModel {
         boolean visible = mFilesVisible.getValue();
         mFilesVisible.setValue(!visible);
     }
+
 }

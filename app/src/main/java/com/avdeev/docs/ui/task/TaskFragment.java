@@ -1,20 +1,19 @@
 package com.avdeev.docs.ui.task;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+
 
 
 import androidx.annotation.NonNull;
 
-import androidx.cardview.widget.CardView;
+
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -33,38 +32,25 @@ public class TaskFragment extends DocFragment {
 
     private TaskViewModel taskViewModel;
 
-    private ItemClickListener itemClickListener;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        Application app = getActivity().getApplication();
 
-        taskViewModel =
-                ViewModelProviders.of(this).get(TaskViewModel.class);
+        taskViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(app).create(TaskViewModel.class);
         View root = inflater.inflate(R.layout.fragment_task, container, false);
 
         final RecyclerView listView = root.findViewById(R.id.task_list);
         final SwipeRefreshLayout refreshLayout = root.findViewById(R.id.refresh);
 
-        itemClickListener = new ItemClickListener() {
-            @Override
-            public void onItemClick(Object task) {
-
-                Intent intent = new Intent(getActivity(), TaskActivity.class);
-                intent.putExtra("task", (Task)task);
-                intent.putExtra("type", "inbox");
-                intent.putExtra("caption", "Входящие");
-                startActivity(intent);
-
-            }
-        };
         //listView.getItemAnimator().set
         listView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         TaskListAdapter adapter = new TaskListAdapter(getContext(), new ArrayList<Task>());
-        adapter.setOnItemClickListener(itemClickListener);
         listView.setAdapter(adapter);
+        adapter.setOnItemClickListener(createClickListener());
 
-        taskViewModel.isAuth().observe(this, new Observer<Boolean>() {
+        taskViewModel.isAuth().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean auth) {
 
@@ -76,17 +62,17 @@ public class TaskFragment extends DocFragment {
             }
         });
 
-        taskViewModel.getTaskList().observe(this, new Observer<ArrayList<Task>>() {
+        taskViewModel.getTaskList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Task>>() {
             @Override
             public void onChanged(ArrayList<Task> tasks) {
 
                 TaskListAdapter adapter = new TaskListAdapter(getContext(), tasks);
-                adapter.setOnItemClickListener(itemClickListener);
+                adapter.setOnItemClickListener(createClickListener());
                 listView.setAdapter(adapter);
             }
         });
 
-        taskViewModel.isWaiting().observe(this, new Observer<Boolean>() {
+        taskViewModel.isWaiting().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean wait) {
 
@@ -94,7 +80,7 @@ public class TaskFragment extends DocFragment {
             }
         });
 
-        taskViewModel.getSearchText().observe(this, new Observer<String>() {
+        taskViewModel.getSearchText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String searchText) {
 
@@ -119,8 +105,32 @@ public class TaskFragment extends DocFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        taskViewModel.getList();
+    }
+
+    @Override
     public void onSearch(String searchText) {
 
         taskViewModel.search(searchText);
+    }
+
+
+    private ItemClickListener createClickListener() {
+
+        return new ItemClickListener() {
+            @Override
+            public void onItemClick(Object task) {
+
+                Intent intent = new Intent(getActivity(), TaskActivity.class);
+                intent.putExtra("task", (Task)task);
+                intent.putExtra("type", "inbox");
+                intent.putExtra("caption", "Входящие");
+                startActivity(intent);
+
+            }
+        };
     }
 }

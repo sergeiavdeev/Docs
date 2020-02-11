@@ -15,10 +15,13 @@ public class DocAppModel extends AndroidViewModel {
     protected MutableLiveData<Boolean> wait;
 
     protected User user;
+    protected AppDoc app;
 
 
     public DocAppModel(Application app) {
         super(app);
+
+        this.app = (AppDoc)app;
 
         user = ((AppDoc)app).getUser();
         isAuth = new MutableLiveData<>();
@@ -37,5 +40,9 @@ public class DocAppModel extends AndroidViewModel {
     public LiveData<Boolean>isWaiting() {
 
         return wait;
+    }
+
+    public Application getApplication() {
+        return app;
     }
 }

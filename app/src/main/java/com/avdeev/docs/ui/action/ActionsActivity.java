@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.Action;
+import com.avdeev.docs.core.ActionRequest;
 import com.avdeev.docs.ui.ext.ActionListAdapter;
 
 import java.util.ArrayList;
@@ -54,11 +55,24 @@ public class ActionsActivity extends AppCompatActivity {
             }
         });
 
-        actionsViewModel.updateActions(
-                getIntent().getStringExtra("type"),
-                getIntent().getStringExtra("id"),
-                getIntent().getStringExtra("request")
-        );
+
+        ActionRequest request;
+
+        if (getIntent().getBooleanExtra("task", false)) {
+
+            request = new ActionRequest(
+                    getIntent().getStringExtra("request"),
+                    getIntent().getStringExtra("type"),
+                    getIntent().getStringExtra("id"),
+                    true);
+        } else {
+
+            request = new ActionRequest(getIntent().getStringExtra("request"),
+                    getIntent().getStringExtra("type"),
+                    getIntent().getStringExtra("id"));
+        }
+
+        actionsViewModel.updateActions(request);
     }
 
     @Override

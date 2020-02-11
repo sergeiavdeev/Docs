@@ -10,18 +10,20 @@ import androidx.lifecycle.ViewModel;
 import com.avdeev.docs.core.DocAppModel;
 import com.avdeev.docs.core.Document;
 
+import java.util.ArrayList;
+
 public class DocOutViewModel extends DocAppModel {
 
-    private MutableLiveData<Document[]> mDocList;
+    private MutableLiveData<ArrayList<Document>> mDocList;
 
     public DocOutViewModel(Application app) {
         super(app);
 
         mDocList = new MutableLiveData<>();
-        mDocList.setValue(new Document[0]);
+        mDocList.setValue(new ArrayList<Document>());
     }
 
-    public LiveData<Document[]> getDocList() {
+    public LiveData<ArrayList<Document>> getDocList() {
         return mDocList;
     }
 
@@ -33,8 +35,8 @@ public class DocOutViewModel extends DocAppModel {
             @Override
             protected Object doInBackground(Object[] objects) {
 
-                Document[] documents = user.getDocOutList();
-                if (documents.length == 0) {
+                ArrayList<Document> documents = user.getDocOutList();
+                if (documents.size() == 0) {
                     user.updateDocList("outbox");
                     documents = user.getDocOutList();
                 }
@@ -47,7 +49,7 @@ public class DocOutViewModel extends DocAppModel {
                 super.onPostExecute(result);
 
                 wait.setValue(false);
-                mDocList.setValue((Document[])result);
+                mDocList.setValue((ArrayList<Document>) result);
             }
 
         }.execute();
@@ -70,7 +72,7 @@ public class DocOutViewModel extends DocAppModel {
                 super.onPostExecute(result);
 
                 wait.setValue(false);
-                mDocList.setValue((Document[])result);
+                mDocList.setValue((ArrayList<Document>) result);
             }
 
         }.execute();

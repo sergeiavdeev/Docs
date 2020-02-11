@@ -25,7 +25,8 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/file_type_icon"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/file_download_icon"/>
 
     <TextView
         android:id="@+id/text_file_size"
@@ -35,7 +36,8 @@
         android:textColor="@color/colorPrimary"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@id/file_type_icon"
-        app:layout_constraintTop_toBottomOf="@id/text_file_name" />
+        app:layout_constraintTop_toBottomOf="@id/text_file_name"
+        app:layout_constraintEnd_toStartOf="@id/file_download_icon"/>
 
     <ImageView
         android:id="@+id/file_download_icon"

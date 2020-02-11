@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.avdeev.docs.core.Action;
+import com.avdeev.docs.core.ActionRequest;
 import com.avdeev.docs.core.DocAppModel;
 import com.avdeev.docs.core.Document;
 
@@ -36,6 +37,28 @@ public class ActionsViewModel extends DocAppModel {
             protected Object doInBackground(Object[] objects) {
 
                 return user.getActions(type, id, request);
+            }
+
+            @Override
+            protected void onPostExecute(Object result) {
+                super.onPostExecute(result);
+
+                wait.setValue(false);
+                actions.setValue((ArrayList<Action>)result);
+            }
+
+        }.execute();
+    }
+
+    public void updateActions(final ActionRequest request) {
+
+        wait.setValue(true);
+
+        new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+
+                return user.getActions(request);
             }
 
             @Override

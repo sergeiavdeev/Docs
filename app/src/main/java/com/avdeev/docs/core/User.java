@@ -39,9 +39,9 @@ public class User {
     private String passwordHash;
     private String apiPath;
     private String deviceKey;
-    private Document[] docsIn;
-    private Document[] docsOut;
-    private Document[] docsInner;
+    private ArrayList<Document> docsIn;
+    private ArrayList<Document> docsOut;
+    private ArrayList<Document> docsInner;
     private ArrayList<Task> taskList;
 
     public User(Context context) {
@@ -51,9 +51,9 @@ public class User {
         dbR = dbHelper.getReadableDatabase();
         auth = false;
         deviceKey = "dfb2304e-67d0-4d06-a8b0-a136dc562103";
-        docsIn = new Document[0];
-        docsOut = new Document[0];
-        docsInner = new Document[0];
+        docsIn = new ArrayList<>();
+        docsOut = new ArrayList<>();
+        docsInner = new ArrayList<>();
         taskList = new ArrayList<>();
 
         apiPath = "https://sed.rudn.ru/BGU_DEMO/hs/DGU_APP_Mobile_Client/";
@@ -138,26 +138,22 @@ public class User {
         return result;
     }
 
-    public Document[] getDocInList() {
+    public ArrayList<Document> getDocInList() {
 
-        if (docsIn.length > 0) {
+        if (docsIn.size() > 0) {
             return docsIn;
         }
 
         dbR = dbHelper.getReadableDatabase();
         Cursor c = dbR.rawQuery("SELECT * FROM DocIn", null);
 
-        docsIn = new Document[0];
+        docsIn = new ArrayList<>();
 
         if (c.moveToFirst()) {
 
-            docsIn = new Document[c.getCount()];
-            int i = 0;
-
             do {
 
-                docsIn[i] = new Document(c);
-                i++;
+                docsIn.add(new Document(c));
             }
             while (c.moveToNext());
         }
@@ -169,26 +165,22 @@ public class User {
         return docsIn;
     }
 
-    public Document[] getDocOutList() {
+    public ArrayList<Document> getDocOutList() {
 
-        if (docsOut.length > 0) {
+        if (docsOut.size() > 0) {
             return docsOut;
         }
 
         dbR = dbHelper.getReadableDatabase();
         Cursor c = dbR.rawQuery("SELECT * FROM DocOut", null);
 
-        docsOut = new Document[0];
+        docsOut = new ArrayList<>();
 
         if (c.moveToFirst()) {
 
-            docsOut = new Document[c.getCount()];
-            int i = 0;
-
             do {
 
-                docsOut[i] = new Document(c);
-                i++;
+                docsOut.add(new Document(c));
             }
             while (c.moveToNext());
         }
@@ -200,26 +192,22 @@ public class User {
         return docsOut;
     }
 
-    public Document[] getDocInnerList() {
+    public ArrayList<Document> getDocInnerList() {
 
-        if (docsInner.length > 0) {
+        if (docsInner.size() > 0) {
             return docsInner;
         }
 
         dbR = dbHelper.getReadableDatabase();
         Cursor c = dbR.rawQuery("SELECT * FROM DocInner", null);
 
-        docsInner = new Document[0];
+        docsInner = new ArrayList<>();
 
         if (c.moveToFirst()) {
 
-            docsInner = new Document[c.getCount()];
-            int i = 0;
-
             do {
 
-                docsInner[i] = new Document(c);
-                i++;
+                docsInner.add(new Document(c));
             }
             while (c.moveToNext());
         }
@@ -636,6 +624,49 @@ public class User {
             String jsonData = response.body().string();
 
             JSONArray jsonActions = new JSONObject(jsonData).getJSONArray(method);
+
+            for (int i = 0; i < jsonActions.length(); i++) {
+
+                actions.add(new Action(jsonActions.getJSONObject(i)));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return actions;
+    }
+
+    public ArrayList<Action> getActions(ActionRequest params) {
+
+        ArrayList<Action> actions = new ArrayList<>();
+
+        OkHttpClient client = new OkHttpClient();
+
+
+        String query = params.method + "?chapter=" + params.type + "&iddocument=" + params.id;
+
+        if (params.task) {
+
+            query = params.method + "?chapter=" + params.type + "&idtask=" + params.id;
+        }
+
+        ArrayList<Header> headers = getHeaders();
+
+        Request request = new Request.Builder()
+                .url(apiPath + query)
+                .get()
+                .addHeader(headers.get(0).name.utf8(), headers.get(0).value.utf8())
+                .addHeader(headers.get(1).name.utf8(), headers.get(1).value.utf8())
+                .addHeader(headers.get(2).name.utf8(), headers.get(2).value.utf8())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            String jsonData = response.body().string();
+
+            JSONArray jsonActions = new JSONObject(jsonData).getJSONArray(params.method);
 
             for (int i = 0; i < jsonActions.length(); i++) {
 
