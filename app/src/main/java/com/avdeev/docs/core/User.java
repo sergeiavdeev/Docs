@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -580,7 +581,8 @@ public class User {
 
     }
 
-    @Contract(pure = true) private String getTableName(@NotNull String type) {
+    @Contract(pure = true)
+    private String getTableName(@NotNull String type) {
 
         String tableName = "";
 
@@ -637,7 +639,7 @@ public class User {
         return actions;
     }
 
-    public ArrayList<Action> getActions(ActionRequest params) {
+    public ArrayList<Action> getActions(@NotNull ActionRequest params) {
 
         ArrayList<Action> actions = new ArrayList<>();
 
@@ -678,6 +680,43 @@ public class User {
         }
 
         return actions;
+    }
+
+    public String getFile(@NotNull File file) throws Exception {
+
+        String fileName = file.getId() + "." + file.getType();
+
+        java.io.File jFile = new java.io.File(context.getFilesDir(), fileName);
+
+        //filePath = jFile.getName();
+
+        if (!jFile.exists()) {
+
+            OkHttpClient client = new OkHttpClient();
+
+
+            String query = "files/?id=" + file.getId();
+
+            ArrayList<Header> headers = getHeaders();
+
+            Request request = new Request.Builder()
+                    .url(apiPath + query)
+                    .get()
+                    .addHeader(headers.get(0).name.utf8(), headers.get(0).value.utf8())
+                    .addHeader(headers.get(1).name.utf8(), headers.get(1).value.utf8())
+                    .addHeader(headers.get(2).name.utf8(), headers.get(2).value.utf8())
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            FileOutputStream outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            outputStream.write(response.body().bytes());
+            outputStream.close();
+        }
+
+        file.setDownload(true);
+
+        return fileName;
     }
 
     @NotNull

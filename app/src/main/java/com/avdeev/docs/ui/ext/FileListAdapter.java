@@ -1,6 +1,8 @@
 package com.avdeev.docs.ui.ext;
 
 import android.content.Context;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.File;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -60,6 +64,7 @@ public class FileListAdapter extends RecyclerView.Adapter <FileListAdapter.FileH
         private ImageView fileIcon;
         private TextView fileName;
         private TextView fileSize;
+        private ImageView downloadIcon;
 
         public FileHolder(View itemView) {
             super(itemView);
@@ -67,6 +72,10 @@ public class FileListAdapter extends RecyclerView.Adapter <FileListAdapter.FileH
             fileIcon = itemView.findViewById(R.id.file_type_icon);
             fileName = itemView.findViewById(R.id.text_file_name);
             fileSize = itemView.findViewById(R.id.text_file_size);
+
+            downloadIcon = itemView.findViewById(R.id.file_download_icon);
+
+                    itemView.setOnClickListener(this);
         }
 
         private void bind(File file) {
@@ -75,9 +84,26 @@ public class FileListAdapter extends RecyclerView.Adapter <FileListAdapter.FileH
             fileSize.setText(Long.toString(file.getSize()) + " KB");
 
             fileIcon.setImageResource(getFileIcon(file.getType()));
+
+            if (file.isDownload()) {
+
+                downloadIcon.setImageResource(R.drawable.ic_file_view_black_24dp);
+            } else {
+
+                downloadIcon.setImageResource(R.drawable.a_ic_file_download);
+                if (file.isWait()) {
+
+                    Drawable drawer = downloadIcon.getDrawable();
+                    ((Animatable)drawer).start();
+                } else {
+
+                    Drawable drawer = downloadIcon.getDrawable();
+                    ((Animatable)drawer).stop();
+                }
+            }
         }
 
-        private int getFileIcon(String type) {
+        private int getFileIcon(@NotNull String type) {
 
             int result = R.mipmap.ic_txt;
 

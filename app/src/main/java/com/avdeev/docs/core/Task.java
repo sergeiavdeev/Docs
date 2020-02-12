@@ -1,5 +1,6 @@
 package com.avdeev.docs.core;
 
+import android.content.Context;
 import android.database.Cursor;
 
 import org.jetbrains.annotations.NotNull;
@@ -218,5 +219,18 @@ public class Task extends Object implements Serializable {
 
     public void setFiles(ArrayList<File> files) {
         this.files = files;
+    }
+
+    public void updateFiles(Context context) {
+
+        for (int i = 0; i < files.size(); i++) {
+
+            File file = files.get(i);
+            String fileName = file.getId() + "." + file.getType();
+
+            java.io.File jFile = new java.io.File(context.getFilesDir(), fileName);
+
+            file.setDownload(jFile.exists());
+        }
     }
 }

@@ -45,7 +45,8 @@
         android:layout_height="40dp"
         android:layout_weight="0"
         android:contentDescription="@string/void_string"
-        android:src="@drawable/ic_file_download_24dp"
+        app:srcCompat="@drawable/a_ic_file_download"
+        android:src="@drawable/a_ic_file_download"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

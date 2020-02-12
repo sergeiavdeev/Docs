@@ -26,6 +26,9 @@ import com.avdeev.docs.ui.login.LoginActivity;
 import com.avdeev.docs.ui.task.detail.TaskActivity;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 public class TaskFragment extends DocFragment {
@@ -118,6 +121,8 @@ public class TaskFragment extends DocFragment {
     }
 
 
+    @NotNull
+    @Contract(value = " -> new", pure = true)
     private ItemClickListener createClickListener() {
 
         return new ItemClickListener() {

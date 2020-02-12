@@ -14,20 +14,28 @@ public class File extends Object implements Serializable {
     private String id;
     private long size;
 
+    private boolean isDownload;
+    private boolean wait;
+
     public File() {
 
         name = "";
         type = "";
         id = "";
         size = 0;
+        isDownload = false;
+        wait = false;
     }
 
-    public File(File file) {
+    public File(@NotNull File file) {
 
         name = file.getName();
         type = file.getType();
         id = file.getId();
         size = file.getSize();
+
+        isDownload = file.isDownload();
+        wait = file.isWait();
     }
 
     public File(@NotNull JSONObject object) throws Exception {
@@ -36,14 +44,20 @@ public class File extends Object implements Serializable {
         name = object.getString("name");
         type = object.getString("type");
         size = object.getLong("size");
+
+        isDownload = false;
+        wait = false;
     }
 
-    public File(Cursor cursor) {
+    public File(@NotNull Cursor cursor) {
 
         id = cursor.getString(cursor.getColumnIndex("id"));
         name = cursor.getString(cursor.getColumnIndex("name"));
         type = cursor.getString(cursor.getColumnIndex("type"));
         size = cursor.getLong(cursor.getColumnIndex("size"));
+
+        isDownload = false;
+        wait = false;
     }
 
     public String getName() {
@@ -76,5 +90,21 @@ public class File extends Object implements Serializable {
 
     public void setSize(long size) {
         this.size = size;
+    }
+
+    public boolean isDownload() {
+        return isDownload;
+    }
+
+    public void setDownload(boolean download) {
+        isDownload = download;
+    }
+
+    public boolean isWait() {
+        return wait;
+    }
+
+    public void setWait(boolean wait) {
+        this.wait = wait;
     }
 }
