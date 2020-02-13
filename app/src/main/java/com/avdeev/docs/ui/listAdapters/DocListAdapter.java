@@ -1,4 +1,4 @@
-package com.avdeev.docs.ui.ext;
+package com.avdeev.docs.ui.listAdapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,7 +16,6 @@ import com.avdeev.docs.R;
 import com.avdeev.docs.core.Document;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class DocListAdapter extends ArrayAdapter<Document> implements Filterable {
 

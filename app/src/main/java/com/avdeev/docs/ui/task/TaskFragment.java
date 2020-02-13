@@ -21,7 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.DocFragment;
 import com.avdeev.docs.core.Task;
-import com.avdeev.docs.ui.ext.TaskListAdapter;
+import com.avdeev.docs.ui.listAdapters.TaskListAdapter;
 import com.avdeev.docs.ui.login.LoginActivity;
 import com.avdeev.docs.ui.task.detail.TaskActivity;
 import com.avdeev.docs.core.interfaces.ItemClickListener;

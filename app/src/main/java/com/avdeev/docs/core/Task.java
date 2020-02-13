@@ -230,7 +230,7 @@ public class Task extends Object implements Serializable {
 
             java.io.File jFile = new java.io.File(context.getFilesDir(), fileName);
 
-            file.setDownload(jFile.exists());
+            file.setDownloaded(jFile.exists());
         }
     }
 }

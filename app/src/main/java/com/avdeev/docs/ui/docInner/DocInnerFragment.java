@@ -2,7 +2,6 @@ package com.avdeev.docs.ui.docInner;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Application;
 import android.content.Intent;
@@ -22,7 +21,7 @@ import com.avdeev.docs.R;
 import com.avdeev.docs.core.DocFragment;
 import com.avdeev.docs.core.Document;
 import com.avdeev.docs.ui.docDetail.DocDetailActivity;
-import com.avdeev.docs.ui.ext.DocListAdapter;
+import com.avdeev.docs.ui.listAdapters.DocListAdapter;
 
 import java.util.ArrayList;
 

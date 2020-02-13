@@ -1,5 +1,6 @@
 package com.avdeev.docs.ui.task.detail;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -24,9 +25,10 @@ import com.avdeev.docs.R;
 import com.avdeev.docs.core.File;
 import com.avdeev.docs.core.Task;
 import com.avdeev.docs.core.User;
+import com.avdeev.docs.core.commonViewModels.FileListViewModel;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.ui.action.ActionsActivity;
-import com.avdeev.docs.ui.ext.FileListAdapter;
+import com.avdeev.docs.ui.listAdapters.FileListAdapter;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +36,7 @@ import org.jetbrains.annotations.NotNull;
 public class TaskActivity extends AppCompatActivity {
 
     private TaskDetailViewModel taskViewModel;
+    private FileListViewModel fileListViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,32 +44,32 @@ public class TaskActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_task);
 
+        Context context = getBaseContext();
+
         Task task = (Task)getIntent().getExtras().getSerializable("task");
 
         task.updateFiles(this);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Задача");
-        actionBar.setSubtitle(task.getType() + " №" + task.getNumber() + " от " + User.dateFromLong(task.getDate()));
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        initActionBar(task);
 
         taskViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(TaskDetailViewModel.class);
 
-        final TextView title = findViewById(R.id.title);
-        final TextView type = findViewById(R.id.type);
-        final TextView description = findViewById(R.id.description);
-        final TextView author = findViewById(R.id.author);
-        final TextView executor = findViewById(R.id.executor);
-        final TextView date_due = findViewById(R.id.date_due);
+        fileListViewModel = ViewModelProvider.AndroidViewModelFactory
+                .getInstance(getApplication()).create(FileListViewModel.class);
 
-        final ImageView fileArrow = findViewById(R.id.image_files);
+        final TextView  title        = findViewById(R.id.title);
+        final TextView  type         = findViewById(R.id.type);
+        final TextView  description  = findViewById(R.id.description);
+        final TextView  author       = findViewById(R.id.author);
+        final TextView  executor     = findViewById(R.id.executor);
+        final TextView  date_due     = findViewById(R.id.date_due);
+        final ImageView fileArrow    = findViewById(R.id.image_files);
         final ImageView historyArrow = findViewById(R.id.image_history);
 
         final RecyclerView fileList = findViewById(R.id.list_file);
-        fileList.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-        fileList.setAdapter(new FileListAdapter(getBaseContext(), task.getFiles()));
+
+        fileList.setLayoutManager(new LinearLayoutManager(context));
 
         taskViewModel.getTask().observe(this, new Observer<Task>() {
             @Override
@@ -77,11 +80,13 @@ public class TaskActivity extends AppCompatActivity {
                 description.setText(task.getDescription());
                 author.setText(task.getAuthor());
                 executor.setText(task.getAssignee());
-                date_due.setText(User.dateFromLong(task.getDate_due()));
 
-                FileListAdapter fileListAdapter = new FileListAdapter(getBaseContext(), task.getFiles());
-                fileListAdapter.setOnItemClickListener(createClickListener());
-                fileList.setAdapter(fileListAdapter);
+                long dateDue = task.getDate_due();
+
+                if (dateDue > 0) {
+
+                    date_due.setText(User.dateFromLong(task.getDate_due()));
+                }
             }
         });
 
@@ -99,33 +104,16 @@ public class TaskActivity extends AppCompatActivity {
             }
         });
 
-        taskViewModel.getFileName().observe(this, new Observer<String>() {
+        fileListViewModel.getFileListAdapter().observe(this, new Observer<FileListAdapter>() {
             @Override
-            public void onChanged(String fileName) {
+            public void onChanged(FileListAdapter fileListAdapter) {
 
-                if (fileName.length() > 0) {
-
-                    java.io.File oFile = new java.io.File(getApplicationContext().getFilesDir(), fileName);
-                    oFile.setReadable(true, false);
-
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(getUri(oFile));
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    //intent.addFlags(Intent.)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                    PackageManager manager = getPackageManager();
-                    if (intent.resolveActivity(manager) != null) {
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Просмотр данного типа файлов не поддерживается", Toast.LENGTH_LONG).show();
-                    }
-
-                }
+                fileList.setAdapter(fileListAdapter);
             }
         });
 
         taskViewModel.setTask(task);
+        fileListViewModel.init(task.getFiles(), createClickListener());
     }
 
     @Override
@@ -165,15 +153,55 @@ public class TaskActivity extends AppCompatActivity {
 
         return new ItemClickListener() {
             @Override
-            public void onItemClick(Object file) {
+            public void onItemClick(Object object) {
 
-                taskViewModel.LoadFile((File)file);
+                File file = (File)object;
+                if (!file.isDownloaded()) {
+                    fileListViewModel.downloadFile(file);
+                } else {
+
+                    previewFile(file);
+                }
             }
         };
     }
 
-    private Uri getUri(java.io.File file) {
+    private void previewFile(File file) {
+
+        String fileName = file.getId() + "." + file.getType();
+
+        java.io.File oFile = new java.io.File(getApplicationContext().getFilesDir(), fileName);
+        oFile.setReadable(true, false);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(getFileUri(oFile));
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        //intent.addFlags(Intent.)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        PackageManager manager = getPackageManager();
+        if (intent.resolveActivity(manager) != null) {
+            startActivity(intent);
+        } else {
+            Toast.makeText(getApplicationContext(), "Просмотр данного типа файлов не поддерживается", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private Uri getFileUri(java.io.File file) {
 
         return FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID, file);
+    }
+
+    private void initActionBar(Task task) {
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Задача");
+        actionBar.setSubtitle(task.getType() + " №" + task.getNumber() + " от " + User.dateFromLong(task.getDate()));
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+    }
+
+    public void actionClick(View view) {
+        Toast.makeText(this, "Действие с задачей", Toast.LENGTH_LONG).show();
     }
 }

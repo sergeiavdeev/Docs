@@ -15,7 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.Action;
 import com.avdeev.docs.core.ActionRequest;
-import com.avdeev.docs.ui.ext.ActionListAdapter;
+import com.avdeev.docs.ui.listAdapters.ActionListAdapter;
 
 import java.util.ArrayList;
 

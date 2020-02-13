@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -14,21 +13,17 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.FileOutputStream;
-import java.net.URL;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 
-import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.internal.http2.Header;
-import okhttp3.internal.http2.Http2Reader;
 
 public class User {
 
@@ -714,7 +709,7 @@ public class User {
             outputStream.close();
         }
 
-        file.setDownload(true);
+        file.setDownloaded(true);
 
         return fileName;
     }

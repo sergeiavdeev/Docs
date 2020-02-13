@@ -12,12 +12,20 @@ import com.avdeev.docs.core.Document;
 public class DocDetailViewModel extends DocAppModel {
 
     protected MutableLiveData<Document> document;
+    private MutableLiveData<Boolean> filesVisible;
+    private MutableLiveData<Boolean> moreVisible;
 
     public DocDetailViewModel(Application app) {
         super(app);
 
         document = new MutableLiveData<>();
         document.setValue(new Document("", "", ""));
+
+        filesVisible = new MutableLiveData<>();
+        filesVisible.setValue(false);
+
+        moreVisible = new MutableLiveData<>();
+        moreVisible.setValue(false);
     }
 
     public void setDocument(Document document) {
@@ -27,6 +35,14 @@ public class DocDetailViewModel extends DocAppModel {
     public LiveData<Document>getDocument() {
 
         return document;
+    }
+
+    public LiveData<Boolean> getFileVisible() {
+        return filesVisible;
+    }
+
+    public LiveData<Boolean> getMoreVisible() {
+        return moreVisible;
     }
 
     public void updateDocument(final String type) {
@@ -49,5 +65,17 @@ public class DocDetailViewModel extends DocAppModel {
             }
 
         }.execute();
+    }
+
+    public void changeFileVisible() {
+
+        boolean visible = filesVisible.getValue();
+        filesVisible.setValue(!visible);
+    }
+
+    public void changeMoreVisible() {
+
+        boolean visible = moreVisible.getValue();
+        moreVisible.setValue(!visible);
     }
 }

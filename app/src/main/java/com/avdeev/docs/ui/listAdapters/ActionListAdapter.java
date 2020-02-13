@@ -1,10 +1,9 @@
-package com.avdeev.docs.ui.ext;
+package com.avdeev.docs.ui.listAdapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.Action;
-import com.avdeev.docs.core.File;
 import com.avdeev.docs.core.User;
 
 import java.util.ArrayList;

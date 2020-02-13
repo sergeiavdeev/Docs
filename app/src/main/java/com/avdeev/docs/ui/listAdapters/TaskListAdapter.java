@@ -1,4 +1,4 @@
-package com.avdeev.docs.ui.ext;
+package com.avdeev.docs.ui.listAdapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

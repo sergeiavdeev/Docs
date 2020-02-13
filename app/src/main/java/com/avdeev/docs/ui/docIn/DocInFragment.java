@@ -12,15 +12,13 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.DocFragment;
 import com.avdeev.docs.core.Document;
 import com.avdeev.docs.ui.docDetail.DocDetailActivity;
-import com.avdeev.docs.ui.docInner.DocInnerViewModel;
-import com.avdeev.docs.ui.ext.DocListAdapter;
+import com.avdeev.docs.ui.listAdapters.DocListAdapter;
 
 import java.util.ArrayList;
 

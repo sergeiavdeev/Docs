@@ -14,7 +14,7 @@ public class File extends Object implements Serializable {
     private String id;
     private long size;
 
-    private boolean isDownload;
+    private boolean isDownloaded;
     private boolean wait;
 
     public File() {
@@ -23,7 +23,7 @@ public class File extends Object implements Serializable {
         type = "";
         id = "";
         size = 0;
-        isDownload = false;
+        isDownloaded = false;
         wait = false;
     }
 
@@ -34,7 +34,7 @@ public class File extends Object implements Serializable {
         id = file.getId();
         size = file.getSize();
 
-        isDownload = file.isDownload();
+        isDownloaded = file.isDownloaded();
         wait = file.isWait();
     }
 
@@ -45,7 +45,7 @@ public class File extends Object implements Serializable {
         type = object.getString("type");
         size = object.getLong("size");
 
-        isDownload = false;
+        isDownloaded = false;
         wait = false;
     }
 
@@ -56,7 +56,7 @@ public class File extends Object implements Serializable {
         type = cursor.getString(cursor.getColumnIndex("type"));
         size = cursor.getLong(cursor.getColumnIndex("size"));
 
-        isDownload = false;
+        isDownloaded = false;
         wait = false;
     }
 
@@ -92,12 +92,12 @@ public class File extends Object implements Serializable {
         this.size = size;
     }
 
-    public boolean isDownload() {
-        return isDownload;
+    public boolean isDownloaded() {
+        return isDownloaded;
     }
 
-    public void setDownload(boolean download) {
-        isDownload = download;
+    public void setDownloaded(boolean downloaded) {
+        isDownloaded = downloaded;
     }
 
     public boolean isWait() {

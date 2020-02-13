@@ -1,4 +1,4 @@
-package com.avdeev.docs.ui.ext;
+package com.avdeev.docs.ui.listAdapters;
 
 import android.content.Context;
 import android.graphics.drawable.Animatable;
@@ -27,7 +27,7 @@ public class FileListAdapter extends RecyclerView.Adapter <FileListAdapter.FileH
 
     private ItemClickListener itemClickListener;
 
-    public FileListAdapter(Context context, ArrayList<File> files) {
+    public FileListAdapter(@NotNull Context context, ArrayList<File> files) {
 
         this.files = files;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -78,19 +78,20 @@ public class FileListAdapter extends RecyclerView.Adapter <FileListAdapter.FileH
                     itemView.setOnClickListener(this);
         }
 
-        private void bind(File file) {
+        private void bind(@NotNull File file) {
 
             fileName.setText(file.getName());
             fileSize.setText(Long.toString(file.getSize()) + " KB");
 
             fileIcon.setImageResource(getFileIcon(file.getType()));
 
-            if (file.isDownload()) {
+            if (file.isDownloaded()) {
 
                 downloadIcon.setImageResource(R.drawable.ic_file_view_black_24dp);
             } else {
 
                 downloadIcon.setImageResource(R.drawable.a_ic_file_download);
+
                 if (file.isWait()) {
 
                     Drawable drawer = downloadIcon.getDrawable();

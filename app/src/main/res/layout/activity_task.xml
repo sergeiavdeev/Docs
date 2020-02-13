@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical">
@@ -96,6 +98,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/type"
                         android:textSize="18sp"
+                        android:textColor="@color/colorPrimary"
                         android:text="@string/void_string" />
 
                     <TextView
@@ -117,6 +120,7 @@
                         app:layout_constraintStart_toEndOf="@+id/title_author"
                         app:layout_constraintTop_toBottomOf="@id/description"
                         android:textSize="18sp"
+                        android:textColor="@color/colorPrimary"
                         android:gravity="end" />
 
                     <TextView
@@ -138,6 +142,7 @@
                         app:layout_constraintStart_toEndOf="@+id/title_executor"
                         app:layout_constraintTop_toBottomOf="@id/author"
                         android:textSize="18sp"
+                        android:textColor="@color/colorPrimary"
                         android:gravity="end" />
 
                     <TextView
@@ -159,6 +164,7 @@
                         app:layout_constraintStart_toEndOf="@+id/title_date_due"
                         app:layout_constraintTop_toBottomOf="@id/executor"
                         android:textSize="18sp"
+                        android:textColor="@color/colorPrimary"
                         android:gravity="end"
                         />
 
@@ -257,14 +263,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:contentDescription="@string/void_string"
                         app:srcCompat="@drawable/ic_collapse_down_black_24dp" />
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/list_history"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/title_history"
-                        />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -282,7 +281,8 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/colorPrimaryDark"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        app:srcCompat="@android:drawable/ic_menu_edit"
+        android:onClick="actionClick"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
