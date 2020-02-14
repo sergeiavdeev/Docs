@@ -48,8 +48,6 @@ public class TaskActivity extends AppCompatActivity {
 
         Task task = (Task)getIntent().getExtras().getSerializable("task");
 
-        task.updateFiles(this);
-
         initActionBar(task);
 
         taskViewModel = ViewModelProvider.AndroidViewModelFactory

@@ -1,6 +1,8 @@
 package com.avdeev.docs.ui.docDetail;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -8,25 +10,35 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.avdeev.docs.BuildConfig;
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.Document;
+import com.avdeev.docs.core.File;
+import com.avdeev.docs.core.commonViewModels.FileListViewModel;
+import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.ui.action.ActionsActivity;
 import com.avdeev.docs.ui.listAdapters.FileListAdapter;
+
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 public class DocDetailActivity extends AppCompatActivity {
 
     private Document doc;
     private String docType;
     DocDetailViewModel docViewModel;
+    FileListViewModel fileListViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +58,9 @@ public class DocDetailActivity extends AppCompatActivity {
         docViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(DocDetailViewModel.class);
         docViewModel.setDocument(doc);
+
+        fileListViewModel = ViewModelProvider.AndroidViewModelFactory
+                .getInstance(getApplication()).create(FileListViewModel.class);
 
         final TextView title = findViewById(R.id.title);
         final TextView status = findViewById(R.id.status);
@@ -74,7 +89,8 @@ public class DocDetailActivity extends AppCompatActivity {
                 signer.setText(document.getSigner());
                 number.setText(document.getNumber());
                 date.setText(document.dateFromLong(document.getDate()));
-                fileList.setAdapter(new FileListAdapter(getBaseContext(), document.getFiles()));
+                fileListViewModel.init(document.getFiles(), createClickListener());
+                //fileList.setAdapter(fileListViewModel.);
             }
         });
 
@@ -106,7 +122,15 @@ public class DocDetailActivity extends AppCompatActivity {
             }
         });
 
+        fileListViewModel.getFileListAdapter().observe(this, new Observer<FileListAdapter>() {
+            @Override
+            public void onChanged(FileListAdapter fileListAdapter) {
+                fileList.setAdapter(fileListAdapter);
+            }
+        });
+
         docViewModel.updateDocument(docType);
+        //fileListViewModel.init(task.getFiles(), createClickListener());
     }
 
     @Override
@@ -170,5 +194,50 @@ public class DocDetailActivity extends AppCompatActivity {
     public void onMoreClick(View view) {
 
         docViewModel.changeMoreVisible();
+    }
+
+    @NotNull
+    @Contract(value = " -> new", pure = true)
+    private ItemClickListener createClickListener() {
+
+        return new ItemClickListener() {
+            @Override
+            public void onItemClick(Object object) {
+
+                File file = (File)object;
+                if (!file.isDownloaded()) {
+                    fileListViewModel.downloadFile(file);
+                } else {
+
+                    previewFile(file);
+                }
+            }
+        };
+    }
+
+    private void previewFile(File file) {
+
+        String fileName = file.getId() + "." + file.getType();
+
+        java.io.File oFile = new java.io.File(getApplicationContext().getFilesDir(), fileName);
+        oFile.setReadable(true, false);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(getFileUri(oFile));
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        //intent.addFlags(Intent.)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        PackageManager manager = getPackageManager();
+        if (intent.resolveActivity(manager) != null) {
+            startActivity(intent);
+        } else {
+            Toast.makeText(getApplicationContext(), "Просмотр данного типа файлов не поддерживается", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private Uri getFileUri(java.io.File file) {
+
+        return FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID, file);
     }
 }

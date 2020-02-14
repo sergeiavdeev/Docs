@@ -221,16 +221,4 @@ public class Task extends Object implements Serializable {
         this.files = files;
     }
 
-    public void updateFiles(Context context) {
-
-        for (int i = 0; i < files.size(); i++) {
-
-            File file = files.get(i);
-            String fileName = file.getId() + "." + file.getType();
-
-            java.io.File jFile = new java.io.File(context.getFilesDir(), fileName);
-
-            file.setDownloaded(jFile.exists());
-        }
-    }
 }

@@ -1,6 +1,7 @@
 package com.avdeev.docs.core.commonViewModels;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
@@ -29,6 +30,7 @@ public class FileListViewModel extends DocAppModel {
 
     public void init(ArrayList<File> files, ItemClickListener itemClickListener) {
 
+        updateFiles(files);
         FileListAdapter adapter = new FileListAdapter(getApplication().getApplicationContext(), files);
         adapter.setOnItemClickListener(itemClickListener);
         fileListAdapter.setValue(adapter);
@@ -63,5 +65,20 @@ public class FileListViewModel extends DocAppModel {
                 adapter.notifyDataSetChanged();
             }
         }.execute();
+    }
+
+    public void updateFiles(ArrayList<File> files) {
+
+        Context context = getApplication().getApplicationContext();
+
+        for (int i = 0; i < files.size(); i++) {
+
+            File file = files.get(i);
+            String fileName = file.getId() + "." + file.getType();
+
+            java.io.File jFile = new java.io.File(context.getFilesDir(), fileName);
+
+            file.setDownloaded(jFile.exists());
+        }
     }
 }

@@ -43,7 +43,7 @@ public class TaskFragment extends DocFragment {
         taskViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(app).create(TaskViewModel.class);
         View root = inflater.inflate(R.layout.fragment_task, container, false);
 
-        final RecyclerView listView = root.findViewById(R.id.task_list);
+        final RecyclerView listView = root.findViewById(R.id.view_list);
         final SwipeRefreshLayout refreshLayout = root.findViewById(R.id.refresh);
 
         //listView.getItemAnimator().set
