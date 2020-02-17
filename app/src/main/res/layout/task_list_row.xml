@@ -18,12 +18,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@id/date_due"
             android:text="@string/void_string"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/colorPrimaryDark"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"/>
+            android:padding="5dp" />
 
         <TextView
             android:id="@+id/date_due"
@@ -32,12 +29,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/void_string"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/colorPrimary"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"/>
+            android:padding="5dp" />
 
         <TextView
             android:id="@+id/date"
@@ -46,12 +40,9 @@
             app:layout_constraintTop_toBottomOf="@id/title"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/void_string"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@color/colorPrimary"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"/>
+            android:padding="5dp" />
         <TextView
             android:id="@+id/author"
             android:layout_width="match_parent"
@@ -59,12 +50,9 @@
             app:layout_constraintTop_toBottomOf="@id/date"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/void_string"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@color/colorPrimary"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"/>
+            android:padding="5dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

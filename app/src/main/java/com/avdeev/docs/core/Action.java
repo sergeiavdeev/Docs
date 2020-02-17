@@ -14,6 +14,20 @@ public class Action extends Object {
         description = "";
     }
 
+    public Action(JSONObject object) throws Exception {
+
+        date = object.getLong("date");
+        person = object.getString("person");
+        description = object.getString("description");
+    }
+
+    public Action(Action action) {
+
+        this.date = action.getDate();
+        this.person = action.getPerson();
+        this.description = action.getDescription();
+    }
+
     public long getDate() {
         return date;
     }
@@ -38,10 +52,5 @@ public class Action extends Object {
         this.description = description;
     }
 
-    public Action(JSONObject object) throws Exception {
 
-        date = object.getLong("date");
-        person = object.getString("person");
-        description = object.getString("description");
-    }
 }

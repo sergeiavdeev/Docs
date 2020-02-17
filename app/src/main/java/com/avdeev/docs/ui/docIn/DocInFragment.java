@@ -41,17 +41,16 @@ public class DocInFragment extends DocFragment {
         docInViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(app).create(DocInViewModel.class);
 
         final View root = inflater.inflate(R.layout.common_list_layout, container, false);
-
         final RecyclerView listView = root.findViewById(R.id.view_list);
-        listView.setLayoutManager(new LinearLayoutManager(getContext()));
-        //final ProgressBar progressBar = root.findViewById(R.id.progress_bar);
         final SwipeRefreshLayout refreshLayout = root.findViewById(R.id.refresh);
+
+        listView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         docInViewModel.getDocList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Document>>() {
             @Override
             public void onChanged(ArrayList<Document> documents) {
 
-                listAdapter = new DocListAdapter(getContext(), new ArrayList<Object>(documents));
+                listAdapter = new DocListAdapter(getContext(), documents);
                 listAdapter.setOnItemClickListener(createClickListener());
                 listView.setAdapter(listAdapter);
             }
@@ -72,19 +71,6 @@ public class DocInFragment extends DocFragment {
                 docInViewModel.updateList();
             }
         });
-
-        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Document doc = (Document) adapterView.getItemAtPosition(i);
-                Intent intent = new Intent(getActivity(), DocDetailActivity.class);
-                intent.putExtra("id", doc);
-                intent.putExtra("type", "inbox");
-                intent.putExtra("caption", "Входящие");
-                startActivity(intent);
-            }
-        });*/
 
         docInViewModel.getList();
 

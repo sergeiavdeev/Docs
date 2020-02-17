@@ -10,27 +10,25 @@ import android.widget.Filterable;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.avdeev.docs.R;
-import com.avdeev.docs.core.Task;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 
 import java.util.ArrayList;
 
-public abstract class BaseAdapter extends RecyclerView.Adapter <BaseAdapter.BaseHolder> implements Filterable {
+public abstract class BaseAdapter<T> extends RecyclerView.Adapter <BaseAdapter.BaseHolder> implements Filterable {
 
-    private ArrayList<Object> adapterList;
-    private ArrayList<Object> initList;
+    private ArrayList<T> adapterList;
+    private ArrayList<T> initList;
     private LayoutInflater inflater;
     private ItemClickListener itemClickListener;
     private BaseAdapter.BaseFilter filter;
 
     protected abstract BaseHolder createHolder(View view);
     protected abstract int getLayoutId();
-    protected abstract Object copyObject(Object object);
-    protected abstract boolean findText(Object object, CharSequence text);
+    protected abstract T copyObject(T object);
+    protected abstract boolean findText(T object, CharSequence text);
 
 
-    public BaseAdapter(Context context, ArrayList<Object> list) {
+    public BaseAdapter(Context context, ArrayList<T> list) {
 
         this.adapterList = new ArrayList<>(list);
         this.initList = new ArrayList<>(list);
@@ -53,9 +51,9 @@ public abstract class BaseAdapter extends RecyclerView.Adapter <BaseAdapter.Base
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BaseAdapter.BaseHolder holder, int position) {
 
-        Object object = adapterList.get(position);
+        T object = adapterList.get(position);
         holder.bind(object);
     }
 
@@ -76,7 +74,7 @@ public abstract class BaseAdapter extends RecyclerView.Adapter <BaseAdapter.Base
 
     protected abstract class BaseHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        abstract void bind(Object object);
+        abstract void bind(T object);
 
         public BaseHolder(View view) {
             super(view);
@@ -87,7 +85,7 @@ public abstract class BaseAdapter extends RecyclerView.Adapter <BaseAdapter.Base
         public void onClick(View v) {
 
             if (itemClickListener != null) {
-                Object object = adapterList.get(getAdapterPosition());
+                T object = adapterList.get(getAdapterPosition());
                 itemClickListener.onItemClick(object);
             }
         }
@@ -105,13 +103,13 @@ public abstract class BaseAdapter extends RecyclerView.Adapter <BaseAdapter.Base
 
             if (constraint != null && constraint.length() > 0) {
 
-                ArrayList<Object> filterObjects = new ArrayList<>();
+                ArrayList<T> filterObjects = new ArrayList<>();
 
                 constraint = constraint.toString().toUpperCase();
 
                 for (int i = 0; i < initList.size(); i++) {
 
-                    Object object = initList.get(i);
+                    T object = initList.get(i);
                     if (findText(object, constraint)) {
 
                         filterObjects.add(copyObject(object));
@@ -128,7 +126,7 @@ public abstract class BaseAdapter extends RecyclerView.Adapter <BaseAdapter.Base
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
 
-            adapterList = (ArrayList<Object>)results.values;
+            adapterList = (ArrayList<T>)results.values;
             notifyDataSetChanged();
         }
     }

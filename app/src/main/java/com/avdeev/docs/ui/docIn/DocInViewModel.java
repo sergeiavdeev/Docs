@@ -8,12 +8,14 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.avdeev.docs.core.DocAppModel;
 import com.avdeev.docs.core.Document;
+import com.avdeev.docs.ui.listAdapters.DocListAdapter;
 
 import java.util.ArrayList;
 
 public class DocInViewModel extends DocAppModel {
 
     private MutableLiveData<ArrayList<Document>> mDocList;
+    private MutableLiveData<DocListAdapter> docListAdapter;
 
     public DocInViewModel(Application app) {
         super(app);

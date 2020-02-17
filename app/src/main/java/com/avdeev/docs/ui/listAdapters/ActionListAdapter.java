@@ -1,54 +1,42 @@
 package com.avdeev.docs.ui.listAdapters;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.Action;
 import com.avdeev.docs.core.User;
-
 import java.util.ArrayList;
 
-public class ActionListAdapter extends RecyclerView.Adapter<ActionListAdapter.ActionHolder> {
+public class ActionListAdapter extends BaseAdapter<Action> {
 
-    private ArrayList<Action> actions;
-    private LayoutInflater inflater;
-    //private ActionListAdapter.ActionHolder actionHolder;
-
-    public ActionListAdapter(Context context, ArrayList<Action> actions) {
-
-        this.actions = actions;
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
-    @NonNull
-    @Override
-    public ActionListAdapter.ActionHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        View view = inflater.inflate(R.layout.action_list_row, parent, false);
-        return new ActionListAdapter.ActionHolder(view);
-
+    public ActionListAdapter(Context context, ArrayList<Action> list) {
+        super(context, list);
     }
 
     @Override
-    public int getItemCount() {
-        return actions.size();
+    protected int getLayoutId() {
+        return R.layout.action_list_row;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ActionListAdapter.ActionHolder holder, int position) {
+    protected BaseHolder createHolder(View view) {
 
-        Action action = actions.get(position);
-        holder.bind(action);
+        return new ActionHolder(view);
     }
 
-    protected class ActionHolder extends RecyclerView.ViewHolder {
+    @Override
+    protected Action copyObject(Action object) {
+
+        return new Action(object);
+    }
+
+    @Override
+    protected boolean findText(Action object, CharSequence text) {
+        return true;
+    }
+
+    protected class ActionHolder extends BaseHolder {
 
         private TextView date;
         private TextView person;
@@ -62,7 +50,8 @@ public class ActionListAdapter extends RecyclerView.Adapter<ActionListAdapter.Ac
             description = itemView.findViewById(R.id.description);
         }
 
-        private void bind(Action action) {
+        @Override
+        void bind(Action action) {
 
             person.setText(action.getPerson());
             date.setText(User.dateFromLong(action.getDate()));

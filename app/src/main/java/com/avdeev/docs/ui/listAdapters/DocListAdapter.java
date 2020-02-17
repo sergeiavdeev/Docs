@@ -9,9 +9,9 @@ import com.avdeev.docs.core.Document;
 
 import java.util.ArrayList;
 
-public class DocListAdapter extends BaseAdapter {
+public class DocListAdapter extends BaseAdapter<Document> {
 
-    public DocListAdapter(Context context, ArrayList<Object> list) {
+    public DocListAdapter(Context context, ArrayList<Document> list) {
         super(context, list);
     }
 
@@ -27,12 +27,12 @@ public class DocListAdapter extends BaseAdapter {
     }
 
     @Override
-    protected Object copyObject(Object object) {
-        return new Document((Document)object);
+    protected Document copyObject(Document object) {
+        return new Document(object);
     }
 
     @Override
-    protected boolean findText(Object object, CharSequence text) {
+    protected boolean findText(Document object, CharSequence text) {
 
         boolean result = false;
 
@@ -54,9 +54,8 @@ public class DocListAdapter extends BaseAdapter {
         private TextView authorView;
 
         @Override
-        void bind(Object object) {
+        void bind(Document document) {
 
-            Document document = (Document)object;
             nameView.setText(document.getTitle());
             authorView.setText(document.getAuthor());
         }

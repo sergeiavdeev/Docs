@@ -59,7 +59,7 @@ public class DocInnerFragment extends DocFragment {
             @Override
             public void onChanged(ArrayList<Document> documents) {
 
-                listAdapter = new DocListAdapter(getContext(), new ArrayList<Object>(documents));
+                listAdapter = new DocListAdapter(getContext(), documents);
                 listAdapter.setOnItemClickListener(createClickListener());
                 listView.setAdapter(listAdapter);
             }
