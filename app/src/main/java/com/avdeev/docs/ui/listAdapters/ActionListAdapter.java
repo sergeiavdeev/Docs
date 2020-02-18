@@ -31,18 +31,13 @@ public class ActionListAdapter extends BaseAdapter<Action> {
         return new Action(object);
     }
 
-    @Override
-    protected boolean findText(Action object, CharSequence text) {
-        return true;
-    }
-
-    protected class ActionHolder extends BaseHolder {
+    private class ActionHolder extends BaseHolder {
 
         private TextView date;
         private TextView person;
         private TextView description;
 
-        public ActionHolder(View itemView) {
+        private ActionHolder(View itemView) {
             super(itemView);
 
             date = itemView.findViewById(R.id.date);

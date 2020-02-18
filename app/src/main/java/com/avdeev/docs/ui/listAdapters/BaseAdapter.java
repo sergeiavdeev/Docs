@@ -25,13 +25,12 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter <BaseAdapter.B
     protected abstract BaseHolder createHolder(View view);
     protected abstract int getLayoutId();
     protected abstract T copyObject(T object);
-    protected abstract boolean findText(T object, CharSequence text);
 
 
     public BaseAdapter(Context context, ArrayList<T> list) {
 
-        this.adapterList = new ArrayList<>(list);
-        this.initList = new ArrayList<>(list);
+        this.adapterList = new ArrayList<T>(list);
+        this.initList = new ArrayList<T>(list);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -72,6 +71,10 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter <BaseAdapter.B
         return filter;
     }
 
+    protected boolean findText(T object, CharSequence text) {
+        return true;
+    }
+
     protected abstract class BaseHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         abstract void bind(T object);
@@ -103,7 +106,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter <BaseAdapter.B
 
             if (constraint != null && constraint.length() > 0) {
 
-                ArrayList<T> filterObjects = new ArrayList<>();
+                ArrayList<T> filterObjects = new ArrayList<T>();
 
                 constraint = constraint.toString().toUpperCase();
 

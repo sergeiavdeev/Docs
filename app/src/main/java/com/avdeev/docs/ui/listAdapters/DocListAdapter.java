@@ -15,6 +15,11 @@ public class DocListAdapter extends BaseAdapter<Document> {
         super(context, list);
     }
 
+    public static DocListAdapter create(Context context, ArrayList<Document> list) {
+
+        return new DocListAdapter(context, list);
+    }
+
     @Override
     protected BaseHolder createHolder(View view) {
 
@@ -32,11 +37,11 @@ public class DocListAdapter extends BaseAdapter<Document> {
     }
 
     @Override
-    protected boolean findText(Document object, CharSequence text) {
+    protected boolean findText(Document document, CharSequence text) {
 
         boolean result = false;
 
-        Document document = (Document)object;
+
 
         if (document.getTitle().toUpperCase().contains(text) ||
             document.getAuthor().toUpperCase().contains(text) ||

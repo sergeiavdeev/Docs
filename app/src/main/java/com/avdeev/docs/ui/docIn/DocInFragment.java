@@ -46,13 +46,12 @@ public class DocInFragment extends DocFragment {
 
         listView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        docInViewModel.getDocList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Document>>() {
+        docInViewModel.getDocListAdapter().observe(getViewLifecycleOwner(), new Observer<DocListAdapter>() {
             @Override
-            public void onChanged(ArrayList<Document> documents) {
+            public void onChanged(DocListAdapter docListAdapter) {
 
-                listAdapter = new DocListAdapter(getContext(), documents);
-                listAdapter.setOnItemClickListener(createClickListener());
-                listView.setAdapter(listAdapter);
+                docListAdapter.setOnItemClickListener(createClickListener());
+                listView.setAdapter(docListAdapter);
             }
         });
 
@@ -72,7 +71,7 @@ public class DocInFragment extends DocFragment {
             }
         });
 
-        docInViewModel.getList();
+        docInViewModel.loadList();
 
         return root;
     }

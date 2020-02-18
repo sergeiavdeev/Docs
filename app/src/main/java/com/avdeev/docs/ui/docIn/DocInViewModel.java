@@ -1,6 +1,7 @@
 package com.avdeev.docs.ui.docIn;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
@@ -14,67 +15,60 @@ import java.util.ArrayList;
 
 public class DocInViewModel extends DocAppModel {
 
-    private MutableLiveData<ArrayList<Document>> mDocList;
     private MutableLiveData<DocListAdapter> docListAdapter;
 
     public DocInViewModel(Application app) {
         super(app);
-        mDocList = new MutableLiveData<>();
-        mDocList.setValue(new ArrayList<Document>());
+
+        docListAdapter = new MutableLiveData<>();
     }
 
-    public LiveData<ArrayList<Document>> getDocList() {
-        return mDocList;
+    public LiveData<DocListAdapter> getDocListAdapter() {
+        return docListAdapter;
     }
 
-    public void getList() {
+    public void loadList() {
 
-        wait.setValue(true);
-
-        new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] objects) {
-
-                ArrayList<Document> documents = user.getDocInList();
-                if (documents.size() == 0) {
-                    user.updateDocList("inbox");
-                    documents = user.getDocInList();
-                }
-
-                return documents;
-            }
-
-            @Override
-            protected void onPostExecute(Object result) {
-                super.onPostExecute(result);
-
-                wait.setValue(false);
-                mDocList.setValue((ArrayList<Document>)result);
-            }
-
-        }.execute();
+        new DocListLoader().execute();
     }
 
     public void updateList() {
 
-        wait.setValue(true);
+        new DocListUpdater().execute();
+    }
 
-        new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] objects) {
+    private class DocListLoader extends BaseAsyncTask<ArrayList<Document>> {
 
+        @Override
+        protected ArrayList<Document> process() {
+
+            ArrayList<Document> documents = user.getDocInList();
+            if (documents.size() == 0) {
                 user.updateDocList("inbox");
-                return user.getDocInList();
+                documents = user.getDocInList();
             }
+            return documents;
+        }
 
-            @Override
-            protected void onPostExecute(Object result) {
-                super.onPostExecute(result);
+        @Override
+        protected void onPostProcess(ArrayList<Document> documentList, Context context) {
+            docListAdapter.setValue(DocListAdapter.create(context, documentList));
+        }
+    }
 
-                wait.setValue(false);
-                mDocList.setValue((ArrayList<Document>) result);
-            }
+    private class DocListUpdater extends BaseAsyncTask<ArrayList<Document>> {
 
-        }.execute();
+        @Override
+        protected ArrayList<Document> process() {
+
+            user.updateDocList("inbox");
+            return user.getDocInList();
+        }
+
+        @Override
+        protected void onPostProcess(ArrayList<Document> documentList, Context context) {
+            docListAdapter.setValue(DocListAdapter.create(context, documentList));
+
+        }
     }
 }
