@@ -29,7 +29,6 @@ import java.util.ArrayList;
 public class DocOutFragment extends DocFragment {
 
     private DocOutViewModel docOutViewModel;
-    private DocListAdapter listAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -46,13 +45,11 @@ public class DocOutFragment extends DocFragment {
         //final ProgressBar progressBar = root.findViewById(R.id.progress_bar);
         final SwipeRefreshLayout refreshLayout = root.findViewById(R.id.refresh);
 
-        docOutViewModel.getDocList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Document>>() {
+        docOutViewModel.getDocListAdapter().observe(getViewLifecycleOwner(), new Observer<DocListAdapter>() {
             @Override
-            public void onChanged(ArrayList<Document> documents) {
-
-                listAdapter = new DocListAdapter(getContext(), documents);
-                listAdapter.setOnItemClickListener(createClickListener());
-                listView.setAdapter(listAdapter);
+            public void onChanged(DocListAdapter docListAdapter) {
+                docListAdapter.setOnItemClickListener(createClickListener());
+                listView.setAdapter(docListAdapter);
             }
         });
 
@@ -80,9 +77,7 @@ public class DocOutFragment extends DocFragment {
     @Override
     public void onSearch(String searchText) {
 
-        if (listAdapter != null) {
-            listAdapter.getFilter().filter(searchText);
-        }
+        docOutViewModel.search(searchText);
     }
 
     @NotNull

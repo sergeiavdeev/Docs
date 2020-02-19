@@ -78,10 +78,7 @@ public class DocInFragment extends DocFragment {
 
     @Override
     public void onSearch(String searchText) {
-
-        if (listAdapter != null) {
-            listAdapter.getFilter().filter(searchText);
-        }
+        docInViewModel.search(searchText);
     }
 
     @NotNull

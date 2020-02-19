@@ -19,8 +19,8 @@ public class DocInViewModel extends DocAppModel {
 
     public DocInViewModel(Application app) {
         super(app);
-
         docListAdapter = new MutableLiveData<>();
+        docListAdapter.setValue(new DocListAdapter(getContext(), new ArrayList<Document>()));
     }
 
     public LiveData<DocListAdapter> getDocListAdapter() {
@@ -35,6 +35,13 @@ public class DocInViewModel extends DocAppModel {
     public void updateList() {
 
         new DocListUpdater().execute();
+    }
+
+    public void search(String searchText) {
+        wait.setValue(true);
+        DocListAdapter adapter = docListAdapter.getValue();
+        adapter.getFilter().filter(searchText);
+        wait.setValue(false);
     }
 
     private class DocListLoader extends BaseAsyncTask<ArrayList<Document>> {

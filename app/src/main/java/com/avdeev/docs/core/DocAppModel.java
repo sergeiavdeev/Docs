@@ -40,9 +40,14 @@ public class DocAppModel extends AndroidViewModel {
         return wait;
     }
 
+    protected Context getContext() {
+        return getApplication().getBaseContext();
+    }
+
     protected abstract class BaseAsyncTask<T> extends AsyncTask {
 
         protected abstract T process();
+
         protected abstract void onPostProcess(T object, Context context);
 
         @Override

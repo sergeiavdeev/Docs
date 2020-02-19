@@ -32,7 +32,7 @@ import java.util.ArrayList;
 public class DocInnerFragment extends DocFragment {
 
     private DocInnerViewModel docInnerViewModel;
-    private DocListAdapter listAdapter;
+
 
     public static DocInnerFragment newInstance() {
         return new DocInnerFragment();
@@ -52,23 +52,20 @@ public class DocInnerFragment extends DocFragment {
 
         final RecyclerView listView = root.findViewById(R.id.view_list);
         listView.setLayoutManager(new LinearLayoutManager(getContext()));
-        //final ProgressBar progressBar = root.findViewById(R.id.progress_bar);
+
         final SwipeRefreshLayout refreshLayout = root.findViewById(R.id.refresh);
 
-        docInnerViewModel.getDocList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Document>>() {
+        docInnerViewModel.getDocListAdapter().observe(getViewLifecycleOwner(), new Observer<DocListAdapter>() {
             @Override
-            public void onChanged(ArrayList<Document> documents) {
-
-                listAdapter = new DocListAdapter(getContext(), documents);
-                listAdapter.setOnItemClickListener(createClickListener());
-                listView.setAdapter(listAdapter);
+            public void onChanged(DocListAdapter docListAdapter) {
+                docListAdapter.setOnItemClickListener(createClickListener());
+                listView.setAdapter(docListAdapter);
             }
         });
 
         docInnerViewModel.isWaiting().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean wait) {
-
                 refreshLayout.setRefreshing(wait);
             }
         });
@@ -76,22 +73,18 @@ public class DocInnerFragment extends DocFragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
                 docInnerViewModel.updateList();
             }
         });
 
         docInnerViewModel.getList();
-
         return root;
     }
 
     @Override
     public void onSearch(String searchText) {
 
-        if (listAdapter != null) {
-            listAdapter.getFilter().filter(searchText);
-        }
+        docInnerViewModel.search(searchText);
     }
 
     @NotNull
