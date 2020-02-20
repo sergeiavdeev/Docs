@@ -22,16 +22,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.avdeev.docs.BuildConfig;
 import com.avdeev.docs.R;
+import com.avdeev.docs.core.Document;
 import com.avdeev.docs.core.File;
 import com.avdeev.docs.core.Task;
 import com.avdeev.docs.core.User;
 import com.avdeev.docs.core.commonViewModels.FileListViewModel;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
+import com.avdeev.docs.core.network.NetworkService;
+import com.avdeev.docs.core.network.pojo.DocumentResponse;
 import com.avdeev.docs.ui.action.ActionsActivity;
 import com.avdeev.docs.ui.listAdapters.FileListAdapter;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TaskActivity extends AppCompatActivity {
 
@@ -201,5 +208,21 @@ public class TaskActivity extends AppCompatActivity {
 
     public void actionClick(View view) {
         Toast.makeText(this, "Действие с задачей", Toast.LENGTH_LONG).show();
+
+        NetworkService.getInstance("https://sed.rudn.ru")
+                .getApi()
+                .getDocuments("inbox", 0)
+                .enqueue(new Callback<DocumentResponse>() {
+                    @Override
+                    public void onResponse(Call<DocumentResponse> call, Response<DocumentResponse> response) {
+                        int a = 1;
+                        DocumentResponse documentResponse = response.body();
+                    }
+
+                    @Override
+                    public void onFailure(Call<DocumentResponse> call, Throwable t) {
+                        int a = 1;
+                    }
+                });
     }
 }
