@@ -5,6 +5,8 @@ import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.avdeev.docs.core.User;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -23,5 +25,17 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         assertEquals("com.avdeev.docs", appContext.getPackageName());
+    }
+
+    @Test
+    public void dateFromLong() {
+
+        long date = 1569583741;
+        String dateString = User.dateFromLong(date);
+        assertEquals(dateString, "27.09.2019");
+
+        date = 0;
+        dateString = User.dateFromLong(date);
+        assertEquals(dateString, "(не указано)");
     }
 }

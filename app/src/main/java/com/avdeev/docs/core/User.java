@@ -717,8 +717,12 @@ public class User {
     @NotNull
     public static String dateFromLong(long l) {
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(l * 1000L);
-        return  DateFormat.format("dd.MM.yyyy", calendar).toString();
+        String date = "(не указано)";
+        if (l > 0) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(l * 1000L);
+            date = DateFormat.format("dd.MM.yyyy", calendar).toString();
+        }
+        return  date;
     }
 }

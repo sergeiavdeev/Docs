@@ -90,13 +90,6 @@ public class Document extends Object implements Serializable {
         return updated_at;
     }
 
-    public String dateFromLong(long l) {
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(l * 1000L);
-        return  DateFormat.format("dd.MM.yyyy", calendar).toString();
-    }
-
     public long getDate() {
         return date;
     }

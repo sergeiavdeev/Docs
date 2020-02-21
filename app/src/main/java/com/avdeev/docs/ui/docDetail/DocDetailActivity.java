@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +24,7 @@ import com.avdeev.docs.BuildConfig;
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.Document;
 import com.avdeev.docs.core.File;
+import com.avdeev.docs.core.User;
 import com.avdeev.docs.core.commonViewModels.FileListViewModel;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.ui.action.ActionsActivity;
@@ -51,7 +51,7 @@ public class DocDetailActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getIntent().getStringExtra("caption"));
-        actionBar.setSubtitle(doc.getType() + " №" + doc.getNumber() + " от " + doc.dateFromLong(doc.getUpdated_at()));
+        actionBar.setSubtitle(doc.getType() + " №" + doc.getNumber() + " от " + User.dateFromLong(doc.getUpdated_at()));
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
@@ -88,7 +88,7 @@ public class DocDetailActivity extends AppCompatActivity {
                 recipient.setText(document.getRecipient());
                 signer.setText(document.getSigner());
                 number.setText(document.getNumber());
-                date.setText(document.dateFromLong(document.getDate()));
+                date.setText(User.dateFromLong(document.getDate()));
                 fileListViewModel.init(document.getFiles(), createClickListener());
                 //fileList.setAdapter(fileListViewModel.);
             }

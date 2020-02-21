@@ -22,14 +22,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.avdeev.docs.BuildConfig;
 import com.avdeev.docs.R;
-import com.avdeev.docs.core.Document;
 import com.avdeev.docs.core.File;
 import com.avdeev.docs.core.Task;
 import com.avdeev.docs.core.User;
 import com.avdeev.docs.core.commonViewModels.FileListViewModel;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.core.network.NetworkService;
+import com.avdeev.docs.core.network.pojo.AuthRequest;
 import com.avdeev.docs.core.network.pojo.DocumentResponse;
+import com.avdeev.docs.core.network.pojo.DocumentsResponse;
+import com.avdeev.docs.core.network.pojo.Login;
 import com.avdeev.docs.ui.action.ActionsActivity;
 import com.avdeev.docs.ui.listAdapters.FileListAdapter;
 
@@ -211,16 +213,17 @@ public class TaskActivity extends AppCompatActivity {
 
         NetworkService.getInstance("https://sed.rudn.ru")
                 .getApi()
-                .getDocuments("inbox", 0)
-                .enqueue(new Callback<DocumentResponse>() {
+                .auth(new Login(""))
+                .enqueue(new Callback<AuthRequest>() {
                     @Override
-                    public void onResponse(Call<DocumentResponse> call, Response<DocumentResponse> response) {
-                        int a = 1;
-                        DocumentResponse documentResponse = response.body();
+                    public void onResponse(Call<AuthRequest> call, Response<AuthRequest> response) {
+
+                        AuthRequest authRequest = response.body();
                     }
 
                     @Override
-                    public void onFailure(Call<DocumentResponse> call, Throwable t) {
+                    public void onFailure(Call<AuthRequest> call, Throwable t) {
+
                         int a = 1;
                     }
                 });
