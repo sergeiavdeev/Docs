@@ -131,8 +131,6 @@ public class TaskFragment extends DocFragment {
 
                 Intent intent = new Intent(getActivity(), TaskActivity.class);
                 intent.putExtra("task", (Task)task);
-                intent.putExtra("type", "inbox");
-                intent.putExtra("caption", "Входящие");
                 startActivity(intent);
 
             }

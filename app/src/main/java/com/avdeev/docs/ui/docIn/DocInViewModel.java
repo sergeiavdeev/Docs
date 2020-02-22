@@ -38,10 +38,12 @@ public class DocInViewModel extends DocAppModel {
     }
 
     public void search(String searchText) {
-        wait.setValue(true);
+        //wait.setValue(true);
+        setWait(true);
         DocListAdapter adapter = docListAdapter.getValue();
         adapter.getFilter().filter(searchText);
-        wait.setValue(false);
+        //wait.setValue(false);
+        setWait(false);
     }
 
     private class DocListLoader extends BaseAsyncTask<ArrayList<Document>> {
@@ -75,7 +77,6 @@ public class DocInViewModel extends DocAppModel {
         @Override
         protected void onPostProcess(ArrayList<Document> documentList, Context context) {
             docListAdapter.setValue(DocListAdapter.create(context, documentList));
-
         }
     }
 }

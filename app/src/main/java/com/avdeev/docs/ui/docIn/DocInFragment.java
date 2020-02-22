@@ -94,7 +94,6 @@ public class DocInFragment extends DocFragment {
                 intent.putExtra("type", "inbox");
                 intent.putExtra("caption", "Входящие");
                 startActivity(intent);
-
             }
         };
     }

@@ -34,6 +34,7 @@ import com.avdeev.docs.core.network.pojo.DocumentsResponse;
 import com.avdeev.docs.core.network.pojo.Login;
 import com.avdeev.docs.ui.action.ActionsActivity;
 import com.avdeev.docs.ui.listAdapters.FileListAdapter;
+import com.avdeev.docs.ui.task.action.TaskActionActivity;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -46,6 +47,7 @@ public class TaskActivity extends AppCompatActivity {
 
     private TaskDetailViewModel taskViewModel;
     private FileListViewModel fileListViewModel;
+    private Task task;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +57,7 @@ public class TaskActivity extends AppCompatActivity {
 
         Context context = getBaseContext();
 
-        Task task = (Task)getIntent().getExtras().getSerializable("task");
+        task = (Task)getIntent().getExtras().getSerializable("task");
 
         initActionBar(task);
 
@@ -211,9 +213,10 @@ public class TaskActivity extends AppCompatActivity {
     public void actionClick(View view) {
         Toast.makeText(this, "Действие с задачей", Toast.LENGTH_LONG).show();
 
+        /*
         NetworkService.getInstance("https://sed.rudn.ru")
                 .getApi()
-                .auth(new Login(""))
+                .auth(new Login("Игнатьев Олег Владимирович-0"))
                 .enqueue(new Callback<AuthRequest>() {
                     @Override
                     public void onResponse(Call<AuthRequest> call, Response<AuthRequest> response) {
@@ -226,6 +229,9 @@ public class TaskActivity extends AppCompatActivity {
 
                         int a = 1;
                     }
-                });
+                });*/
+        Intent intent = new Intent(this, TaskActionActivity.class);
+        intent.putExtra("task", task);
+        startActivity(intent);
     }
 }

@@ -19,6 +19,7 @@ public class DocAppModel extends AndroidViewModel {
     protected MutableLiveData<Boolean> isAuth;
     protected MutableLiveData<Boolean> wait;
     protected User user;
+    protected int waitCount;
 
     public DocAppModel(Application app) {
         super(app);
@@ -28,6 +29,7 @@ public class DocAppModel extends AndroidViewModel {
         wait = new MutableLiveData<>();
         wait.setValue(false);
         isAuth.setValue(user.isAuth());
+        waitCount = 0;
     }
 
     public LiveData<Boolean>isAuth() {
@@ -38,6 +40,20 @@ public class DocAppModel extends AndroidViewModel {
 
     public LiveData<Boolean>isWaiting() {
         return wait;
+    }
+
+    protected void setWait(boolean isWait) {
+
+        synchronized (this) {
+            if (isWait) {
+                waitCount ++;
+            } else {
+                if (waitCount > 0) {
+                    waitCount --;
+                }
+            }
+            wait.setValue(waitCount > 0);
+        }
     }
 
     protected Context getContext() {
@@ -57,14 +73,14 @@ public class DocAppModel extends AndroidViewModel {
 
         @Override
         protected void onPreExecute() {
-            wait.setValue(true);
+            setWait(true);
         }
 
         @Override
         protected void onPostExecute(Object object) {
             super.onPostExecute(object);
             onPostProcess((T)object, getApplication().getBaseContext());
-            wait.setValue(false);
+            setWait(false);
         }
     }
 }

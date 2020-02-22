@@ -1,18 +1,18 @@
 package com.avdeev.docs.core.network.pojo;
 
 public class AuthRequest {
-   private boolean success;
+   private int success;
 
    public AuthRequest() {
-       success = false;
+       success = 0;
    }
 
 
-    public boolean isSuccess() {
+    public int getSuccess() {
         return success;
     }
 
-    public void setSuccess(boolean success) {
+    public void setSuccess(int success) {
         this.success = success;
     }
 }
