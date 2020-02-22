@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.avdeev.docs.R;
@@ -31,10 +32,21 @@ public class TaskActionActivity extends AppCompatActivity {
 
         Task task = (Task)getIntent().getExtras().getSerializable("task");
         initActionBar(task);
+
+        taskActionViewModel.getActionComplete().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean complete) {
+
+                if (complete) {
+                    finish();
+                }
+            }
+        });
     }
 
     private void initActionBar(Task task) {
 
+        //Ознакомление Утвеждение Рассмотрение Исполнение
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Утвердить");
         actionBar.setSubtitle(task.getType() + " №" + task.getNumber() + " от " + User.dateFromLong(task.getDate()));
@@ -56,6 +68,7 @@ public class TaskActionActivity extends AppCompatActivity {
     }
 
     public void postActionClick(View view) {
+
         Toast.makeText(this, "Отправили согласование", Toast.LENGTH_LONG).show();
 
         taskActionViewModel.postTaskAction();
