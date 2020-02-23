@@ -10,36 +10,31 @@ import androidx.lifecycle.ViewModel;
 import com.avdeev.docs.core.DocAppModel;
 import com.avdeev.docs.core.Document;
 import com.avdeev.docs.core.Task;
+import com.avdeev.docs.ui.listAdapters.TaskListAdapter;
 
 import java.util.ArrayList;
 
 public class TaskViewModel extends DocAppModel {
 
-    private MutableLiveData<ArrayList<Task>> mTaskList;
-    private MutableLiveData<String> mSearchText;
+    private MutableLiveData<TaskListAdapter> taskListAdapter;
+    private MutableLiveData<String> searchText;
 
     public TaskViewModel(Application app) {
 
         super(app);
 
-        mTaskList = new MutableLiveData<>();
-        mTaskList.setValue(new ArrayList<Task>());
-
-        mSearchText = new MutableLiveData<>();
-        mSearchText.setValue("");
+        taskListAdapter = new MutableLiveData<>();
+        taskListAdapter.setValue(new TaskListAdapter(getContext(), new ArrayList<>()));
     }
 
-    public LiveData<ArrayList<Task>> getTaskList() {
-        return mTaskList;
+    public LiveData<TaskListAdapter> getTaskListAdapter() {
+        return taskListAdapter;
     }
 
-    public LiveData<String> getSearchText() {
-        return mSearchText;
-    }
 
     public void getList() {
 
-        wait.setValue(true);
+        setWait(true);
 
         new AsyncTask() {
             @Override
@@ -64,9 +59,8 @@ public class TaskViewModel extends DocAppModel {
             @Override
             protected void onPostExecute(Object result) {
                 super.onPostExecute(result);
-
-                wait.setValue(false);
-                mTaskList.setValue((ArrayList<Task>) result);
+                taskListAdapter.setValue(new TaskListAdapter(getContext(), new ArrayList<>((ArrayList<Task>)result)));
+                setWait(false);
             }
 
         }.execute();
@@ -74,7 +68,7 @@ public class TaskViewModel extends DocAppModel {
 
     public void updateList() {
 
-        wait.setValue(true);
+        setWait(true);
 
         new AsyncTask() {
             @Override
@@ -97,9 +91,8 @@ public class TaskViewModel extends DocAppModel {
             @Override
             protected void onPostExecute(Object result) {
                 super.onPostExecute(result);
-
-                wait.setValue(false);
-                mTaskList.setValue((ArrayList<Task>) result);
+                taskListAdapter.setValue(new TaskListAdapter(getContext(), new ArrayList<>((ArrayList<Task>)result)));
+                setWait(false);
             }
 
         }.execute();
@@ -107,6 +100,9 @@ public class TaskViewModel extends DocAppModel {
 
     public void search(String searchText) {
 
-        mSearchText.setValue(searchText);
+        setWait(true);
+        TaskListAdapter adapter = taskListAdapter.getValue();
+        adapter.getFilter().filter(searchText);
+        setWait(false);
     }
 }

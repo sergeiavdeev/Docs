@@ -1,5 +1,7 @@
 package com.avdeev.docs.ui.login;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -15,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avdeev.docs.MainActivity;
 import com.avdeev.docs.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -31,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
         //Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
+        Context context = getBaseContext();
+
         final ProgressBar progressBar = findViewById(R.id.progress_bar);
         textLogin = findViewById(R.id.edit_login);
         textPassword = findViewById(R.id.edit_password);
@@ -44,9 +49,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onChanged(Boolean auth) {
 
                 if (auth) {
+                    Intent intent = new Intent(context, MainActivity.class);
+                    startActivity(intent);
                     finish();
                 }
-
             }
         });
 

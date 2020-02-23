@@ -20,7 +20,7 @@ public class DocInViewModel extends DocAppModel {
     public DocInViewModel(Application app) {
         super(app);
         docListAdapter = new MutableLiveData<>();
-        docListAdapter.setValue(new DocListAdapter(getContext(), new ArrayList<Document>()));
+        docListAdapter.setValue(new DocListAdapter(getContext(), new ArrayList<>()));
     }
 
     public LiveData<DocListAdapter> getDocListAdapter() {
