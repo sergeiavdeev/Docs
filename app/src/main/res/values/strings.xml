@@ -29,4 +29,6 @@
     <string name="title_date_due">Выполнить до</string>
     <string name="title_task_one">Задача</string>
     <string name="title_doc">Документ</string>
+    <string name="title_apply">Утвердить</string>
+    <string name="title_cancel">Отклонить</string>
 </resources>

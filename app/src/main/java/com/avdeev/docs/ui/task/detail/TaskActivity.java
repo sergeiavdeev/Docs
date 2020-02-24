@@ -53,6 +53,7 @@ public class TaskActivity extends AppCompatActivity {
     private Task task;
     Animation fab_clock, fab_anticlock, fab_open, fab_close;
     FloatingActionButton fab, fab_history, fab_aply, fab_cancel;
+    TextView fabTextApply, fabTextCancel, fabTextHistory;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,6 +86,9 @@ public class TaskActivity extends AppCompatActivity {
         fab_aply = findViewById(R.id.floatingActionHistory);
         fab_aply = findViewById(R.id.floatingActionAply);
         fab_cancel = findViewById(R.id.floatingActionCancel);
+        fabTextApply = findViewById(R.id.text_apply);
+        fabTextCancel = findViewById(R.id.text_cancel);
+        fabTextHistory = findViewById(R.id.text_history);
 
         fab_history.setClickable(false);
         fab_aply.setClickable(false);
@@ -100,7 +104,6 @@ public class TaskActivity extends AppCompatActivity {
         fileList.setLayoutManager(new LinearLayoutManager(context));
 
         taskViewModel.getTask().observe(this, (Task task) -> {
-
             title.setText(task.getTitle());
             type.setText(task.getType());
             description.setText(task.getDescription());
@@ -130,8 +133,6 @@ public class TaskActivity extends AppCompatActivity {
         fileListViewModel.getFileListAdapter().observe(this, (FileListAdapter fileListAdapter) -> {
             fileList.setAdapter(fileListAdapter);
         });
-
-
 
         taskViewModel.setTask(task);
         fileListViewModel.init(task.getFiles(), createClickListener());
@@ -245,6 +246,10 @@ public class TaskActivity extends AppCompatActivity {
         fab_history.setClickable(true);
         fab_aply.setClickable(true);
         fab_cancel.setClickable(true);
+
+        //fabTextHistory.setVisibility(View.VISIBLE);
+        //fabTextApply.setVisibility(View.VISIBLE);
+        //fabTextCancel.setVisibility(View.VISIBLE);
     }
 
     private void closeFab() {
@@ -258,6 +263,10 @@ public class TaskActivity extends AppCompatActivity {
             fab_history.setClickable(false);
             fab_aply.setClickable(false);
             fab_cancel.setClickable(false);
+
+            //fabTextHistory.setVisibility(View.INVISIBLE);
+            //fabTextApply.setVisibility(View.INVISIBLE);
+            //fabTextCancel.setVisibility(View.INVISIBLE);
         }
     }
 }

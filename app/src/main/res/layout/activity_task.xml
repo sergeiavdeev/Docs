@@ -244,6 +244,22 @@
         app:srcCompat="@drawable/ic_fab_cancel_24dp"
         />
 
+    <TextView
+        android:id="@+id/text_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/fab_text_background"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:padding="5dp"
+        android:text="@string/title_cancel"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/floatingActionCancel"
+        app:layout_constraintEnd_toStartOf="@id/floatingActionCancel"
+        app:layout_constraintTop_toTopOf="@id/floatingActionCancel" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionAply"
         android:layout_width="wrap_content"
@@ -259,6 +275,22 @@
         app:layout_constraintEnd_toEndOf="@+id/floatingActionHistory"
         app:layout_constraintStart_toStartOf="@+id/floatingActionHistory"
         app:srcCompat="@drawable/ic_fab_check_24dp"
+        />
+    <TextView
+        android:id="@+id/text_apply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_apply"
+        app:layout_constraintTop_toTopOf="@id/floatingActionAply"
+        app:layout_constraintBottom_toBottomOf="@id/floatingActionAply"
+        app:layout_constraintEnd_toStartOf="@id/floatingActionAply"
+        android:layout_marginEnd="10dp"
+        android:visibility="invisible"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:background="@drawable/fab_text_background"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:padding="5dp"
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -276,6 +308,22 @@
         app:layout_constraintEnd_toEndOf="@+id/floatingActionButton"
         app:layout_constraintStart_toStartOf="@+id/floatingActionButton"
         app:srcCompat="@drawable/ic_fab_history_24dp"
+        />
+    <TextView
+        android:id="@+id/text_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_history"
+        app:layout_constraintTop_toTopOf="@id/floatingActionHistory"
+        app:layout_constraintBottom_toBottomOf="@id/floatingActionHistory"
+        app:layout_constraintEnd_toStartOf="@id/floatingActionHistory"
+        android:layout_marginEnd="10dp"
+        android:visibility="invisible"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:background="@drawable/fab_text_background"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:padding="5dp"
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
