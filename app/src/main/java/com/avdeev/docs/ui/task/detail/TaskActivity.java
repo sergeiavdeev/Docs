@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +37,7 @@ import com.avdeev.docs.core.network.pojo.Login;
 import com.avdeev.docs.ui.action.ActionsActivity;
 import com.avdeev.docs.ui.listAdapters.FileListAdapter;
 import com.avdeev.docs.ui.task.action.TaskActionActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -48,6 +51,8 @@ public class TaskActivity extends AppCompatActivity {
     private TaskDetailViewModel taskViewModel;
     private FileListViewModel fileListViewModel;
     private Task task;
+    Animation fab_clock, fab_anticlock, fab_open, fab_close;
+    FloatingActionButton fab, fab_history, fab_aply, fab_cancel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,52 +79,59 @@ public class TaskActivity extends AppCompatActivity {
         final TextView  executor     = findViewById(R.id.executor);
         final TextView  date_due     = findViewById(R.id.date_due);
         final ImageView fileArrow    = findViewById(R.id.image_files);
-        final ImageView historyArrow = findViewById(R.id.image_history);
+
+        fab = findViewById(R.id.floatingActionButton);
+        fab_history = findViewById(R.id.floatingActionHistory);
+        fab_aply = findViewById(R.id.floatingActionHistory);
+        fab_aply = findViewById(R.id.floatingActionAply);
+        fab_cancel = findViewById(R.id.floatingActionCancel);
+
+        fab_history.setClickable(false);
+        fab_aply.setClickable(false);
+        fab_cancel.setClickable(false);
+
+        fab_clock = AnimationUtils.loadAnimation(this, R.anim.fab_rotate_clock);
+        fab_anticlock = AnimationUtils.loadAnimation(this, R.anim.fab_rotate_anticlock);
+        fab_open = AnimationUtils.loadAnimation(this, R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(this, R.anim.fab_close);
 
         final RecyclerView fileList = findViewById(R.id.list_file);
 
         fileList.setLayoutManager(new LinearLayoutManager(context));
 
-        taskViewModel.getTask().observe(this, new Observer<Task>() {
-            @Override
-            public void onChanged(Task task) {
+        taskViewModel.getTask().observe(this, (Task task) -> {
 
-                title.setText(task.getTitle());
-                type.setText(task.getType());
-                description.setText(task.getDescription());
-                author.setText(task.getAuthor());
-                executor.setText(task.getAssignee());
+            title.setText(task.getTitle());
+            type.setText(task.getType());
+            description.setText(task.getDescription());
+            author.setText(task.getAuthor());
+            executor.setText(task.getAssignee());
+            date_due.setText(User.dateFromLong(task.getDate_due()));
+        });
 
-                long dateDue = task.getDate_due();
-
-                if (dateDue > 0) {
-
-                    date_due.setText(User.dateFromLong(task.getDate_due()));
-                }
+        taskViewModel.getFilesVisible().observe(this, (Boolean visible) -> {
+            if (visible) {
+                fileList.setVisibility(View.VISIBLE);
+                fileArrow.setImageResource(R.drawable.ic_collapse_up_black_24dp);
+            } else {
+                fileList.setVisibility(View.GONE);
+                fileArrow.setImageResource(R.drawable.ic_collapse_down_black_24dp);
             }
         });
 
-        taskViewModel.getFilesVisible().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean visible) {
-
-                if (visible) {
-                    fileList.setVisibility(View.VISIBLE);
-                    fileArrow.setImageResource(R.drawable.ic_collapse_up_black_24dp);
-                } else {
-                    fileList.setVisibility(View.GONE);
-                    fileArrow.setImageResource(R.drawable.ic_collapse_down_black_24dp);
-                }
+        taskViewModel.isFabOpen().observe(this, (Boolean visible) -> {
+            if (visible) {
+                openFab();
+            } else {
+                closeFab();
             }
         });
 
-        fileListViewModel.getFileListAdapter().observe(this, new Observer<FileListAdapter>() {
-            @Override
-            public void onChanged(FileListAdapter fileListAdapter) {
-
-                fileList.setAdapter(fileListAdapter);
-            }
+        fileListViewModel.getFileListAdapter().observe(this, (FileListAdapter fileListAdapter) -> {
+            fileList.setAdapter(fileListAdapter);
         });
+
+
 
         taskViewModel.setTask(task);
         fileListViewModel.init(task.getFiles(), createClickListener());
@@ -175,7 +187,7 @@ public class TaskActivity extends AppCompatActivity {
         };
     }
 
-    private void previewFile(File file) {
+    private void previewFile(@NotNull File file) {
 
         String fileName = file.getId() + "." + file.getType();
 
@@ -185,9 +197,7 @@ public class TaskActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(getFileUri(oFile));
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        //intent.addFlags(Intent.)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
         PackageManager manager = getPackageManager();
         if (intent.resolveActivity(manager) != null) {
             startActivity(intent);
@@ -210,28 +220,44 @@ public class TaskActivity extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
     }
 
-    public void actionClick(View view) {
-        Toast.makeText(this, "Действие с задачей", Toast.LENGTH_LONG).show();
+    public void onActionClick(View view) {
+        taskViewModel.changeFabOpen();
+    }
 
-        /*
-        NetworkService.getInstance("https://sed.rudn.ru")
-                .getApi()
-                .auth(new Login("Игнатьев Олег Владимирович-0"))
-                .enqueue(new Callback<AuthRequest>() {
-                    @Override
-                    public void onResponse(Call<AuthRequest> call, Response<AuthRequest> response) {
-
-                        AuthRequest authRequest = response.body();
-                    }
-
-                    @Override
-                    public void onFailure(Call<AuthRequest> call, Throwable t) {
-
-                        int a = 1;
-                    }
-                });*/
+    public void onApplyClick(View view) {
         Intent intent = new Intent(this, TaskActionActivity.class);
         intent.putExtra("task", task);
         startActivity(intent);
+    }
+
+    public void onCancelClick(View view) {
+        Intent intent = new Intent(this, TaskActionActivity.class);
+        intent.putExtra("task", task);
+        startActivity(intent);
+    }
+
+    private void openFab() {
+        fab.startAnimation(fab_clock);
+        fab_history.startAnimation(fab_open);
+        fab_aply.startAnimation(fab_open);
+        fab_cancel.startAnimation(fab_open);
+
+        fab_history.setClickable(true);
+        fab_aply.setClickable(true);
+        fab_cancel.setClickable(true);
+    }
+
+    private void closeFab() {
+
+        if(fab_history.isClickable()) {
+            fab.startAnimation(fab_anticlock);
+            fab_history.startAnimation(fab_close);
+            fab_aply.startAnimation(fab_close);
+            fab_cancel.startAnimation(fab_close);
+
+            fab_history.setClickable(false);
+            fab_aply.setClickable(false);
+            fab_cancel.setClickable(false);
+        }
     }
 }

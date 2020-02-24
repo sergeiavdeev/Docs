@@ -221,54 +221,62 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/title_files"
                          />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/history_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/files_card"
-                android:layout_margin="5dp"
-                android:onClick="onHistoryClick"
-                >
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:padding="5dp"
-
-                    >
-
-                    <TextView
-                        android:id="@+id/title_history"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:textSize="22sp"
-                        android:text="@string/title_history"
-                        android:textColor="@color/colorPrimaryDark"
-                        />
-                    <ImageView
-                        android:id="@+id/image_history"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:contentDescription="@string/void_string"
-                        app:srcCompat="@drawable/ic_collapse_down_black_24dp" />
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="invisible"
+        android:onClick="onCancelClick"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@id/floatingActionAply"
+        app:layout_constraintEnd_toEndOf="@+id/floatingActionAply"
+        app:layout_constraintStart_toStartOf="@+id/floatingActionAply"
+        app:srcCompat="@drawable/ic_fab_cancel_24dp"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionAply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="invisible"
+        android:onClick="onApplyClick"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@id/floatingActionHistory"
+        app:layout_constraintEnd_toEndOf="@+id/floatingActionHistory"
+        app:layout_constraintStart_toStartOf="@+id/floatingActionHistory"
+        app:srcCompat="@drawable/ic_fab_check_24dp"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="invisible"
+        android:onClick="onHistoryClick"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@id/floatingActionButton"
+        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton"
+        app:layout_constraintStart_toStartOf="@+id/floatingActionButton"
+        app:srcCompat="@drawable/ic_fab_history_24dp"
+        />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -278,13 +286,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:clickable="true"
         android:focusable="true"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_margin="@dimen/fab_margin"
         android:backgroundTint="@color/colorPrimaryDark"
-        app:srcCompat="@android:drawable/ic_menu_edit"
-        android:onClick="actionClick"/>
-
-
+        app:srcCompat="@drawable/ic_fab_add_24dp"
+        app:fabSize="normal"
+        android:onClick="onActionClick"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

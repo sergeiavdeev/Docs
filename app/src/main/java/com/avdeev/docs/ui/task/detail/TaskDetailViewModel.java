@@ -12,12 +12,14 @@ public class TaskDetailViewModel extends DocAppModel {
 
     private MutableLiveData<Task> task;
     private MutableLiveData<Boolean> filesVisible;
+    private MutableLiveData<Boolean> fabOpen;
 
     public TaskDetailViewModel(Application app) {
         super(app);
 
         task = new MutableLiveData<>();
-        filesVisible = new MutableLiveData<>();
+        filesVisible = new MutableLiveData<>(false);
+        fabOpen = new MutableLiveData<>(false);
         filesVisible.setValue(false);
     }
 
@@ -34,10 +36,18 @@ public class TaskDetailViewModel extends DocAppModel {
         return filesVisible;
     }
 
+    public LiveData<Boolean> isFabOpen() {
+        return fabOpen;
+    }
+
     public void changeFileVisible() {
 
         boolean visible = filesVisible.getValue();
         filesVisible.setValue(!visible);
     }
 
+    public void changeFabOpen() {
+        Boolean open = fabOpen.getValue();
+        fabOpen.setValue(!open);
+    }
 }

@@ -348,7 +348,6 @@
                     android:id="@+id/button_history"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/title_history"
                     tools:ignore="MissingConstraints"
                     android:text="@string/title_history"
                     android:textColor="@color/colorPrimary"
