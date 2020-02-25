@@ -17,7 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,11 +28,6 @@ import com.avdeev.docs.core.Task;
 import com.avdeev.docs.core.User;
 import com.avdeev.docs.core.commonViewModels.FileListViewModel;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
-import com.avdeev.docs.core.network.NetworkService;
-import com.avdeev.docs.core.network.pojo.AuthRequest;
-import com.avdeev.docs.core.network.pojo.DocumentResponse;
-import com.avdeev.docs.core.network.pojo.DocumentsResponse;
-import com.avdeev.docs.core.network.pojo.Login;
 import com.avdeev.docs.ui.action.ActionsActivity;
 import com.avdeev.docs.ui.listAdapters.FileListAdapter;
 import com.avdeev.docs.ui.task.action.TaskActionActivity;
@@ -41,10 +35,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class TaskActivity extends AppCompatActivity {
 

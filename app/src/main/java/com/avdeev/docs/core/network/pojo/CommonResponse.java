@@ -1,9 +1,9 @@
 package com.avdeev.docs.core.network.pojo;
 
-public class AuthRequest {
+public class CommonResponse {
    private int success;
 
-   public AuthRequest() {
+   public CommonResponse() {
        success = 0;
    }
 
