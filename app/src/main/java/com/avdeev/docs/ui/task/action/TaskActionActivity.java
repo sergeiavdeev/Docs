@@ -14,11 +14,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.avdeev.docs.R;
+import com.avdeev.docs.core.ActionRequest;
 import com.avdeev.docs.core.Task;
 import com.avdeev.docs.core.User;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.avdeev.docs.core.network.pojo.TaskActionRequest;
 import com.avdeev.docs.databinding.ActivityTaskActionBinding;
 
 public class TaskActionActivity extends AppCompatActivity {
@@ -59,12 +61,34 @@ public class TaskActionActivity extends AppCompatActivity {
 
     private void initActionBar(Task task) {
 
-        //Ознакомление Утвеждение Рассмотрение Исполнение
+        //Ознакомление Утверждение Рассмотрение Исполнение
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Утвердить");
+        actionBar.setTitle(getActionTitle(task.getType()));
         actionBar.setSubtitle(task.getType() + " №" + task.getNumber() + " от " + User.dateFromLong(task.getDate()));
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
+    }
+
+    private String getActionTitle(String taskType) {
+        String title = "Ознакомиться";
+
+        if (taskType.equals("Рассмотрение")) {
+            title = "Рассмотреть";
+        } else if (taskType.equals("Исполнение")) {
+            title = "Исполнить";
+        } else if (taskType.equals("Утверждение")) {
+            title = getAcceptTitle();
+        }
+        return title;
+    }
+
+    private String getAcceptTitle() {
+        String title = "Утвердить";
+
+        if (action.equals(TaskActionRequest.ACTION_NO)) {
+            title = "Отклонить";
+        }
+        return title;
     }
 
     @Override

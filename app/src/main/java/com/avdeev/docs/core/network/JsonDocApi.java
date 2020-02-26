@@ -1,4 +1,4 @@
-package com.avdeev.docs.core.interfaces;
+package com.avdeev.docs.core.network;
 
 import com.avdeev.docs.core.network.pojo.CommonResponse;
 import com.avdeev.docs.core.network.pojo.DocumentResponse;
@@ -23,6 +23,6 @@ public interface JsonDocApi {
     @GET("/BGU_DEMO/hs/DGU_APP_Mobile_Client/documents/details")
     Call<DocumentResponse> getDocument(@Query("chapter") String chapter, @Query("id") String id);
 
-    @POST("/BGU_DEMO/hs/DGU_APP_Mobile_Client/tasks")
+    @POST("tasks")
     Call<CommonResponse> postTaskAction(@Body TaskActionRequest request);
 }

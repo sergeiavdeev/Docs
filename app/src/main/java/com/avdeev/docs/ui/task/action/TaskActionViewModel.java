@@ -45,14 +45,18 @@ public class TaskActionViewModel extends DocAppModel {
 
         setWait(true);
 
-        NetworkService.getInstance("https://sed.rudn.ru")
+        NetworkService.getInstance("https://sed.rudn.ru/BGU_DEMO/hs/DGU_APP_Mobile_Client/")
                 .getApi()
                 .postTaskAction(new TaskActionRequest(task.getId(), action, comment))
                 .enqueue(new Callback<CommonResponse>() {
                     @Override
                     public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
                         setWait(false);
-                        actionComplete.setValue(true);
+                        CommonResponse r = response.body();
+
+                        if (r.getSuccess() == 1) {
+                            actionComplete.setValue(true);
+                        }
                     }
 
                     @Override
@@ -64,4 +68,7 @@ public class TaskActionViewModel extends DocAppModel {
         actionComplete.setValue(true);
     }
 
+    private void deleteTask() {
+
+    }
 }

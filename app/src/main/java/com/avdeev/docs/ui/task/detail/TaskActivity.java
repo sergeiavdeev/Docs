@@ -28,6 +28,7 @@ import com.avdeev.docs.core.Task;
 import com.avdeev.docs.core.User;
 import com.avdeev.docs.core.commonViewModels.FileListViewModel;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
+import com.avdeev.docs.core.network.pojo.TaskActionRequest;
 import com.avdeev.docs.ui.action.ActionsActivity;
 import com.avdeev.docs.ui.listAdapters.FileListAdapter;
 import com.avdeev.docs.ui.task.action.TaskActionActivity;
@@ -218,24 +219,27 @@ public class TaskActivity extends AppCompatActivity {
     public void onApplyClick(View view) {
         Intent intent = new Intent(this, TaskActionActivity.class);
         intent.putExtra("task", task);
+        intent.putExtra("action", TaskActionRequest.ACTION_COMMENTS);
         startActivity(intent);
     }
 
     public void onCancelClick(View view) {
         Intent intent = new Intent(this, TaskActionActivity.class);
         intent.putExtra("task", task);
+        intent.putExtra("action", TaskActionRequest.ACTION_NO);
         startActivity(intent);
     }
 
     private void openFab() {
         fab.startAnimation(fab_clock);
         fab_history.startAnimation(fab_open);
-        fab_aply.startAnimation(fab_open);
-        fab_cancel.startAnimation(fab_open);
-
         fab_history.setClickable(true);
+        fab_aply.startAnimation(fab_open);
         fab_aply.setClickable(true);
-        fab_cancel.setClickable(true);
+        if (task.getType().equals("Утверждение")) {
+            fab_cancel.startAnimation(fab_open);
+            fab_cancel.setClickable(true);
+        }
 
         //fabTextHistory.setVisibility(View.VISIBLE);
         //fabTextApply.setVisibility(View.VISIBLE);
@@ -247,13 +251,13 @@ public class TaskActivity extends AppCompatActivity {
         if(fab_history.isClickable()) {
             fab.startAnimation(fab_anticlock);
             fab_history.startAnimation(fab_close);
-            fab_aply.startAnimation(fab_close);
-            fab_cancel.startAnimation(fab_close);
-
             fab_history.setClickable(false);
+            fab_aply.startAnimation(fab_close);
             fab_aply.setClickable(false);
-            fab_cancel.setClickable(false);
-
+            if (task.getType().equals("Утверждение")) {
+                fab_cancel.startAnimation(fab_close);
+                fab_cancel.setClickable(false);
+            }
             //fabTextHistory.setVisibility(View.INVISIBLE);
             //fabTextApply.setVisibility(View.INVISIBLE);
             //fabTextCancel.setVisibility(View.INVISIBLE);

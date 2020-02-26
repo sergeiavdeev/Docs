@@ -1,7 +1,5 @@
 package com.avdeev.docs.core.network;
 
-import com.avdeev.docs.core.interfaces.JsonDocApi;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
