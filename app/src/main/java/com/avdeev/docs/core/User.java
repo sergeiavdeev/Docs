@@ -713,16 +713,4 @@ public class User {
 
         return fileName;
     }
-
-    @NotNull
-    public static String dateFromLong(long l) {
-
-        String date = "(не указано)";
-        if (l > 0) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(l * 1000L);
-            date = DateFormat.format("dd.MM.yyyy", calendar).toString();
-        }
-        return  date;
-    }
 }

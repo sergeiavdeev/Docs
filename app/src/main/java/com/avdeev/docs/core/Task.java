@@ -1,26 +1,20 @@
 package com.avdeev.docs.core;
 
-import android.content.Context;
-import android.database.Cursor;
 
+import android.database.Cursor;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Task extends Object implements Serializable {
+public class Task extends BaseDocument {
 
-    private String id;
-    private String title;
     private String author;
     private long priority;
     private String type;
     private String number;
     private String assignee;
     private String document_type;
-    private String description;
     private long date_due;
     private long date;
     private long updated_at;
@@ -28,15 +22,12 @@ public class Task extends Object implements Serializable {
 
     public Task() {
 
-        id = "";
-        title = "";
         author = "";
         priority = 0;
         type = "";
         number = "";
         assignee = "";
         document_type = "";
-        description = "";
         date_due = 0;
         date = 0;
         updated_at = 0;
@@ -117,22 +108,6 @@ public class Task extends Object implements Serializable {
         }
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getAuthor() {
         return author;
     }
@@ -179,14 +154,6 @@ public class Task extends Object implements Serializable {
 
     public void setDocument_type(String document_type) {
         this.document_type = document_type;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public long getDate_due() {

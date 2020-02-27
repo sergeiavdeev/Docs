@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.Action;
+import com.avdeev.docs.core.BaseDocument;
 import com.avdeev.docs.core.User;
 import java.util.ArrayList;
 
@@ -49,7 +50,7 @@ public class ActionListAdapter extends BaseAdapter<Action> {
         void bind(Action action) {
 
             person.setText(action.getPerson());
-            date.setText(User.dateFromLong(action.getDate()));
+            date.setText(BaseDocument.dateFromLong(action.getDate()));
             description.setText(action.getDescription());
         }
     }

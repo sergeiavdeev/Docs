@@ -13,6 +13,7 @@ public class User {
     public String token;
     @ColumnInfo(name="api_path")
     public String apiPath;
+    public String key;
 
     public User(String token, String apiPath) {
         this.token = token;

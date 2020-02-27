@@ -16,8 +16,10 @@ import java.lang.reflect.Constructor;
 
 public class DocAppModel extends AndroidViewModel {
 
-    protected MutableLiveData<Boolean> isAuth;
+    protected MutableLiveData<Boolean> auth;
     protected MutableLiveData<Boolean> wait;
+    protected MutableLiveData<Boolean> error;
+    protected MutableLiveData<String> errorMessage;
     protected User user;
     protected int waitCount;
 
@@ -25,21 +27,25 @@ public class DocAppModel extends AndroidViewModel {
         super(app);
 
         user = ((AppDoc)app).getUser();
-        isAuth = new MutableLiveData<>();
-        wait = new MutableLiveData<>();
-        wait.setValue(false);
-        isAuth.setValue(user.isAuth());
+        auth = new MutableLiveData<>(user.isAuth());
+        wait = new MutableLiveData<>(false);
+        error = new MutableLiveData<>(false);
+        errorMessage = new MutableLiveData<>("");
         waitCount = 0;
     }
 
     public LiveData<Boolean>isAuth() {
 
-        isAuth.setValue(user.isAuth());
-        return isAuth;
+        auth.setValue(user.isAuth());
+        return auth;
     }
 
     public LiveData<Boolean>isWaiting() {
         return wait;
+    }
+
+    public LiveData<String> getErrorMessage () {
+        return errorMessage;
     }
 
     protected void setWait(boolean isWait) {

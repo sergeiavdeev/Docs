@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.avdeev.docs.BuildConfig;
 import com.avdeev.docs.R;
+import com.avdeev.docs.core.BaseDocument;
 import com.avdeev.docs.core.Document;
 import com.avdeev.docs.core.File;
 import com.avdeev.docs.core.User;
@@ -51,7 +52,7 @@ public class DocDetailActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getIntent().getStringExtra("caption"));
-        actionBar.setSubtitle(doc.getType() + " №" + doc.getNumber() + " от " + User.dateFromLong(doc.getUpdated_at()));
+        actionBar.setSubtitle(doc.getType() + " №" + doc.getNumber() + " от " + BaseDocument.dateFromLong(doc.getUpdated_at()));
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
@@ -88,7 +89,7 @@ public class DocDetailActivity extends AppCompatActivity {
                 recipient.setText(document.getRecipient());
                 signer.setText(document.getSigner());
                 number.setText(document.getNumber());
-                date.setText(User.dateFromLong(document.getDate()));
+                date.setText(BaseDocument.dateFromLong(document.getDate()));
                 fileListViewModel.init(document.getFiles(), createClickListener());
                 //fileList.setAdapter(fileListViewModel.);
             }

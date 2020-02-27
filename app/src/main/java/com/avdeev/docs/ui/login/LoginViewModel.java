@@ -43,7 +43,7 @@ public class LoginViewModel extends DocAppModel {
                 super.onPostExecute(result);
 
                 wait.setValue(false);
-                isAuth.setValue((boolean) result);
+                auth.setValue((boolean) result);
                 authError.setValue(!(boolean)result);
             }
 

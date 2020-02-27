@@ -1,32 +1,22 @@
 package com.avdeev.docs.core;
 
 import android.database.Cursor;
-import android.text.format.DateFormat;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 
-public class Document extends Object implements Serializable {
+public class Document extends BaseDocument {
 
-    private String title;
     private String author;
-    private String id;
     private String number;
     private String type;
-
-    private long updated_at;
-    private long date;
-
     private String status;
-    private String description;
     private String recipient;
     private String signer;
     private String department;
+    private long updated_at;
+    private long date;
 
     private ArrayList<File> files;
 
@@ -66,16 +56,8 @@ public class Document extends Object implements Serializable {
         files = new ArrayList<>();
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public String getAuthor() {
         return author;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getNumber() {
@@ -96,10 +78,6 @@ public class Document extends Object implements Serializable {
 
     public String getStatus() {
         return status;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public String getRecipient() {

@@ -6,15 +6,22 @@ import androidx.room.Query;
 
 import com.avdeev.docs.core.database.entity.User;
 
+import java.util.UUID;
+
 @Dao
-public interface Users {
+public abstract class Users {
 
     @Query("SELECT * FROM user LIMIT 1")
-    User getOne();
+    public abstract User getOne();
 
     @Query("DELETE FROM user")
-    void clear();
+    public abstract void clear();
 
     @Insert
-    void add(User user);
+    abstract void addUser(User user);
+
+    public void add(User user) {
+        user.key = UUID.randomUUID().toString();
+        addUser(user);
+    }
 }

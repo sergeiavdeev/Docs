@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.avdeev.docs.BuildConfig;
 import com.avdeev.docs.R;
+import com.avdeev.docs.core.BaseDocument;
 import com.avdeev.docs.core.File;
 import com.avdeev.docs.core.Task;
 import com.avdeev.docs.core.User;
@@ -100,7 +101,7 @@ public class TaskActivity extends AppCompatActivity {
             description.setText(task.getDescription());
             author.setText(task.getAuthor());
             executor.setText(task.getAssignee());
-            date_due.setText(User.dateFromLong(task.getDate_due()));
+            date_due.setText(BaseDocument.dateFromLong(task.getDate_due()));
         });
 
         taskViewModel.getFilesVisible().observe(this, (Boolean visible) -> {
@@ -207,7 +208,7 @@ public class TaskActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Задача");
-        actionBar.setSubtitle(task.getType() + " №" + task.getNumber() + " от " + User.dateFromLong(task.getDate()));
+        actionBar.setSubtitle(task.getType() + " №" + task.getNumber() + " от " + BaseDocument.dateFromLong(task.getDate()));
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
     }

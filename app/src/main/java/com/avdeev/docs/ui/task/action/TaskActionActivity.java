@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.ActionRequest;
+import com.avdeev.docs.core.BaseDocument;
 import com.avdeev.docs.core.Task;
 import com.avdeev.docs.core.User;
 
@@ -64,7 +65,7 @@ public class TaskActionActivity extends AppCompatActivity {
         //Ознакомление Утверждение Рассмотрение Исполнение
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getActionTitle(task.getType()));
-        actionBar.setSubtitle(task.getType() + " №" + task.getNumber() + " от " + User.dateFromLong(task.getDate()));
+        actionBar.setSubtitle(task.getType() + " №" + task.getNumber() + " от " + BaseDocument.dateFromLong(task.getDate()));
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
     }

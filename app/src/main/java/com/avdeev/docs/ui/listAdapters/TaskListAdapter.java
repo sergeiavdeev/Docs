@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 import com.avdeev.docs.R;
+import com.avdeev.docs.core.BaseDocument;
 import com.avdeev.docs.core.Task;
 import com.avdeev.docs.core.User;
 import org.jetbrains.annotations.NotNull;
@@ -72,7 +73,7 @@ public class TaskListAdapter extends BaseAdapter<Task> {
 
             if (lDate > 0 && sNumber.length() > 0) {
 
-                date.setText("№" + sNumber + " от " + User.dateFromLong(task.getDate()));
+                date.setText("№" + sNumber + " от " + BaseDocument.dateFromLong(task.getDate()));
                 date.setVisibility(View.VISIBLE);
             } else {
                 date.setText("");
@@ -84,7 +85,7 @@ public class TaskListAdapter extends BaseAdapter<Task> {
             long dateDue = task.getDate_due();
 
             if (dateDue > 0) {
-                date_due.setText(User.dateFromLong(task.getDate_due()));
+                date_due.setText(BaseDocument.dateFromLong(task.getDate_due()));
             } else {
                 date_due.setText("");
             }
