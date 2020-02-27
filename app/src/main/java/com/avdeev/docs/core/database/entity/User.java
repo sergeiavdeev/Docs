@@ -10,13 +10,13 @@ public class User {
 
     @PrimaryKey(autoGenerate = true)
     public int id;
-    public String token;
-    @ColumnInfo(name="api_path")
-    public String apiPath;
+    public String hash;
+    @ColumnInfo(name="api_url")
+    public String apiUrl;
     public String key;
 
-    public User(String token, String apiPath) {
-        this.token = token;
-        this.apiPath = apiPath;
+    public User(String hash, String apiUrl) {
+        this.hash = hash;
+        this.apiUrl = apiUrl;
     }
 }

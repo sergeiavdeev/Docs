@@ -35,7 +35,7 @@ public class LoginViewModel extends DocAppModel {
             @Override
             protected Object doInBackground(Object[] objects) {
 
-                return user.auth(l, p);
+                return appUser.auth(l, p);
             }
 
             @Override

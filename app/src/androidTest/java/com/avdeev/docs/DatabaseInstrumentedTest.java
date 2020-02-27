@@ -42,6 +42,7 @@ public class DatabaseInstrumentedTest {
     public void init() {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         db = Room.databaseBuilder(appContext, DocDatabase.class, "docs").build();
+
     }
 
     @Test
@@ -55,8 +56,8 @@ public class DatabaseInstrumentedTest {
 
         db.user().add(new User("abcde", "https://"));
         User user = db.user().getOne();
-        assertEquals(user.token, "abcde");
-        assertEquals(user.apiPath, "https://");
+        assertEquals(user.hash, "abcde");
+        assertEquals(user.apiUrl, "https://");
         assertEquals(user.key.length() > 0, true);
 
         db.user().clear();

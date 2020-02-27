@@ -1,10 +1,8 @@
 package com.avdeev.docs.ui.task.action;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -14,10 +12,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.avdeev.docs.R;
-import com.avdeev.docs.core.ActionRequest;
 import com.avdeev.docs.core.BaseDocument;
 import com.avdeev.docs.core.Task;
-import com.avdeev.docs.core.User;
 
 import org.jetbrains.annotations.NotNull;
 

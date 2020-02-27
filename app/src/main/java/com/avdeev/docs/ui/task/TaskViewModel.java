@@ -5,10 +5,8 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.avdeev.docs.core.DocAppModel;
-import com.avdeev.docs.core.Document;
 import com.avdeev.docs.core.Task;
 import com.avdeev.docs.ui.listAdapters.TaskListAdapter;
 
@@ -43,10 +41,10 @@ public class TaskViewModel extends DocAppModel {
                 ArrayList<Task> taskList;
 
                 try {
-                    taskList = user.getTaskList();
+                    taskList = appUser.getTaskList();
                     if (taskList.size() == 0) {
-                        user.updateTaskList();
-                        taskList = user.getTaskList();
+                        appUser.updateTaskList();
+                        taskList = appUser.getTaskList();
                     }
                 }catch (Exception e) {
                     e.printStackTrace();
@@ -76,10 +74,10 @@ public class TaskViewModel extends DocAppModel {
 
                 ArrayList<Task> taskList;
 
-                user.updateTaskList();
+                appUser.updateTaskList();
 
                 try {
-                    taskList = user.getTaskList();
+                    taskList = appUser.getTaskList();
                 } catch (Exception e) {
                     e.printStackTrace();
                     taskList = new ArrayList<>();

@@ -6,7 +6,7 @@ import android.widget.TextView;
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.Action;
 import com.avdeev.docs.core.BaseDocument;
-import com.avdeev.docs.core.User;
+
 import java.util.ArrayList;
 
 public class ActionListAdapter extends BaseAdapter<Action> {

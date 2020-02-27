@@ -2,11 +2,9 @@ package com.avdeev.docs.ui.docOut;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.avdeev.docs.core.DocAppModel;
 import com.avdeev.docs.core.Document;
@@ -50,10 +48,10 @@ public class DocOutViewModel extends DocAppModel {
         @Override
         protected ArrayList<Document> process() {
 
-            ArrayList<Document> documents = user.getDocOutList();
+            ArrayList<Document> documents = appUser.getDocOutList();
             if (documents.size() == 0) {
-                user.updateDocList("outbox");
-                documents = user.getDocInList();
+                appUser.updateDocList("outbox");
+                documents = appUser.getDocInList();
             }
             return documents;
         }
@@ -69,8 +67,8 @@ public class DocOutViewModel extends DocAppModel {
         @Override
         protected ArrayList<Document> process() {
 
-            user.updateDocList("outbox");
-            return user.getDocOutList();
+            appUser.updateDocList("outbox");
+            return appUser.getDocOutList();
         }
 
         @Override

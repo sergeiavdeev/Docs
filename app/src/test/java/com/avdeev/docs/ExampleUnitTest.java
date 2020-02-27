@@ -1,7 +1,5 @@
 package com.avdeev.docs;
 
-import com.avdeev.docs.core.User;
-
 import org.junit.Test;
 
 import static org.junit.Assert.*;

@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         AppDoc app = (AppDoc)getApplication();
 
-        if (!app.getUser().isAuth()) {
+        if (!app.getAppUser().isAuth()) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();

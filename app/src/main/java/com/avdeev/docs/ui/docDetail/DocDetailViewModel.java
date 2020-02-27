@@ -53,7 +53,7 @@ public class DocDetailViewModel extends DocAppModel {
             @Override
             protected Object doInBackground(Object[] objects) {
 
-                return user.updateDocument(document.getValue(), type);
+                return appUser.updateDocument(document.getValue(), type);
             }
 
             @Override

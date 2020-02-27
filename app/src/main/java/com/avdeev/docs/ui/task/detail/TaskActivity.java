@@ -26,7 +26,6 @@ import com.avdeev.docs.R;
 import com.avdeev.docs.core.BaseDocument;
 import com.avdeev.docs.core.File;
 import com.avdeev.docs.core.Task;
-import com.avdeev.docs.core.User;
 import com.avdeev.docs.core.commonViewModels.FileListViewModel;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.core.network.pojo.TaskActionRequest;

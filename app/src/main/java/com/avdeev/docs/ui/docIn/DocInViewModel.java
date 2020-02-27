@@ -2,7 +2,6 @@ package com.avdeev.docs.ui.docIn;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -51,10 +50,10 @@ public class DocInViewModel extends DocAppModel {
         @Override
         protected ArrayList<Document> process() {
 
-            ArrayList<Document> documents = user.getDocInList();
+            ArrayList<Document> documents = appUser.getDocInList();
             if (documents.size() == 0) {
-                user.updateDocList("inbox");
-                documents = user.getDocInList();
+                appUser.updateDocList("inbox");
+                documents = appUser.getDocInList();
             }
             return documents;
         }
@@ -70,8 +69,8 @@ public class DocInViewModel extends DocAppModel {
         @Override
         protected ArrayList<Document> process() {
 
-            user.updateDocList("inbox");
-            return user.getDocInList();
+            appUser.updateDocList("inbox");
+            return appUser.getDocInList();
         }
 
         @Override

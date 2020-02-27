@@ -2,11 +2,9 @@ package com.avdeev.docs.ui.docInner;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.avdeev.docs.core.DocAppModel;
 import com.avdeev.docs.core.Document;
@@ -48,13 +46,13 @@ public class DocInnerViewModel extends DocAppModel {
         @Override
         protected ArrayList<Document> process() {
 
-            ArrayList<Document> documents = user.getDocInnerList();
+            ArrayList<Document> documents = appUser.getDocInnerList();
             if (documents.size() == 0) {
                 int count = 5000;
                 while(count == 5000) {
-                    count = user.updateDocList("internal");
+                    count = appUser.updateDocList("internal");
                 }
-                documents = user.getDocInnerList();
+                documents = appUser.getDocInnerList();
             }
             return documents;
         }
@@ -70,8 +68,8 @@ public class DocInnerViewModel extends DocAppModel {
         @Override
         protected ArrayList<Document> process() {
 
-            user.updateDocList("internal");
-            return user.getDocInnerList();
+            appUser.updateDocList("internal");
+            return appUser.getDocInnerList();
         }
 
         @Override

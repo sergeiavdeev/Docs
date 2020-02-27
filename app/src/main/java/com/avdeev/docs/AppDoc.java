@@ -3,12 +3,19 @@ package com.avdeev.docs;
 import android.app.Application;
 import android.content.Context;
 
-import com.avdeev.docs.core.User;
+import androidx.room.Room;
+
+import com.avdeev.docs.core.AppUser;
+import com.avdeev.docs.core.database.DocDatabase;
+import com.avdeev.docs.core.database.entity.User;
+import com.avdeev.docs.core.network.NetworkService;
 
 public class AppDoc extends Application {
 
     private Context context;
-    private User user;
+    private AppUser appUser;
+    private NetworkService networkService;
+    private DocDatabase database;
 
     public AppDoc() {
 
@@ -20,12 +27,21 @@ public class AppDoc extends Application {
         super.onCreate();
 
         context = getBaseContext();
-        user = new User(context);
+
+        database = DocDatabase.getInstance(context);
+
+        DocDatabase.executor.execute(() ->{
+            User user = database.user().getOne();
+            if (user == null) {
+
+            }
+        });
+
+        appUser = new AppUser(context);
     }
 
-    public User getUser() {
-
-        return user;
+    public AppUser getAppUser() {
+        return appUser;
     }
 
 }

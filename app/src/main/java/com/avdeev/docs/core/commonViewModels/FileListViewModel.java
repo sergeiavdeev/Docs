@@ -49,7 +49,7 @@ public class FileListViewModel extends DocAppModel {
 
                 String fileName = "";
                 try {
-                    fileName = user.getFile(file);
+                    fileName = appUser.getFile(file);
                     file.setDownloaded(true);
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -25,7 +25,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.internal.http2.Header;
 
-public class User {
+public class AppUser {
 
     private boolean auth;
     private Context context;
@@ -40,7 +40,7 @@ public class User {
     private ArrayList<Document> docsInner;
     private ArrayList<Task> taskList;
 
-    public User(Context context) {
+    public AppUser(Context context) {
 
         this.context = context;
         dbHelper = new DbHelper(context);

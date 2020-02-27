@@ -1,9 +1,10 @@
 package com.avdeev.docs.core.network;
 
+
 import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
-
+import java.security.MessageDigest;
+import java.util.Date;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -16,6 +17,8 @@ public class NetworkService {
     private static NetworkService instance;
     private static String baseUrl;
     private Retrofit retrofit;
+    private String authKey;
+    private String passwordHash;
 
     private NetworkService() {
 
@@ -24,11 +27,13 @@ public class NetworkService {
             @Override
             public Response intercept(@NotNull Chain chain) throws IOException {
 
+                String date = String.valueOf(new Date().getTime());
+
                 Request request = chain.request();
                 Request.Builder builder = request.newBuilder()
-                        .addHeader("X-Auth-Key", "3d5670c50623d2ed")
-                        .addHeader("X-Auth-Timestamp", "1574250835161")
-                        .addHeader("X-Auth-Token", "200f03928f3d90f31dbefdc01a4cff1f3e616de8");
+                        .addHeader("X-Auth-Key", authKey)
+                        .addHeader("X-Auth-Timestamp", date)
+                        .addHeader("X-Auth-Token", generateApiToken(date));
 
                 Request newRequest = builder.build();
                 return chain.proceed(newRequest);
@@ -51,6 +56,41 @@ public class NetworkService {
         }
 
         return instance;
+    }
+
+    public NetworkService setAuthKey(String authKey) {
+        this.authKey = authKey;
+        return this;
+    }
+
+    public NetworkService setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+        return this;
+    }
+
+    private String generateApiToken(String date) {
+        String token = "";
+        MessageDigest hash;
+        try {
+            hash = MessageDigest.getInstance("SHA-1");
+            hash.update(authKey.getBytes("UTF-8"));
+            hash.update(date.getBytes("UTF-8"));
+            hash.update(passwordHash.getBytes("UTF-8"));
+            token = getHex(hash.digest());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return token;
+    }
+
+    @NotNull
+    private String getHex(@NotNull byte [] bytes) {
+        StringBuilder bTtoken = new StringBuilder();
+        for (byte b : bytes)
+        {
+            bTtoken.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+        }
+        return bTtoken.toString();
     }
 
     public JsonDocApi getApi() {

@@ -25,7 +25,6 @@ import com.avdeev.docs.R;
 import com.avdeev.docs.core.BaseDocument;
 import com.avdeev.docs.core.Document;
 import com.avdeev.docs.core.File;
-import com.avdeev.docs.core.User;
 import com.avdeev.docs.core.commonViewModels.FileListViewModel;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.ui.action.ActionsActivity;
@@ -45,7 +44,7 @@ public class DocDetailActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_doc_detail_v2);
+        setContentView(R.layout.activity_doc_detail);
 
         doc = (Document)getIntent().getExtras().getSerializable("id");
         docType = getIntent().getStringExtra("type");

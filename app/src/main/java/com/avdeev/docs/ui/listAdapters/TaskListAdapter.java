@@ -6,7 +6,7 @@ import android.widget.TextView;
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.BaseDocument;
 import com.avdeev.docs.core.Task;
-import com.avdeev.docs.core.User;
+
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 

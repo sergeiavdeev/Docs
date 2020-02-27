@@ -4,15 +4,11 @@ import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.avdeev.docs.AppDoc;
-
-import java.lang.reflect.Constructor;
 
 public class DocAppModel extends AndroidViewModel {
 
@@ -20,14 +16,14 @@ public class DocAppModel extends AndroidViewModel {
     protected MutableLiveData<Boolean> wait;
     protected MutableLiveData<Boolean> error;
     protected MutableLiveData<String> errorMessage;
-    protected User user;
+    protected AppUser appUser;
     protected int waitCount;
 
     public DocAppModel(Application app) {
         super(app);
 
-        user = ((AppDoc)app).getUser();
-        auth = new MutableLiveData<>(user.isAuth());
+        appUser = ((AppDoc)app).getAppUser();
+        auth = new MutableLiveData<>(appUser.isAuth());
         wait = new MutableLiveData<>(false);
         error = new MutableLiveData<>(false);
         errorMessage = new MutableLiveData<>("");
@@ -36,7 +32,7 @@ public class DocAppModel extends AndroidViewModel {
 
     public LiveData<Boolean>isAuth() {
 
-        auth.setValue(user.isAuth());
+        auth.setValue(appUser.isAuth());
         return auth;
     }
 

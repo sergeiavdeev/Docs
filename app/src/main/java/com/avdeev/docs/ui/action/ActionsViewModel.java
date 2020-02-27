@@ -9,7 +9,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.avdeev.docs.core.Action;
 import com.avdeev.docs.core.ActionRequest;
 import com.avdeev.docs.core.DocAppModel;
-import com.avdeev.docs.core.Document;
 
 import java.util.ArrayList;
 
@@ -36,7 +35,7 @@ public class ActionsViewModel extends DocAppModel {
             @Override
             protected Object doInBackground(Object[] objects) {
 
-                return user.getActions(type, id, request);
+                return appUser.getActions(type, id, request);
             }
 
             @Override
@@ -58,7 +57,7 @@ public class ActionsViewModel extends DocAppModel {
             @Override
             protected Object doInBackground(Object[] objects) {
 
-                return user.getActions(request);
+                return appUser.getActions(request);
             }
 
             @Override

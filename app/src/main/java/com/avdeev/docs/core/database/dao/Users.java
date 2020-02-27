@@ -21,6 +21,7 @@ public abstract class Users {
     abstract void addUser(User user);
 
     public void add(User user) {
+        clear();
         user.key = UUID.randomUUID().toString();
         addUser(user);
     }
