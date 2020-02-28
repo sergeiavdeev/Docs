@@ -1,6 +1,8 @@
 package com.avdeev.docs.core.network;
 
 
+import com.avdeev.docs.core.AppUser;
+
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -68,6 +70,19 @@ public class NetworkService {
         return this;
     }
 
+    public NetworkService setPasswordHashFromPassword(String password) {
+        MessageDigest pHash;
+        try {
+            pHash = MessageDigest.getInstance("SHA-1");
+            pHash.update(password.getBytes("UTF-8"));
+            this.passwordHash = getHex(pHash.digest());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        AppUser.setHash(this.passwordHash);
+        return this;
+    }
+
     private String generateApiToken(String date) {
         String token = "";
         MessageDigest hash;
@@ -95,5 +110,9 @@ public class NetworkService {
 
     public JsonDocApi getApi() {
         return retrofit.create(JsonDocApi.class);
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
     }
 }

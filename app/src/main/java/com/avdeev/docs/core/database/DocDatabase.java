@@ -43,23 +43,23 @@ public abstract class DocDatabase extends RoomDatabase {
     public abstract Tasks task();
 
     private static final int NUMBER_OF_THREADS = 4;
-    private static volatile DocDatabase instanse;
+    private static volatile DocDatabase instance;
 
     public static final ExecutorService executor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     public static DocDatabase getInstance(Context context) {
 
-        if (instanse == null) {
+        if (instance == null) {
             synchronized (DocDatabase.class) {
-                if (instanse == null) {
-                    instanse = Room.databaseBuilder(context, DocDatabase.class, "docs").build();
+                if (instance == null) {
+                    instance = Room.databaseBuilder(context, DocDatabase.class, "docs").build();
                 }
             }
         }
-        return instanse;
+        return instance;
     }
 
     public static DocDatabase getInstance() {
-        return instanse;
+        return instance;
     }
 }

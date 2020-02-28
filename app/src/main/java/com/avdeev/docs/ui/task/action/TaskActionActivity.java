@@ -45,7 +45,7 @@ public class TaskActionActivity extends AppCompatActivity {
         binding.setTaskActionViewModel(taskActionViewModel);
         binding.setLifecycleOwner(this);
 
-        taskActionViewModel.getActionComplete().observe(this, new Observer<Boolean>() {
+        taskActionViewModel.isComplete().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean complete) {
 

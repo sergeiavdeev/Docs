@@ -15,6 +15,7 @@ public class DocAppModel extends AndroidViewModel {
     protected MutableLiveData<Boolean> auth;
     protected MutableLiveData<Boolean> wait;
     protected MutableLiveData<Boolean> error;
+    protected MutableLiveData<Boolean> complete;
     protected MutableLiveData<String> errorMessage;
     protected AppUser appUser;
     protected int waitCount;
@@ -27,6 +28,7 @@ public class DocAppModel extends AndroidViewModel {
         wait = new MutableLiveData<>(false);
         error = new MutableLiveData<>(false);
         errorMessage = new MutableLiveData<>("");
+        complete = new MutableLiveData<>(false);
         waitCount = 0;
     }
 
@@ -42,6 +44,10 @@ public class DocAppModel extends AndroidViewModel {
 
     public LiveData<String> getErrorMessage () {
         return errorMessage;
+    }
+
+    public LiveData<Boolean> isComplete() {
+        return complete;
     }
 
     protected void setWait(boolean isWait) {

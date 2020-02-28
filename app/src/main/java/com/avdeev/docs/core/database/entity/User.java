@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class User {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     public int id;
     public String hash;
     @ColumnInfo(name="api_url")
@@ -16,6 +16,7 @@ public class User {
     public String key;
 
     public User(String hash, String apiUrl) {
+        this.id = 1;
         this.hash = hash;
         this.apiUrl = apiUrl;
     }

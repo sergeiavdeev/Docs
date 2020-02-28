@@ -31,4 +31,6 @@
     <string name="title_doc">Документ</string>
     <string name="title_apply">Утвердить</string>
     <string name="title_cancel">Отклонить</string>
+    <string name="api_url">API URL</string>
+    <string name="title_save">Сохранить</string>
 </resources>

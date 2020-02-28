@@ -27,7 +27,11 @@ import okhttp3.internal.http2.Header;
 
 public class AppUser {
 
-    private boolean auth;
+    private static boolean auth;
+    private static AppUser instance;
+    private static String apiUrl;
+    private static String hash;
+    private static String key;
     private Context context;
     private DbHelper dbHelper;
     private SQLiteDatabase dbR;
@@ -66,6 +70,49 @@ public class AppUser {
         if (dbR.isOpen()) {
             dbR.close();
         }
+    }
+
+    private AppUser() {
+        this.auth = false;
+    }
+
+    public static AppUser getInstance() {
+        if (instance == null) {
+            synchronized (AppUser.class) {
+                if (instance == null) {
+                    instance = new AppUser();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public static void setApiUrl(String apiUrl) {
+        AppUser.apiUrl = apiUrl;
+    }
+
+    public static void setHash(String hash) {
+        AppUser.hash = hash;
+    }
+
+    public static void setKey(String key) {
+        AppUser.key = key;
+    }
+
+    public static String getApiUrl() {
+        return apiUrl;
+    }
+
+    public static String getHash() {
+        return hash;
+    }
+
+    public static String getKey() {
+        return key;
+    }
+
+    public static void setAuth(boolean auth) {
+        AppUser.auth = auth;
     }
 
     public boolean isAuth() {

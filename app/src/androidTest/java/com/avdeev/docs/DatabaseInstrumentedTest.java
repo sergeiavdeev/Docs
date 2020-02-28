@@ -60,6 +60,11 @@ public class DatabaseInstrumentedTest {
         assertEquals(user.apiUrl, "https://");
         assertEquals(user.key.length() > 0, true);
 
+        db.user().add(new User("effff", "https://d"));
+        user = db.user().getOne();
+        assertEquals(user.hash, "effff");
+        assertEquals(user.apiUrl, "https://d");
+
         db.user().clear();
         user = db.user().getOne();
         assertEquals(user, null);

@@ -14,18 +14,12 @@ import retrofit2.Response;
 
 public class TaskActionViewModel extends DocAppModel {
 
-    private MutableLiveData<Boolean> actionComplete;
     private Task task;
     private String comment;
 
     public TaskActionViewModel(Application app) {
         super(app);
-        actionComplete = new MutableLiveData<>(false);
         comment = "";
-    }
-
-    public LiveData<Boolean> getActionComplete() {
-        return actionComplete;
     }
 
     public String getComment() {
@@ -55,7 +49,8 @@ public class TaskActionViewModel extends DocAppModel {
                         CommonResponse r = response.body();
 
                         if (r.getSuccess() == 1) {
-                            actionComplete.setValue(true);
+                            deleteTask();
+                            complete.setValue(true);
                         }
                     }
 
@@ -64,8 +59,6 @@ public class TaskActionViewModel extends DocAppModel {
                         setWait(false);
                     }
                 });
-
-        actionComplete.setValue(true);
     }
 
     private void deleteTask() {

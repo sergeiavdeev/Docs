@@ -14,8 +14,6 @@ public class AppDoc extends Application {
 
     private Context context;
     private AppUser appUser;
-    private NetworkService networkService;
-    private DocDatabase database;
 
     public AppDoc() {
 
@@ -28,14 +26,7 @@ public class AppDoc extends Application {
 
         context = getBaseContext();
 
-        database = DocDatabase.getInstance(context);
-
-        DocDatabase.executor.execute(() ->{
-            User user = database.user().getOne();
-            if (user == null) {
-
-            }
-        });
+        DocDatabase.getInstance(context);
 
         appUser = new AppUser(context);
     }

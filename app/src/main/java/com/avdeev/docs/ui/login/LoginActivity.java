@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -19,6 +20,8 @@ import android.widget.Toast;
 
 import com.avdeev.docs.MainActivity;
 import com.avdeev.docs.R;
+import com.avdeev.docs.databinding.ActivityLoginBinding;
+import com.avdeev.docs.ui.settings.SettingsActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -26,13 +29,15 @@ public class LoginActivity extends AppCompatActivity {
     private EditText textLogin;
     private EditText textPassword;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        //setContentView(R.layout.activity_login);
+        loginViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(LoginViewModel.class);
+
+        ActivityLoginBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        binding.setLoginViewModel(loginViewModel);
+        binding.setLifecycleOwner(this);
 
         Context context = getBaseContext();
 
@@ -41,8 +46,6 @@ public class LoginActivity extends AppCompatActivity {
         textPassword = findViewById(R.id.edit_password);
         final Button btn = findViewById(R.id.button_login);
         final TextView textError = findViewById(R.id.text_error);
-
-        loginViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(LoginViewModel.class);
 
         loginViewModel.isAuth().observe(this, new Observer<Boolean>() {
             @Override
@@ -91,12 +94,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onClickSettings(MenuItem item) {
-
-        Toast.makeText(this, "Натройки", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     public void onClickAuth(View view) {
         //Toast.makeText(this, "Вход", Toast.LENGTH_LONG).show();
-        loginViewModel.auth(textLogin.getText().toString(), textPassword.getText().toString());
+        //loginViewModel.auth(textLogin.getText().toString(), textPassword.getText().toString());
+        loginViewModel.auth();
     }
 }
