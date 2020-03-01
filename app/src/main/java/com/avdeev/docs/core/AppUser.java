@@ -115,12 +115,13 @@ public class AppUser {
         AppUser.auth = auth;
     }
 
-    public boolean isAuth() {
+    public static boolean isAuth() {
 
         return auth;
     }
 
-    public boolean auth(String login, String password) {
+    @Deprecated
+    public boolean auth_(String login, String password) {
 
         boolean result = false;
 

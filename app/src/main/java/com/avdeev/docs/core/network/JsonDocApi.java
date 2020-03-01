@@ -14,13 +14,13 @@ import retrofit2.http.Query;
 
 public interface JsonDocApi {
 
-    @POST("/BGU_DEMO/hs/DGU_APP_Mobile_Client/auth")
+    @POST("auth")
     Call<CommonResponse> auth(@Body Login login);
 
-    @GET("/BGU_DEMO/hs/DGU_APP_Mobile_Client/documents")
+    @GET("documents")
     Call<DocumentsResponse> getDocuments(@Query("chapter") String chapter, @Query("timestamp") long timestamp);
 
-    @GET("/BGU_DEMO/hs/DGU_APP_Mobile_Client/documents/details")
+    @GET("documents/details")
     Call<DocumentResponse> getDocument(@Query("chapter") String chapter, @Query("id") String id);
 
     @POST("tasks")

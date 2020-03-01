@@ -36,6 +36,7 @@ public class StartViewModel extends DocAppModel {
             AppUser.setKey(user.key);
             AppUser.setApiUrl(user.apiUrl);
             AppUser.setHash(user.hash);
+            AppUser.setAuth(user.hash.length()>0);
             complete.postValue(true);
         });
     }

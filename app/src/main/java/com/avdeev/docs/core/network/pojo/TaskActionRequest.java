@@ -1,8 +1,5 @@
 package com.avdeev.docs.core.network.pojo;
 
-import androidx.annotation.Nullable;
-import org.jetbrains.annotations.Contract;
-
 public class TaskActionRequest {
     private String id;
     private String action;

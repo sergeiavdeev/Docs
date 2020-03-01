@@ -17,7 +17,7 @@ public class SettingsViewModel extends DocAppModel {
         apiUrl = AppUser.getApiUrl();
 
         if (AppUser.getApiUrl().length() == 0) {
-            apiUrl = "https://";
+            apiUrl = "https://sed.rudn.ru/BGU_DEMO/hs/DGU_APP_Mobile_Client/";
         }
     }
 

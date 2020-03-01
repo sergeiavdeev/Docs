@@ -1,11 +1,6 @@
 package com.avdeev.docs.ui.login;
 
 import android.app.Application;
-import android.os.AsyncTask;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
 import com.avdeev.docs.core.AppUser;
 import com.avdeev.docs.core.DocAppModel;
 import com.avdeev.docs.core.database.DocDatabase;
@@ -20,50 +15,13 @@ import retrofit2.Response;
 
 public class LoginViewModel extends DocAppModel {
 
-    private MutableLiveData<Boolean> authError;
     private String login;
     private String password;
 
     public LoginViewModel(Application app) {
         super(app);
-        authError = new MutableLiveData<>();
-        authError.setValue(false);
         login = "Игнатьев Олег Владимирович";
         password = "gbrn03121965sed";
-    }
-
-    public LiveData<Boolean>isAuthError() {
-
-        return authError;
-    }
-
-    @Deprecated
-    public void auth(String login, String password) {
-
-        final String l = login;
-        final String p = password;
-
-        wait.setValue(true);
-        authError.setValue(false);
-
-        new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] objects) {
-
-                return appUser.auth(l, p);
-            }
-
-            @Override
-            protected void onPostExecute(Object result) {
-                super.onPostExecute(result);
-
-                wait.setValue(false);
-                auth.setValue((boolean) result);
-                authError.setValue(!(boolean)result);
-            }
-
-
-        }.execute();
     }
 
     public void auth() {
@@ -103,6 +61,7 @@ public class LoginViewModel extends DocAppModel {
         DocDatabase.executor.execute(() -> {
             db.user().add(new User(AppUser.getHash(), AppUser.getApiUrl()));
             complete.postValue(true);
+            auth.postValue(true);
         });
     }
 

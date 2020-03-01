@@ -34,7 +34,7 @@ public class DocAppModel extends AndroidViewModel {
 
     public LiveData<Boolean>isAuth() {
 
-        auth.setValue(appUser.isAuth());
+        auth.setValue(AppUser.isAuth());
         return auth;
     }
 
@@ -48,6 +48,10 @@ public class DocAppModel extends AndroidViewModel {
 
     public LiveData<Boolean> isComplete() {
         return complete;
+    }
+
+    public LiveData<Boolean> isError() {
+        return error;
     }
 
     protected void setWait(boolean isWait) {

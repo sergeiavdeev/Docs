@@ -9,14 +9,15 @@
             />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
-
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:labelFor="@id/apiUrl"
             android:text="@string/api_url"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="18sp"
@@ -27,7 +28,8 @@
             android:id="@+id/apiUrl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textUri"
+            android:inputType="textCapSentences|textMultiLine|textUri"
+            android:autofillHints="@string/api_url"
             android:text="@={settingsViewModel.apiUrl}"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 

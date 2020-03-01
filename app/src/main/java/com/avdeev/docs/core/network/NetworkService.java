@@ -2,6 +2,7 @@ package com.avdeev.docs.core.network;
 
 
 import com.avdeev.docs.core.AppUser;
+import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
@@ -57,6 +58,10 @@ public class NetworkService {
             instance = new NetworkService();
         }
 
+        return instance;
+    }
+
+    public static NetworkService getInstance() {
         return instance;
     }
 
