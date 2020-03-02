@@ -22,9 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.avdeev.docs.BuildConfig;
 import com.avdeev.docs.R;
-import com.avdeev.docs.core.BaseDocument;
-import com.avdeev.docs.core.Document;
-import com.avdeev.docs.core.File;
+import com.avdeev.docs.core.network.pojo.BaseDocument;
+import com.avdeev.docs.core.network.pojo.Document;
+import com.avdeev.docs.core.network.pojo.File;
 import com.avdeev.docs.core.commonViewModels.FileListViewModel;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.ui.action.ActionsActivity;

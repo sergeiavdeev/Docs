@@ -1,10 +1,9 @@
 package com.avdeev.docs.ui.task.action;
 
 import android.app.Application;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+
 import com.avdeev.docs.core.DocAppModel;
-import com.avdeev.docs.core.Task;
+import com.avdeev.docs.core.network.pojo.Task;
 import com.avdeev.docs.core.network.NetworkService;
 import com.avdeev.docs.core.network.pojo.CommonResponse;
 import com.avdeev.docs.core.network.pojo.TaskActionRequest;

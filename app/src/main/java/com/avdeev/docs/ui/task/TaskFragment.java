@@ -13,14 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.DocFragment;
-import com.avdeev.docs.core.Task;
-import com.avdeev.docs.ui.listAdapters.TaskListAdapter;
+import com.avdeev.docs.core.network.pojo.Task;
 import com.avdeev.docs.ui.login.LoginActivity;
 import com.avdeev.docs.ui.task.detail.TaskActivity;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import java.util.ArrayList;
 
 public class TaskFragment extends DocFragment {
 
@@ -38,9 +36,10 @@ public class TaskFragment extends DocFragment {
 
         listView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        TaskListAdapter adapter = new TaskListAdapter(getContext(), new ArrayList<Task>());
-        listView.setAdapter(adapter);
-        adapter.setOnItemClickListener(createClickListener());
+        listView.setAdapter(taskViewModel.getTaskAdapter());
+        //adapter.setOnItemClickListener(createClickListener());
+
+        taskViewModel.taskList.observe(getViewLifecycleOwner(), taskViewModel.getTaskAdapter()::submitList);
 
         taskViewModel.isAuth().observe(getViewLifecycleOwner(), (Boolean auth) -> {
             if (!auth) {
@@ -49,26 +48,23 @@ public class TaskFragment extends DocFragment {
             }
         });
 
-        taskViewModel.getTaskListAdapter().observe(getViewLifecycleOwner(), (TaskListAdapter taskListAdapter)-> {
-            taskListAdapter.setOnItemClickListener(createClickListener());
-            listView.setAdapter(taskListAdapter);
-        });
 
         taskViewModel.isWaiting().observe(getViewLifecycleOwner(), (Boolean wait) -> {
             refreshLayout.setRefreshing(wait);
         });
 
         refreshLayout.setOnRefreshListener(()->{
-            taskViewModel.updateList();
+            //taskViewModel.updateList();
         });
 
-        taskViewModel.getList();
+        taskViewModel.updateTasksFromNetwork();
+
         return root;
     }
 
     @Override
     public void onSearch(String searchText) {
-        taskViewModel.search(searchText);
+        //taskViewModel.search(searchText);
     }
 
     @NotNull

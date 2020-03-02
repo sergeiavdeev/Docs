@@ -4,8 +4,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import android.text.format.DateFormat;
 import android.util.Log;
+
+import com.avdeev.docs.core.network.pojo.Action;
+import com.avdeev.docs.core.network.pojo.Document;
+import com.avdeev.docs.core.network.pojo.File;
+import com.avdeev.docs.core.network.pojo.Task;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +19,6 @@ import org.json.JSONObject;
 import java.io.FileOutputStream;
 import java.security.MessageDigest;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import okhttp3.MediaType;

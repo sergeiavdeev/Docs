@@ -1,4 +1,4 @@
-package com.avdeev.docs.core;
+package com.avdeev.docs.core.network.pojo;
 
 import org.json.JSONObject;
 

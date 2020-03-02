@@ -1,9 +1,10 @@
 package com.avdeev.docs.core.database.entity;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import com.avdeev.docs.core.network.pojo.File;
 
 @Entity
 public class TaskFile {
@@ -18,5 +19,12 @@ public class TaskFile {
         //this.taskId = taskId;
         this.id = id;
         this.name = name;
+    }
+
+    public static TaskFile create(File file) {
+        TaskFile newFile = new TaskFile(file.getId(), file.getName());
+        newFile.type = file.getType();
+        newFile.size = file.getSize();
+        return newFile;
     }
 }

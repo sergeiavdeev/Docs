@@ -1,5 +1,6 @@
 package com.avdeev.docs.core.database.dao;
 
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -58,4 +59,7 @@ public abstract class Tasks {
 
     @Query("DELETE FROM Task WHERE id=:id")
     protected abstract void deleteTask(String id);
+
+    @Query("SELECT * FROM Task ORDER BY updated_at DESC")
+    public abstract DataSource.Factory<Integer, Task>taskByDate();
 }

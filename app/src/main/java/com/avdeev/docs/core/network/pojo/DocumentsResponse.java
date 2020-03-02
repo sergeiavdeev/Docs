@@ -1,7 +1,5 @@
 package com.avdeev.docs.core.network.pojo;
 
-import com.avdeev.docs.core.Document;
-
 import java.util.List;
 
 public class DocumentsResponse {

@@ -1,10 +1,8 @@
 package com.avdeev.docs;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.avdeev.docs.core.AppUser;
-import com.avdeev.docs.core.Document;
 import com.avdeev.docs.core.network.NetworkService;
 import com.avdeev.docs.core.network.pojo.DocumentsResponse;
 
@@ -13,10 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import static org.junit.Assert.*;
 

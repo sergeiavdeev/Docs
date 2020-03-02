@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.avdeev.docs.core.DocAppModel;
-import com.avdeev.docs.core.File;
+import com.avdeev.docs.core.network.pojo.File;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.ui.listAdapters.FileListAdapter;
 

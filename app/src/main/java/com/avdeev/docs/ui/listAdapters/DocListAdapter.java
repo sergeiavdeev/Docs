@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.avdeev.docs.R;
-import com.avdeev.docs.core.Document;
+import com.avdeev.docs.core.network.pojo.Document;
 
 import java.util.ArrayList;
 

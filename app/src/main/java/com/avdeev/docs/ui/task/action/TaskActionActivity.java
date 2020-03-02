@@ -12,8 +12,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.avdeev.docs.R;
-import com.avdeev.docs.core.BaseDocument;
-import com.avdeev.docs.core.Task;
+import com.avdeev.docs.core.network.pojo.BaseDocument;
+import com.avdeev.docs.core.network.pojo.Task;
 
 import org.jetbrains.annotations.NotNull;
 

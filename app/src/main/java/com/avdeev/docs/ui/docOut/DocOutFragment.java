@@ -16,15 +16,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.DocFragment;
-import com.avdeev.docs.core.Document;
+import com.avdeev.docs.core.network.pojo.Document;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.ui.docDetail.DocDetailActivity;
 import com.avdeev.docs.ui.listAdapters.DocListAdapter;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 
 public class DocOutFragment extends DocFragment {
 

@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.avdeev.docs.core.DocAppModel;
-import com.avdeev.docs.core.Document;
+import com.avdeev.docs.core.network.pojo.Document;
 
 public class DocDetailViewModel extends DocAppModel {
 

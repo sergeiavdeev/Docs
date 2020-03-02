@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.avdeev.docs.R;
-import com.avdeev.docs.core.File;
+import com.avdeev.docs.core.network.pojo.File;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 

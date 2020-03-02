@@ -1,6 +1,7 @@
-package com.avdeev.docs.core;
+package com.avdeev.docs.core.network.pojo;
 
 import android.database.Cursor;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;

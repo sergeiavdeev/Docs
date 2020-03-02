@@ -56,7 +56,6 @@ public class LoginViewModel extends DocAppModel {
     }
 
     private void saveUserToDatabase() {
-
         DocDatabase db = DocDatabase.getInstance();
         DocDatabase.executor.execute(() -> {
             db.user().add(new User(AppUser.getHash(), AppUser.getApiUrl()));

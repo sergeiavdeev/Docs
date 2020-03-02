@@ -5,6 +5,7 @@ import com.avdeev.docs.core.network.pojo.DocumentResponse;
 import com.avdeev.docs.core.network.pojo.DocumentsResponse;
 import com.avdeev.docs.core.network.pojo.Login;
 import com.avdeev.docs.core.network.pojo.TaskActionRequest;
+import com.avdeev.docs.core.network.pojo.TasksResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -25,4 +26,7 @@ public interface JsonDocApi {
 
     @POST("tasks")
     Call<CommonResponse> postTaskAction(@Body TaskActionRequest request);
+
+    @GET("tasks")
+    Call<TasksResponse> getTasks();
 }

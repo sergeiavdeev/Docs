@@ -9,6 +9,7 @@ import androidx.room.PrimaryKey;
 public class DocumentOutbox {
     @PrimaryKey @NonNull public String id;
     public String title;
+    public String author;
     public String type;
     public String number;
     @ColumnInfo(name = "updated_at") public long updatedAt;

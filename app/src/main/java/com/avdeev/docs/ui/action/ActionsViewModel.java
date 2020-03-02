@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.avdeev.docs.core.Action;
+import com.avdeev.docs.core.network.pojo.Action;
 import com.avdeev.docs.core.ActionRequest;
 import com.avdeev.docs.core.DocAppModel;
 

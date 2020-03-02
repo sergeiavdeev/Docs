@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.avdeev.docs.R;
-import com.avdeev.docs.core.Action;
+import com.avdeev.docs.core.network.pojo.Action;
 import com.avdeev.docs.core.ActionRequest;
 import com.avdeev.docs.ui.listAdapters.ActionListAdapter;
 
