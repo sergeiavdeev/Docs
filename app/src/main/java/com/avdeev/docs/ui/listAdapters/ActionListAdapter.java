@@ -47,7 +47,7 @@ public class ActionListAdapter extends BaseAdapter<Action> {
         }
 
         @Override
-        void bind(Action action) {
+        protected void bind(Action action) {
 
             person.setText(action.getPerson());
             date.setText(BaseDocument.dateFromLong(action.getDate()));

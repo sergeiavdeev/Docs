@@ -39,7 +39,9 @@ public class TaskFragment extends DocFragment {
         listView.setAdapter(taskViewModel.getTaskAdapter());
         //adapter.setOnItemClickListener(createClickListener());
 
-        taskViewModel.taskList.observe(getViewLifecycleOwner(), taskViewModel.getTaskAdapter()::submitList);
+        taskViewModel.taskList.observe(getViewLifecycleOwner(), (pagedList) -> {
+            taskViewModel.getTaskAdapter().submitList(pagedList);
+        });
 
         taskViewModel.isAuth().observe(getViewLifecycleOwner(), (Boolean auth) -> {
             if (!auth) {
@@ -64,7 +66,10 @@ public class TaskFragment extends DocFragment {
 
     @Override
     public void onSearch(String searchText) {
-        //taskViewModel.search(searchText);
+        taskViewModel.search(this, searchText);
+        taskViewModel.taskList.observe(getViewLifecycleOwner(), (pagedList) -> {
+            taskViewModel.getTaskAdapter().submitList(pagedList);
+        });
     }
 
     @NotNull

@@ -49,7 +49,7 @@ public class FileListAdapter extends BaseAdapter<File> {
 
             downloadIcon = itemView.findViewById(R.id.file_download_icon);
 
-                    itemView.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         @Override

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
@@ -25,6 +26,8 @@ import com.avdeev.docs.core.database.entity.Task;
 import com.avdeev.docs.core.database.entity.TaskWithFiles;
 import com.avdeev.docs.core.network.NetworkService;
 import com.avdeev.docs.core.network.pojo.TasksResponse;
+import com.avdeev.docs.ui.listAdapters.BaseAdapter;
+import com.avdeev.docs.ui.listAdapters.BasePagedAdapter;
 
 import java.util.List;
 
@@ -35,19 +38,24 @@ import retrofit2.Response;
 public class TaskViewModel extends DocAppModel {
 
     private Tasks tasksDao;
-    public final LiveData<PagedList<Task>> taskList;
+    public LiveData<PagedList<Task>> taskList;
     TaskAdapter taskAdapter;
 
     public TaskViewModel(Application app) {
         super(app);
 
         this.tasksDao = DocDatabase.getInstance().task();
-        taskList = new LivePagedListBuilder<>(tasksDao.taskByDate(), 50).build();
+        taskList = new LivePagedListBuilder<>(tasksDao.taskByDate(""), 50).build();
         taskAdapter = new TaskAdapter(app.getBaseContext());
     }
 
     public TaskAdapter getTaskAdapter() {
         return taskAdapter;
+    }
+
+    public void search(LifecycleOwner lifecycleOwner, String search) {
+        taskList.removeObservers(lifecycleOwner);
+        taskList = new LivePagedListBuilder<>(tasksDao.taskByDate(search), 50).build();
     }
 
     public void updateTasksFromNetwork() {
@@ -86,87 +94,77 @@ public class TaskViewModel extends DocAppModel {
                 });
     }
 
-    public class TaskAdapter extends PagedListAdapter<Task, TaskViewHolder> {
+    public class TaskAdapter extends BasePagedAdapter<Task> {
 
-        private LayoutInflater inflater;
-
-        protected TaskAdapter(Context context) {
-            super(DIFF_CALLBACK);
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-
-        @NonNull
         @Override
-        public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = inflater.inflate(R.layout.task_list_row, parent, false);
+        protected BaseHolder createHolder(View view) {
             return new TaskViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
-            Task task = getItem(position);
+        protected int getLayoutId() {
+            return R.layout.task_list_row;
+        }
 
-            if (task != null) {
-                holder.bind(task);
-            } else {
+        protected TaskAdapter(Context context) {
+            super(context, DIFF);
+        }
 
+        protected class TaskViewHolder extends BaseHolder {
+
+            private TextView title;
+            private TextView author;
+            private TextView date;
+            private TextView date_due;
+
+            public TaskViewHolder(View view) {
+                super(view);
+
+                title = itemView.findViewById(R.id.title);
+                author = itemView.findViewById(R.id.author);
+                date = itemView.findViewById(R.id.date);
+                date_due = itemView.findViewById(R.id.date_due);
+            }
+
+            @Override
+            protected void bind(Task task) {
+                title.setText(task.title);
+
+                long lDate = task.date;
+                String sNumber = task.number;
+
+                if (lDate > 0 && sNumber.length() > 0) {
+
+                    date.setText("№" + sNumber + " от " + BaseDocument.dateFromLong(task.date));
+                    date.setVisibility(View.VISIBLE);
+                } else {
+                    date.setText("");
+                    date.setVisibility(View.GONE);
+                }
+
+                author.setText(task.author);
+
+                long dateDue = task.dateDue;
+
+                if (dateDue > 0) {
+                    date_due.setText(BaseDocument.dateFromLong(task.dateDue));
+                } else {
+                    date_due.setText("");
+                }
             }
         }
     }
 
-    public class TaskViewHolder extends RecyclerView.ViewHolder {
+    private static DiffUtil.ItemCallback<Task> DIFF = new DiffUtil.ItemCallback<Task>() {
 
-        private TextView title;
-        private TextView author;
-        private TextView date;
-        private TextView date_due;
-
-        public TaskViewHolder(@NonNull View itemView) {
-            super(itemView);
-            title = itemView.findViewById(R.id.title);
-            author = itemView.findViewById(R.id.author);
-            date = itemView.findViewById(R.id.date);
-            date_due = itemView.findViewById(R.id.date_due);
+        @Override
+        public boolean areItemsTheSame(Task oldTask, Task newTask) {
+            return areContentsTheSame(oldTask, newTask);
         }
 
-        public void bind(Task task) {
-            title.setText(task.title);
-
-            long lDate = task.date;
-            String sNumber = task.number;
-
-            if (lDate > 0 && sNumber.length() > 0) {
-
-                date.setText("№" + sNumber + " от " + BaseDocument.dateFromLong(task.date));
-                date.setVisibility(View.VISIBLE);
-            } else {
-                date.setText("");
-                date.setVisibility(View.GONE);
-            }
-
-            author.setText(task.author);
-
-            long dateDue = task.dateDue;
-
-            if (dateDue > 0) {
-                date_due.setText(BaseDocument.dateFromLong(task.dateDue));
-            } else {
-                date_due.setText("");
-            }
+        @Override
+        public boolean areContentsTheSame(Task oldTask, Task newTask) {
+            return areContentsTheSame(oldTask, newTask);
         }
-    }
-
-    private static DiffUtil.ItemCallback<Task> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<Task>() {
-
-                @Override
-                public boolean areItemsTheSame(Task oldTask, Task newTask) {
-                    return oldTask.id.equals(newTask.id);
-                }
-
-                @Override
-                public boolean areContentsTheSame(Task oldTask, Task newTask) {
-                    return oldTask.equals(newTask);
-                }
-            };
+    };
 }

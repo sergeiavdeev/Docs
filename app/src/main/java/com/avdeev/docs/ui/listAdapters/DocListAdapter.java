@@ -22,7 +22,6 @@ public class DocListAdapter extends BaseAdapter<Document> {
 
     @Override
     protected BaseHolder createHolder(View view) {
-
         return new DocHolder(view);
     }
 
@@ -59,7 +58,7 @@ public class DocListAdapter extends BaseAdapter<Document> {
         private TextView authorView;
 
         @Override
-        void bind(Document document) {
+        protected void bind(Document document) {
 
             nameView.setText(document.getTitle());
             authorView.setText(document.getAuthor());
