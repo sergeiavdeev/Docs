@@ -38,19 +38,13 @@ import retrofit2.Response;
 public class TaskViewModel extends DocAppModel {
 
     private Tasks tasksDao;
-    public LiveData<PagedList<Task>> taskList;
-    TaskAdapter taskAdapter;
+    public LiveData<PagedList<TaskWithFiles>> taskList;
 
     public TaskViewModel(Application app) {
         super(app);
 
         this.tasksDao = DocDatabase.getInstance().task();
         taskList = new LivePagedListBuilder<>(tasksDao.taskByDate(""), 50).build();
-        taskAdapter = new TaskAdapter(app.getBaseContext());
-    }
-
-    public TaskAdapter getTaskAdapter() {
-        return taskAdapter;
     }
 
     public void search(LifecycleOwner lifecycleOwner, String search) {
@@ -93,78 +87,4 @@ public class TaskViewModel extends DocAppModel {
                     }
                 });
     }
-
-    public class TaskAdapter extends BasePagedAdapter<Task> {
-
-        @Override
-        protected BaseHolder createHolder(View view) {
-            return new TaskViewHolder(view);
-        }
-
-        @Override
-        protected int getLayoutId() {
-            return R.layout.task_list_row;
-        }
-
-        protected TaskAdapter(Context context) {
-            super(context, DIFF);
-        }
-
-        protected class TaskViewHolder extends BaseHolder {
-
-            private TextView title;
-            private TextView author;
-            private TextView date;
-            private TextView date_due;
-
-            public TaskViewHolder(View view) {
-                super(view);
-
-                title = itemView.findViewById(R.id.title);
-                author = itemView.findViewById(R.id.author);
-                date = itemView.findViewById(R.id.date);
-                date_due = itemView.findViewById(R.id.date_due);
-            }
-
-            @Override
-            protected void bind(Task task) {
-                title.setText(task.title);
-
-                long lDate = task.date;
-                String sNumber = task.number;
-
-                if (lDate > 0 && sNumber.length() > 0) {
-
-                    date.setText("№" + sNumber + " от " + BaseDocument.dateFromLong(task.date));
-                    date.setVisibility(View.VISIBLE);
-                } else {
-                    date.setText("");
-                    date.setVisibility(View.GONE);
-                }
-
-                author.setText(task.author);
-
-                long dateDue = task.dateDue;
-
-                if (dateDue > 0) {
-                    date_due.setText(BaseDocument.dateFromLong(task.dateDue));
-                } else {
-                    date_due.setText("");
-                }
-            }
-        }
-    }
-
-    private static DiffUtil.ItemCallback<Task> DIFF = new DiffUtil.ItemCallback<Task>() {
-
-        @Override
-        public boolean areItemsTheSame(Task oldTask, Task newTask) {
-            return areContentsTheSame(oldTask, newTask);
-        }
-
-        @Override
-        public boolean areContentsTheSame(Task oldTask, Task newTask) {
-            return areContentsTheSame(oldTask, newTask);
-        }
-    };
 }

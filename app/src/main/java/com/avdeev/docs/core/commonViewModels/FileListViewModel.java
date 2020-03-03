@@ -8,11 +8,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.avdeev.docs.core.DocAppModel;
+import com.avdeev.docs.core.database.entity.TaskFile;
 import com.avdeev.docs.core.network.pojo.File;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
+import com.avdeev.docs.core.network.pojo.Task;
 import com.avdeev.docs.ui.listAdapters.FileListAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FileListViewModel extends DocAppModel {
 
@@ -28,7 +31,7 @@ public class FileListViewModel extends DocAppModel {
         return fileListAdapter;
     }
 
-    public void init(ArrayList<File> files, ItemClickListener itemClickListener) {
+    public void init(List<TaskFile> files, ItemClickListener itemClickListener) {
 
         updateFiles(files);
         FileListAdapter adapter = new FileListAdapter(getApplication().getApplicationContext(), files);
@@ -67,18 +70,18 @@ public class FileListViewModel extends DocAppModel {
         }.execute();
     }
 
-    public void updateFiles(ArrayList<File> files) {
+    public void updateFiles(List<TaskFile> files) {
 
         Context context = getApplication().getApplicationContext();
 
         for (int i = 0; i < files.size(); i++) {
 
-            File file = files.get(i);
-            String fileName = file.getId() + "." + file.getType();
+            TaskFile file = files.get(i);
+            String fileName = file.id + "." + file.type;
 
             java.io.File jFile = new java.io.File(context.getFilesDir(), fileName);
 
-            file.setDownloaded(jFile.exists());
+            //file.setDownloaded(jFile.exists());
         }
     }
 }

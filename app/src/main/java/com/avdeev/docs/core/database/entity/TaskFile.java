@@ -6,8 +6,10 @@ import androidx.room.PrimaryKey;
 
 import com.avdeev.docs.core.network.pojo.File;
 
+import java.io.Serializable;
+
 @Entity
-public class TaskFile {
+public class TaskFile extends Object implements Serializable {
     @PrimaryKey (autoGenerate = true) public long _id;
     public String id;
     @ColumnInfo(name = "task_id") public String taskId;

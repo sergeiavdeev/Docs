@@ -1,12 +1,15 @@
 package com.avdeev.docs.core.database.entity;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity
-public class Task {
+public class Task extends Object implements Serializable {
     @PrimaryKey @NonNull public String id;
     public String title;
     public String author;
@@ -56,5 +59,18 @@ public class Task {
                 this.updatedAt == task.updatedAt;
 
     }
+
+    public static DiffUtil.ItemCallback<Task> DIFF_UTIL = new DiffUtil.ItemCallback<Task>() {
+
+        @Override
+        public boolean areItemsTheSame(Task oldTask, Task newTask) {
+            return oldTask.id.equals(newTask.id);
+        }
+
+        @Override
+        public boolean areContentsTheSame(Task oldTask, Task newTask) {
+            return oldTask.equals(newTask);
+        }
+    };
 }
 

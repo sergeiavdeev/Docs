@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BaseAdapter<T> extends RecyclerView.Adapter <BaseAdapter.BaseHolder> implements Filterable {
 
@@ -27,7 +28,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter <BaseAdapter.B
     protected abstract T copyObject(T object);
 
 
-    public BaseAdapter(Context context, ArrayList<T> list) {
+    public BaseAdapter(Context context, List<T> list) {
 
         this.adapterList = new ArrayList<T>(list);
         this.initList = new ArrayList<T>(list);

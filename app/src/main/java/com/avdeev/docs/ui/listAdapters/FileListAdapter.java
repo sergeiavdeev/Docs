@@ -7,13 +7,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.avdeev.docs.R;
-import com.avdeev.docs.core.network.pojo.File;
+import com.avdeev.docs.core.database.entity.TaskFile;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
+import java.util.List;
 
-public class FileListAdapter extends BaseAdapter<File> {
+public class FileListAdapter extends BaseAdapter<TaskFile> {
 
-    public FileListAdapter(@NotNull Context context, ArrayList<File> files) {
+    public FileListAdapter(@NotNull Context context, List<TaskFile> files) {
         super(context, files);
     }
 
@@ -28,8 +29,8 @@ public class FileListAdapter extends BaseAdapter<File> {
     }
 
     @Override
-    protected File copyObject(File file) {
-        return new File(file);
+    protected TaskFile copyObject(TaskFile file) {
+        return new TaskFile(file.id, file.name);
     }
 
 
@@ -53,13 +54,14 @@ public class FileListAdapter extends BaseAdapter<File> {
         }
 
         @Override
-        void bind(@NotNull File file) {
+        void bind(@NotNull TaskFile file) {
 
-            fileName.setText(file.getName());
-            fileSize.setText(Long.toString(file.getSize()) + " KB");
+            fileName.setText(file.name);
+            fileSize.setText(Long.toString(file.size) + " KB");
 
-            fileIcon.setImageResource(getFileIcon(file.getType()));
+            fileIcon.setImageResource(getFileIcon(file.type));
 
+            /*
             if (file.isDownloaded()) {
 
                 downloadIcon.setImageResource(R.drawable.ic_file_view_black_24dp);
@@ -76,7 +78,7 @@ public class FileListAdapter extends BaseAdapter<File> {
                     Drawable drawer = downloadIcon.getDrawable();
                     ((Animatable)drawer).stop();
                 }
-            }
+            }*/
         }
 
         private int getFileIcon(@NotNull String type) {

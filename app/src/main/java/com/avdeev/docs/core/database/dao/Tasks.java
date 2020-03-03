@@ -63,11 +63,12 @@ public abstract class Tasks {
     @Query("SELECT * FROM Task ORDER BY updated_at DESC")
     public abstract DataSource.Factory<Integer, Task>taskByDate();
 
+    @Transaction
     @Query("SELECT * FROM Task " +
             "WHERE " +
             "title LIKE '%' || :search || '%' OR " +
             "author LIKE '%' || :search || '%' OR " +
             "number LIKE '%' || :search || '%' " +
             "ORDER BY updated_at DESC")
-    public abstract DataSource.Factory<Integer, Task>taskByDate(String search);
+    public abstract DataSource.Factory<Integer, TaskWithFiles>taskByDate(String search);
 }

@@ -23,9 +23,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.avdeev.docs.BuildConfig;
 import com.avdeev.docs.R;
+import com.avdeev.docs.core.database.entity.Task;
+import com.avdeev.docs.core.database.entity.TaskWithFiles;
 import com.avdeev.docs.core.network.pojo.BaseDocument;
 import com.avdeev.docs.core.network.pojo.File;
-import com.avdeev.docs.core.network.pojo.Task;
+
 import com.avdeev.docs.core.commonViewModels.FileListViewModel;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.core.network.pojo.TaskActionRequest;
@@ -41,7 +43,7 @@ public class TaskActivity extends AppCompatActivity {
 
     private TaskDetailViewModel taskViewModel;
     private FileListViewModel fileListViewModel;
-    private Task task;
+    private TaskWithFiles taskWithFiles;
     Animation fab_clock, fab_anticlock, fab_open, fab_close;
     FloatingActionButton fab, fab_history, fab_aply, fab_cancel;
     TextView fabTextApply, fabTextCancel, fabTextHistory;
@@ -54,9 +56,9 @@ public class TaskActivity extends AppCompatActivity {
 
         Context context = getBaseContext();
 
-        task = (Task)getIntent().getExtras().getSerializable("task");
+        taskWithFiles = (TaskWithFiles) getIntent().getExtras().getSerializable("task");
 
-        initActionBar(task);
+        initActionBar(taskWithFiles.task);
 
         taskViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(TaskDetailViewModel.class);
@@ -95,12 +97,12 @@ public class TaskActivity extends AppCompatActivity {
         fileList.setLayoutManager(new LinearLayoutManager(context));
 
         taskViewModel.getTask().observe(this, (Task task) -> {
-            title.setText(task.getTitle());
-            type.setText(task.getType());
-            description.setText(task.getDescription());
-            author.setText(task.getAuthor());
-            executor.setText(task.getAssignee());
-            date_due.setText(BaseDocument.dateFromLong(task.getDate_due()));
+            title.setText(task.title);
+            type.setText(task.type);
+            description.setText(task.description);
+            author.setText(task.author);
+            executor.setText(task.assignee);
+            date_due.setText(BaseDocument.dateFromLong(task.dateDue));
         });
 
         taskViewModel.getFilesVisible().observe(this, (Boolean visible) -> {
@@ -125,8 +127,8 @@ public class TaskActivity extends AppCompatActivity {
             fileList.setAdapter(fileListAdapter);
         });
 
-        taskViewModel.setTask(task);
-        fileListViewModel.init(task.getFiles(), createClickListener());
+        taskViewModel.setTask(taskWithFiles.task);
+        fileListViewModel.init(taskWithFiles.files, createClickListener());
     }
 
     @Override
@@ -152,7 +154,7 @@ public class TaskActivity extends AppCompatActivity {
         Task task = taskViewModel.getTask().getValue();
 
         Intent intent = new Intent(this, ActionsActivity.class);
-        intent.putExtra("id", task.getId());
+        intent.putExtra("id", task.id);
         intent.putExtra("type", "inbox");
         intent.putExtra("caption", "История");
         intent.putExtra("request", "history");
@@ -207,7 +209,7 @@ public class TaskActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Задача");
-        actionBar.setSubtitle(task.getType() + " №" + task.getNumber() + " от " + BaseDocument.dateFromLong(task.getDate()));
+        actionBar.setSubtitle(task.type + " №" + task.number + " от " + BaseDocument.dateFromLong(task.date));
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
     }
@@ -218,14 +220,14 @@ public class TaskActivity extends AppCompatActivity {
 
     public void onApplyClick(View view) {
         Intent intent = new Intent(this, TaskActionActivity.class);
-        intent.putExtra("task", task);
+        intent.putExtra("task", taskWithFiles.task);
         intent.putExtra("action", TaskActionRequest.ACTION_COMMENTS);
         startActivity(intent);
     }
 
     public void onCancelClick(View view) {
         Intent intent = new Intent(this, TaskActionActivity.class);
-        intent.putExtra("task", task);
+        intent.putExtra("task", taskWithFiles.task);
         intent.putExtra("action", TaskActionRequest.ACTION_NO);
         startActivity(intent);
     }
@@ -236,7 +238,7 @@ public class TaskActivity extends AppCompatActivity {
         fab_history.setClickable(true);
         fab_aply.startAnimation(fab_open);
         fab_aply.setClickable(true);
-        if (task.getType().equals("Утверждение")) {
+        if (taskWithFiles.task.type.equals("Утверждение")) {
             fab_cancel.startAnimation(fab_open);
             fab_cancel.setClickable(true);
         }
@@ -254,7 +256,7 @@ public class TaskActivity extends AppCompatActivity {
             fab_history.setClickable(false);
             fab_aply.startAnimation(fab_close);
             fab_aply.setClickable(false);
-            if (task.getType().equals("Утверждение")) {
+            if (taskWithFiles.task.type.equals("Утверждение")) {
                 fab_cancel.startAnimation(fab_close);
                 fab_cancel.setClickable(false);
             }

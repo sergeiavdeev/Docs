@@ -25,9 +25,8 @@ public abstract class BasePagedAdapter<T> extends PagedListAdapter<T, BasePagedA
     protected abstract BaseHolder createHolder(View view);
     protected abstract int getLayoutId();
 
-    public BasePagedAdapter(Context context, DiffUtil.ItemCallback<T> dif) {
-        super(dif);
-
+    public BasePagedAdapter(Context context, DiffUtil.ItemCallback<T> callback) {
+        super(callback);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -80,5 +79,4 @@ public abstract class BasePagedAdapter<T> extends PagedListAdapter<T, BasePagedA
             }
         }
     }
-
 }

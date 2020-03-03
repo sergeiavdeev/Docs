@@ -89,7 +89,7 @@ public class DocDetailActivity extends AppCompatActivity {
                 signer.setText(document.getSigner());
                 number.setText(document.getNumber());
                 date.setText(BaseDocument.dateFromLong(document.getDate()));
-                fileListViewModel.init(document.getFiles(), createClickListener());
+                //fileListViewModel.init(document.getFiles(), createClickListener());
                 //fileList.setAdapter(fileListViewModel.);
             }
         });

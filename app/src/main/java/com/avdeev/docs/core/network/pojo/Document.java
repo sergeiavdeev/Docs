@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Document extends BaseDocument {
 
@@ -19,7 +20,7 @@ public class Document extends BaseDocument {
     private long updated_at;
     private long date;
 
-    private ArrayList<File> files;
+    private List<File> files;
 
     public Document(String id, String title, String author) {
 
@@ -93,7 +94,7 @@ public class Document extends BaseDocument {
         return department;
     }
 
-    public ArrayList<File> getFiles() {
+    public List<File> getFiles() {
         return files;
     }
 

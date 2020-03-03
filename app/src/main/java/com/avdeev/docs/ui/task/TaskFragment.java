@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.DocFragment;
-import com.avdeev.docs.core.network.pojo.Task;
+import com.avdeev.docs.core.database.entity.Task;
+import com.avdeev.docs.core.database.entity.TaskWithFiles;
+import com.avdeev.docs.ui.listAdapters.TaskListAdapter;
 import com.avdeev.docs.ui.login.LoginActivity;
 import com.avdeev.docs.ui.task.detail.TaskActivity;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
@@ -23,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 public class TaskFragment extends DocFragment {
 
     private TaskViewModel taskViewModel;
+    private TaskListAdapter taskListAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -31,16 +34,18 @@ public class TaskFragment extends DocFragment {
         taskViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(app).create(TaskViewModel.class);
         View root = inflater.inflate(R.layout.fragment_task, container, false);
 
+        taskListAdapter = new TaskListAdapter(getContext());
+
         final RecyclerView listView = root.findViewById(R.id.view_list);
         final SwipeRefreshLayout refreshLayout = root.findViewById(R.id.refresh);
 
         listView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        listView.setAdapter(taskViewModel.getTaskAdapter());
-        //adapter.setOnItemClickListener(createClickListener());
+        listView.setAdapter(taskListAdapter);
+        taskListAdapter.setOnItemClickListener(createClickListener());
 
         taskViewModel.taskList.observe(getViewLifecycleOwner(), (pagedList) -> {
-            taskViewModel.getTaskAdapter().submitList(pagedList);
+            taskListAdapter.submitList(pagedList);
         });
 
         taskViewModel.isAuth().observe(getViewLifecycleOwner(), (Boolean auth) -> {
@@ -56,7 +61,7 @@ public class TaskFragment extends DocFragment {
         });
 
         refreshLayout.setOnRefreshListener(()->{
-            //taskViewModel.updateList();
+            taskViewModel.updateTasksFromNetwork();
         });
 
         taskViewModel.updateTasksFromNetwork();
@@ -68,7 +73,7 @@ public class TaskFragment extends DocFragment {
     public void onSearch(String searchText) {
         taskViewModel.search(this, searchText);
         taskViewModel.taskList.observe(getViewLifecycleOwner(), (pagedList) -> {
-            taskViewModel.getTaskAdapter().submitList(pagedList);
+            taskListAdapter.submitList(pagedList);
         });
     }
 
@@ -77,7 +82,7 @@ public class TaskFragment extends DocFragment {
     private ItemClickListener createClickListener() {
 
         return (Object task) -> {
-            startTaskActivity((Task)task);
+            startTaskActivity((TaskWithFiles) task);
         };
     }
 
@@ -86,7 +91,7 @@ public class TaskFragment extends DocFragment {
         startActivity(intent);
     }
 
-    private void startTaskActivity(Task task) {
+    private void startTaskActivity(TaskWithFiles task) {
         Intent intent = new Intent(getActivity(), TaskActivity.class);
         intent.putExtra("task", task);
         startActivity(intent);
