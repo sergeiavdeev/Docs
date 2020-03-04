@@ -55,7 +55,6 @@ public class TaskFragment extends DocFragment {
             }
         });
 
-
         taskViewModel.isWaiting().observe(getViewLifecycleOwner(), (Boolean wait) -> {
             refreshLayout.setRefreshing(wait);
         });
@@ -79,10 +78,10 @@ public class TaskFragment extends DocFragment {
 
     @NotNull
     @Contract(value = " -> new", pure = true)
-    private ItemClickListener createClickListener() {
+    private ItemClickListener<TaskWithFiles> createClickListener() {
 
-        return (Object task) -> {
-            startTaskActivity((TaskWithFiles) task);
+        return (TaskWithFiles task) -> {
+            startTaskActivity(task);
         };
     }
 

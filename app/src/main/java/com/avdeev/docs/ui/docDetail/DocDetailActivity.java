@@ -22,9 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.avdeev.docs.BuildConfig;
 import com.avdeev.docs.R;
+import com.avdeev.docs.core.network.pojo.AppFile;
 import com.avdeev.docs.core.network.pojo.BaseDocument;
 import com.avdeev.docs.core.network.pojo.Document;
-import com.avdeev.docs.core.network.pojo.File;
 import com.avdeev.docs.core.commonViewModels.FileListViewModel;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.ui.action.ActionsActivity;
@@ -204,20 +204,19 @@ public class DocDetailActivity extends AppCompatActivity {
             @Override
             public void onItemClick(Object object) {
 
-                File file = (File)object;
-                if (!file.isDownloaded()) {
-                    fileListViewModel.downloadFile(file);
+                AppFile appFile = (AppFile)object;
+                if (!appFile.isExitst()) {
+                    fileListViewModel.downloadFile(appFile);
                 } else {
-
-                    previewFile(file);
+                    previewFile(appFile);
                 }
             }
         };
     }
 
-    private void previewFile(File file) {
+    private void previewFile(AppFile appFile) {
 
-        String fileName = file.getId() + "." + file.getType();
+        String fileName = appFile.getId() + "." + appFile.getType();
 
         java.io.File oFile = new java.io.File(getApplicationContext().getFilesDir(), fileName);
         oFile.setReadable(true, false);

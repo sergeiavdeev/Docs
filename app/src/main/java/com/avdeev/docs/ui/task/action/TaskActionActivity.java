@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.network.pojo.BaseDocument;
-import com.avdeev.docs.core.network.pojo.Task;
+import com.avdeev.docs.core.network.pojo.AppTask;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +31,7 @@ public class TaskActionActivity extends AppCompatActivity {
 
         //setContentView(R.layout.activity_task_action);
 
-        Task task = (Task)getIntent().getExtras().getSerializable("task");
+        AppTask task = (AppTask)getIntent().getExtras().getSerializable("task");
         action = getIntent().getStringExtra("action");
 
         initActionBar(task);
@@ -56,7 +56,7 @@ public class TaskActionActivity extends AppCompatActivity {
         });
     }
 
-    private void initActionBar(Task task) {
+    private void initActionBar(AppTask task) {
 
         //Ознакомление Утверждение Рассмотрение Исполнение
         ActionBar actionBar = getSupportActionBar();

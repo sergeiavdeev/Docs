@@ -17,7 +17,7 @@ import com.avdeev.docs.core.database.entity.DocumentInbox;
 import com.avdeev.docs.core.database.entity.DocumentInner;
 import com.avdeev.docs.core.database.entity.DocumentOutbox;
 import com.avdeev.docs.core.database.entity.Task;
-import com.avdeev.docs.core.database.entity.TaskFile;
+import com.avdeev.docs.core.database.entity.File;
 import com.avdeev.docs.core.database.entity.User;
 
 import java.util.concurrent.ExecutorService;
@@ -31,7 +31,7 @@ import java.util.concurrent.Executors;
                 DocumentOutbox.class,
                 DocumentInner.class,
                 Task.class,
-                TaskFile.class
+                File.class
             },
         version = 1, exportSchema = false)
 public abstract class DocDatabase extends RoomDatabase {

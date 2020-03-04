@@ -7,6 +7,7 @@ import com.avdeev.docs.core.network.pojo.Login;
 import com.avdeev.docs.core.network.pojo.TaskActionRequest;
 import com.avdeev.docs.core.network.pojo.TasksResponse;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -29,4 +30,7 @@ public interface JsonDocApi {
 
     @GET("tasks")
     Call<TasksResponse> getTasks();
+
+    @GET("files")
+    Call<ResponseBody>getFile(@Query("id") String id);
 }

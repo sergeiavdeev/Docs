@@ -28,7 +28,6 @@ public class TaskDetailViewModel extends DocAppModel {
         return task;
     }
 
-
     public void setTask(Task task) {
         this.task.setValue(task);
     }

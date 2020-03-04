@@ -4,7 +4,8 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
-import com.avdeev.docs.core.network.pojo.File;
+import com.avdeev.docs.core.network.pojo.AppFile;
+import com.avdeev.docs.core.network.pojo.AppTask;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,14 +17,24 @@ public class TaskWithFiles extends Object implements Serializable {
         parentColumn = "id",
         entityColumn = "task_id"
     )
-    public List<TaskFile> files;
+    public List<File> files;
 
-    public static TaskWithFiles create(com.avdeev.docs.core.network.pojo.Task task) {
+    public static TaskWithFiles create(AppTask task) {
         TaskWithFiles taskWithFiles = new TaskWithFiles();
         taskWithFiles.task = Task.create(task);
         taskWithFiles.files = new ArrayList<>();
-        for (File file:task.getFiles()) {
-            taskWithFiles.files.add(TaskFile.create(file));
+        for (AppFile appFile :task.getAppFiles()) {
+            taskWithFiles.files.add(File.create(appFile));
+        }
+        return taskWithFiles;
+    }
+
+    public static TaskWithFiles create(Task task) {
+        TaskWithFiles taskWithFiles = new TaskWithFiles();
+        taskWithFiles.task = task;
+        taskWithFiles.files = new ArrayList<>();
+        for (File file :task.files) {
+            taskWithFiles.files.add(file);
         }
         return taskWithFiles;
     }
@@ -38,9 +49,9 @@ public class TaskWithFiles extends Object implements Serializable {
                 this.task.assignee.equals(task.task.assignee)&&
                 this.task.document_type.equals(task.task.document_type)&&
                 this.task.description.equals(task.task.description)&&
-                this.task.dateDue == task.task.dateDue &&
+                this.task.date_due == task.task.date_due &&
                 this.task.date == task.task.date &&
-                this.task.updatedAt == task.task.updatedAt;
+                this.task.updated_at == task.task.updated_at;
 
     }
 

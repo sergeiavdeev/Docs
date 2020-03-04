@@ -54,6 +54,7 @@
             android:authorities="com.avdeev.docs"
             android:name="androidx.core.content.FileProvider"
             android:exported="false"
+            android:enabled="true"
             android:grantUriPermissions="true">
 
             <meta-data

@@ -7,8 +7,9 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.List;
 
-public class Task extends BaseDocument {
+public class AppTask extends BaseDocument {
 
     private String author;
     private long priority;
@@ -19,9 +20,9 @@ public class Task extends BaseDocument {
     private long date_due;
     private long date;
     private long updated_at;
-    private ArrayList<File> files;
+    private List<AppFile> files;
 
-    public Task() {
+    public AppTask() {
 
         author = "";
         priority = 0;
@@ -32,10 +33,10 @@ public class Task extends BaseDocument {
         date_due = 0;
         date = 0;
         updated_at = 0;
-        files = new ArrayList<File>();
+        files = new ArrayList<AppFile>();
     }
 
-    public Task(Task task) {
+    public AppTask(AppTask task) {
 
         id = task.getId();
         title = task.getTitle();
@@ -49,15 +50,15 @@ public class Task extends BaseDocument {
         date_due = task.getDate_due();
         date = task.getDate();
         updated_at = task.getUpdated_at();
-        files = new ArrayList<File>();
+        files = new ArrayList<AppFile>();
 
-        ArrayList<File> f = task.getFiles();
+        List<AppFile> f = task.getAppFiles();
         for (int i = 0; i < f.size(); i++) {
-            files.add(new File(f.get(i)));
+            files.add(new AppFile(f.get(i)));
         }
     }
 
-    public Task(@NotNull JSONObject task) throws Exception {
+    public AppTask(@NotNull JSONObject task) throws Exception {
 
         id = task.getString("id");
         title = task.getString("title");
@@ -78,11 +79,11 @@ public class Task extends BaseDocument {
 
         for (int i = 0; i < jFiles.length(); i++) {
 
-            files.add(new File(jFiles.getJSONObject(i)));
+            files.add(new AppFile(jFiles.getJSONObject(i)));
         }
     }
 
-    public Task(@NotNull Cursor cursor, @NotNull Cursor cFiles) throws Exception {
+    public AppTask(@NotNull Cursor cursor, @NotNull Cursor cFiles) throws Exception {
 
         id = cursor.getString(cursor.getColumnIndex("id"));
         title = cursor.getString(cursor.getColumnIndex("title"));
@@ -102,7 +103,7 @@ public class Task extends BaseDocument {
         if (cFiles.moveToFirst()) {
 
             do {
-                files.add(new File(cFiles));
+                files.add(new AppFile(cFiles));
 
             }
             while (cFiles.moveToNext());
@@ -181,12 +182,12 @@ public class Task extends BaseDocument {
         this.updated_at = updated_at;
     }
 
-    public ArrayList<File> getFiles() {
+    public List<AppFile> getAppFiles() {
         return files;
     }
 
-    public void setFiles(ArrayList<File> files) {
-        this.files = files;
+    public void setAppFiles(List<AppFile> appFiles) {
+        this.files = appFiles;
     }
 
 }

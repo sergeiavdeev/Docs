@@ -7,14 +7,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.avdeev.docs.R;
-import com.avdeev.docs.core.database.entity.TaskFile;
+import com.avdeev.docs.core.database.entity.File;
+import com.avdeev.docs.core.network.pojo.AppFile;
+
 import org.jetbrains.annotations.NotNull;
-import java.util.ArrayList;
+
 import java.util.List;
 
-public class FileListAdapter extends BaseAdapter<TaskFile> {
+public class FileListAdapter extends BaseAdapter<AppFile> {
 
-    public FileListAdapter(@NotNull Context context, List<TaskFile> files) {
+    public FileListAdapter(@NotNull Context context, List<AppFile> files) {
         super(context, files);
     }
 
@@ -29,8 +31,8 @@ public class FileListAdapter extends BaseAdapter<TaskFile> {
     }
 
     @Override
-    protected TaskFile copyObject(TaskFile file) {
-        return new TaskFile(file.id, file.name);
+    protected AppFile copyObject(AppFile file) {
+        return AppFile.create(file);
     }
 
 
@@ -54,22 +56,22 @@ public class FileListAdapter extends BaseAdapter<TaskFile> {
         }
 
         @Override
-        void bind(@NotNull TaskFile file) {
+        void bind(@NotNull AppFile file) {
 
-            fileName.setText(file.name);
-            fileSize.setText(Long.toString(file.size) + " KB");
+            fileName.setText(file.getName());
+            fileSize.setText(Long.toString(file.getSize()) + " KB");
 
-            fileIcon.setImageResource(getFileIcon(file.type));
+            fileIcon.setImageResource(getFileIcon(file.getType()));
 
-            /*
-            if (file.isDownloaded()) {
+
+            if (file.isExitst()) {
 
                 downloadIcon.setImageResource(R.drawable.ic_file_view_black_24dp);
             } else {
 
                 downloadIcon.setImageResource(R.drawable.a_ic_file_download);
 
-                if (file.isWait()) {
+                if (file.isDownloading()) {
 
                     Drawable drawer = downloadIcon.getDrawable();
                     ((Animatable)drawer).start();
@@ -78,7 +80,7 @@ public class FileListAdapter extends BaseAdapter<TaskFile> {
                     Drawable drawer = downloadIcon.getDrawable();
                     ((Animatable)drawer).stop();
                 }
-            }*/
+            }
         }
 
         private int getFileIcon(@NotNull String type) {

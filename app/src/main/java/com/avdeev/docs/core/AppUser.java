@@ -8,8 +8,8 @@ import android.util.Log;
 
 import com.avdeev.docs.core.network.pojo.Action;
 import com.avdeev.docs.core.network.pojo.Document;
-import com.avdeev.docs.core.network.pojo.File;
-import com.avdeev.docs.core.network.pojo.Task;
+import com.avdeev.docs.core.network.pojo.AppFile;
+import com.avdeev.docs.core.network.pojo.AppTask;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -45,7 +45,7 @@ public class AppUser {
     private ArrayList<Document> docsIn;
     private ArrayList<Document> docsOut;
     private ArrayList<Document> docsInner;
-    private ArrayList<Task> taskList;
+    private ArrayList<AppTask> taskList;
 
     public AppUser(Context context) {
 
@@ -266,7 +266,7 @@ public class AppUser {
         return docsInner;
     }
 
-    public ArrayList<Task> getTaskList() throws Exception {
+    public ArrayList<AppTask> getTaskList() throws Exception {
 
         if (taskList.size() == 0) {
 
@@ -283,7 +283,7 @@ public class AppUser {
                             c.getString(c.getColumnIndex("id")) + "'",
                             null)
                     ;
-                    taskList.add(new Task(c, cFiles));
+                    taskList.add(new AppTask(c, cFiles));
                 }
                 while (c.moveToNext());
             }
@@ -728,9 +728,9 @@ public class AppUser {
         return actions;
     }
 
-    public String getFile(@NotNull File file) throws Exception {
+    public String getFile(@NotNull AppFile appFile) throws Exception {
 
-        String fileName = file.getId() + "." + file.getType();
+        String fileName = appFile.getId() + "." + appFile.getType();
 
         java.io.File jFile = new java.io.File(context.getFilesDir(), fileName);
 
@@ -741,7 +741,7 @@ public class AppUser {
             OkHttpClient client = new OkHttpClient();
 
 
-            String query = "files/?id=" + file.getId();
+            String query = "files/?id=" + appFile.getId();
 
             ArrayList<Header> headers = getHeaders();
 
@@ -760,7 +760,7 @@ public class AppUser {
             outputStream.close();
         }
 
-        file.setDownloaded(true);
+        appFile.setExist(true);
 
         return fileName;
     }

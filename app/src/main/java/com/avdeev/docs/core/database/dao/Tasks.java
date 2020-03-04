@@ -8,7 +8,7 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 
 import com.avdeev.docs.core.database.entity.Task;
-import com.avdeev.docs.core.database.entity.TaskFile;
+import com.avdeev.docs.core.database.entity.File;
 import com.avdeev.docs.core.database.entity.TaskWithFiles;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public abstract class Tasks {
         clearFiles();
     }
 
-    @Query("DELETE FROM TaskFile")
+    @Query("DELETE FROM File")
     protected abstract void clearFiles();
 
     @Query("DELETE FROM Task")
@@ -36,7 +36,7 @@ public abstract class Tasks {
     public void add(TaskWithFiles task) {
         addTask(task.task);
         deleteFiles(task.task.id);
-        for (TaskFile file : task.files) {
+        for (File file : task.files) {
             file.taskId = task.task.id;
         }
         addFiles(task.files);
@@ -45,11 +45,11 @@ public abstract class Tasks {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     protected abstract void addTask(Task task);
 
-    @Query("DELETE FROM TaskFile WHERE task_id=:owner")
+    @Query("DELETE FROM File WHERE task_id=:owner")
     protected abstract void deleteFiles(String owner);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    protected abstract void addFiles(List<TaskFile> files);
+    protected abstract void addFiles(List<File> files);
 
     @Transaction
     public void delete(String id) {

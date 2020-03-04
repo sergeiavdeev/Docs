@@ -20,7 +20,7 @@ public class Document extends BaseDocument {
     private long updated_at;
     private long date;
 
-    private List<File> files;
+    private List<AppFile> appFiles;
 
     public Document(String id, String title, String author) {
 
@@ -31,7 +31,7 @@ public class Document extends BaseDocument {
         type = "";
         updated_at = 0;
         date = 0;
-        files = new ArrayList<>();
+        appFiles = new ArrayList<>();
     }
 
     public Document(@NotNull Document document) {
@@ -43,7 +43,7 @@ public class Document extends BaseDocument {
         number = document.getNumber();
         date = document.getDate();
         updated_at = document.getUpdated_at();
-        files = new ArrayList<>();
+        appFiles = new ArrayList<>();
     }
 
     public Document(@NotNull Cursor cursor) {
@@ -55,7 +55,7 @@ public class Document extends BaseDocument {
         type = cursor.getString(cursor.getColumnIndex("type"));
         updated_at = cursor.getLong(cursor.getColumnIndex("updated_at"));
         date = cursor.getLong(cursor.getColumnIndex("date"));
-        files = new ArrayList<>();
+        appFiles = new ArrayList<>();
     }
 
     public String getAuthor() {
@@ -94,12 +94,12 @@ public class Document extends BaseDocument {
         return department;
     }
 
-    public List<File> getFiles() {
-        return files;
+    public List<AppFile> getAppFiles() {
+        return appFiles;
     }
 
-    public void setFiles(ArrayList<File> files) {
-        this.files = files;
+    public void setAppFiles(ArrayList<AppFile> appFiles) {
+        this.appFiles = appFiles;
     }
 
     public void fromJson(JSONObject object) {
@@ -117,7 +117,7 @@ public class Document extends BaseDocument {
             for (int i = 0; i < jsonFiles.length(); i++) {
                 JSONObject file = jsonFiles.getJSONObject(i);
 
-                files.add(new File(file));
+                appFiles.add(new AppFile(file));
             }
 
         } catch (Exception e) {

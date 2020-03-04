@@ -1,7 +1,6 @@
 package com.avdeev.docs;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.room.Room;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -13,13 +12,12 @@ import com.avdeev.docs.core.database.entity.DocumentInbox;
 import com.avdeev.docs.core.database.entity.DocumentInner;
 import com.avdeev.docs.core.database.entity.DocumentOutbox;
 import com.avdeev.docs.core.database.entity.Task;
-import com.avdeev.docs.core.database.entity.TaskFile;
+import com.avdeev.docs.core.database.entity.File;
 import com.avdeev.docs.core.database.entity.TaskWithFiles;
 import com.avdeev.docs.core.database.entity.User;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -152,9 +150,9 @@ public class DatabaseInstrumentedTest {
     public void taskFull() {
 
         Task task = new Task("1", "task 1");
-        List<TaskFile> files = new ArrayList<>();
-        files.add(new TaskFile("1", "file 1"));
-        files.add(new TaskFile("2", "file 2"));
+        List<File> files = new ArrayList<>();
+        files.add(new File("1", "file 1"));
+        files.add(new File("2", "file 2"));
         TaskWithFiles taskWithFiles = new TaskWithFiles();
         taskWithFiles.task = task;
         taskWithFiles.files = files;
@@ -166,7 +164,7 @@ public class DatabaseInstrumentedTest {
         assertEquals(tasks.get(0).files.size(), 2);
 
         task.title = "Task2";
-        files.add(new TaskFile("3", "file 3"));
+        files.add(new File("3", "file 3"));
         db.task().add(taskWithFiles);
         tasks = db.task().getAll();
 

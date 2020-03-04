@@ -1,6 +1,6 @@
 package com.avdeev.docs.core.interfaces;
 
-public interface ItemClickListener {
+public interface ItemClickListener<T> {
 
-    void onItemClick(Object task);
+    void onItemClick(T entity);
 }

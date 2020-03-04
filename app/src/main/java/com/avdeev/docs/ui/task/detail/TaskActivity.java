@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.databinding.BindingMethod;
+import androidx.databinding.BindingMethods;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,12 +27,13 @@ import com.avdeev.docs.BuildConfig;
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.database.entity.Task;
 import com.avdeev.docs.core.database.entity.TaskWithFiles;
+import com.avdeev.docs.core.network.pojo.AppFile;
 import com.avdeev.docs.core.network.pojo.BaseDocument;
-import com.avdeev.docs.core.network.pojo.File;
 
 import com.avdeev.docs.core.commonViewModels.FileListViewModel;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.core.network.pojo.TaskActionRequest;
+import com.avdeev.docs.databinding.ActivityTaskBinding;
 import com.avdeev.docs.ui.action.ActionsActivity;
 import com.avdeev.docs.ui.listAdapters.FileListAdapter;
 import com.avdeev.docs.ui.task.action.TaskActionActivity;
@@ -38,6 +41,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
+@BindingMethods({
+        @BindingMethod(type = android.widget.ImageView.class,
+                attribute = "app:srcCompat",
+                method = "setImageDrawable") })
 
 public class TaskActivity extends AppCompatActivity {
 
@@ -52,8 +60,6 @@ public class TaskActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_task);
-
         Context context = getBaseContext();
 
         taskWithFiles = (TaskWithFiles) getIntent().getExtras().getSerializable("task");
@@ -62,17 +68,12 @@ public class TaskActivity extends AppCompatActivity {
 
         taskViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(TaskDetailViewModel.class);
+        ActivityTaskBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_task);
+        binding.setTaskViewModel(taskViewModel);
+        binding.setLifecycleOwner(this);
 
         fileListViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(FileListViewModel.class);
-
-        final TextView  title        = findViewById(R.id.title);
-        final TextView  type         = findViewById(R.id.type);
-        final TextView  description  = findViewById(R.id.description);
-        final TextView  author       = findViewById(R.id.author);
-        final TextView  executor     = findViewById(R.id.executor);
-        final TextView  date_due     = findViewById(R.id.date_due);
-        final ImageView fileArrow    = findViewById(R.id.image_files);
 
         fab = findViewById(R.id.floatingActionButton);
         fab_history = findViewById(R.id.floatingActionHistory);
@@ -96,25 +97,6 @@ public class TaskActivity extends AppCompatActivity {
 
         fileList.setLayoutManager(new LinearLayoutManager(context));
 
-        taskViewModel.getTask().observe(this, (Task task) -> {
-            title.setText(task.title);
-            type.setText(task.type);
-            description.setText(task.description);
-            author.setText(task.author);
-            executor.setText(task.assignee);
-            date_due.setText(BaseDocument.dateFromLong(task.dateDue));
-        });
-
-        taskViewModel.getFilesVisible().observe(this, (Boolean visible) -> {
-            if (visible) {
-                fileList.setVisibility(View.VISIBLE);
-                fileArrow.setImageResource(R.drawable.ic_collapse_up_black_24dp);
-            } else {
-                fileList.setVisibility(View.GONE);
-                fileArrow.setImageResource(R.drawable.ic_collapse_down_black_24dp);
-            }
-        });
-
         taskViewModel.isFabOpen().observe(this, (Boolean visible) -> {
             if (visible) {
                 openFab();
@@ -128,19 +110,17 @@ public class TaskActivity extends AppCompatActivity {
         });
 
         taskViewModel.setTask(taskWithFiles.task);
-        fileListViewModel.init(taskWithFiles.files, createClickListener());
+        fileListViewModel.init(AppFile.createList(taskWithFiles.files), createClickListener());
     }
 
     @Override
     public boolean onOptionsItemSelected(@NotNull MenuItem item) {
 
         switch (item.getItemId()) {
-
             case android.R.id.home:
                 finish();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -165,25 +145,20 @@ public class TaskActivity extends AppCompatActivity {
     @NotNull
     @Contract(value = " -> new", pure = true)
     private ItemClickListener createClickListener() {
+        return (Object object) -> {
 
-        return new ItemClickListener() {
-            @Override
-            public void onItemClick(Object object) {
-
-                File file = (File)object;
-                if (!file.isDownloaded()) {
-                    fileListViewModel.downloadFile(file);
-                } else {
-
-                    previewFile(file);
-                }
+            AppFile appFile = (AppFile)object;
+            if (!appFile.isExitst()) {
+                fileListViewModel.downloadFile(appFile);
+            } else {
+                previewFile(appFile);
             }
         };
     }
 
-    private void previewFile(@NotNull File file) {
+    private void previewFile(@NotNull AppFile appFile) {
 
-        String fileName = file.getId() + "." + file.getType();
+        String fileName = appFile.getId() + "." + appFile.getType();
 
         java.io.File oFile = new java.io.File(getApplicationContext().getFilesDir(), fileName);
         oFile.setReadable(true, false);
@@ -191,6 +166,7 @@ public class TaskActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(getFileUri(oFile));
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PackageManager manager = getPackageManager();
         if (intent.resolveActivity(manager) != null) {

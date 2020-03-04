@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.avdeev.docs.core.AppUser;
+import com.avdeev.docs.core.network.NetworkService;
 import com.avdeev.docs.ui.login.LoginActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -33,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+
+        NetworkService.getInstance(AppUser.getApiUrl())
+                .setPasswordHash(AppUser.getHash())
+                .setAuthKey(AppUser.getKey());
 
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);

@@ -2,15 +2,20 @@ package com.avdeev.docs.core.database.entity;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.avdeev.docs.core.network.pojo.AppTask;
+
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class Task extends Object implements Serializable {
-    @PrimaryKey @NonNull public String id;
+    @PrimaryKey @NonNull
+    public String id;
+
     public String title;
     public String author;
     public long priority;
@@ -19,16 +24,19 @@ public class Task extends Object implements Serializable {
     public String assignee;
     public String document_type;
     public String description;
-    @ColumnInfo(name = "date_due") public long dateDue;
+    public long date_due;
     public long date;
-    @ColumnInfo(name = "updated_at") public long updatedAt;
+    public long updated_at;
+
+    @Ignore
+    public List<File> files;
 
     public Task(String id, String title) {
         this.id = id;
         this.title = title;
     }
 
-    public static Task create(com.avdeev.docs.core.network.pojo.Task task) {
+    public static Task create(AppTask task) {
         Task newTask = new Task(task.getId(), task.getTitle());
         newTask.author = task.getAuthor();
         newTask.priority = task.getPriority();
@@ -37,9 +45,9 @@ public class Task extends Object implements Serializable {
         newTask.assignee = task.getAssignee();
         newTask.document_type = task.getDocument_type();
         newTask.description = task.getDescription();
-        newTask.dateDue = task.getDate_due();
+        newTask.date_due = task.getDate_due();
         newTask.date = task.getDate();
-        newTask.updatedAt = task.getUpdated_at();
+        newTask.updated_at = task.getUpdated_at();
 
         return newTask;
     }
@@ -54,9 +62,9 @@ public class Task extends Object implements Serializable {
                 this.assignee.equals(task.assignee)&&
                 this.document_type.equals(task.document_type)&&
                 this.description.equals(task.description)&&
-                this.dateDue == task.dateDue &&
+                this.date_due == task.date_due &&
                 this.date == task.date &&
-                this.updatedAt == task.updatedAt;
+                this.updated_at == task.updated_at;
 
     }
 

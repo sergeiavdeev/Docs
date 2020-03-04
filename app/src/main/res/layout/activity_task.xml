@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <import type="android.view.View" />
+        <import type="com.avdeev.docs.core.network.pojo.BaseDocument" />
+        <variable
+            name="taskViewModel"
+            type="com.avdeev.docs.ui.task.detail.TaskDetailViewModel" />
+    </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical">
@@ -55,7 +63,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/title_task"
                         android:textSize="18sp"
-                        android:text="@string/void_string"
+                        android:text="@{taskViewModel.getTask().title}"
                         android:textColor="@color/colorPrimaryDark"
                         />
 
@@ -83,7 +91,7 @@
                         android:id="@+id/type"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="@string/void_string"
+                        android:text="@{taskViewModel.getTask().type}"
                         android:textSize="22sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -99,7 +107,7 @@
                         app:layout_constraintTop_toBottomOf="@id/type"
                         android:textSize="18sp"
                         android:textColor="@color/colorPrimary"
-                        android:text="@string/void_string" />
+                        android:text="@{taskViewModel.getTask().description}" />
 
                     <TextView
                         android:id="@+id/title_author"
@@ -115,7 +123,7 @@
                         android:id="@+id/author"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/void_string"
+                        android:text="@{taskViewModel.getTask().author}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/title_author"
                         app:layout_constraintTop_toBottomOf="@id/description"
@@ -137,7 +145,7 @@
                         android:id="@+id/executor"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/void_string"
+                        android:text="@{taskViewModel.getTask().assignee}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/title_executor"
                         app:layout_constraintTop_toBottomOf="@id/author"
@@ -159,7 +167,7 @@
                         android:id="@+id/date_due"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/void_string"
+                        android:text="@{BaseDocument.dateFromLong(taskViewModel.getTask().date_due)}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/title_date_due"
                         app:layout_constraintTop_toBottomOf="@id/executor"
@@ -188,20 +196,17 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="5dp"
                     android:padding="5dp"
-                    android:animateLayoutChanges="true"
-                    >
+                    android:animateLayoutChanges="true">
 
                     <TextView
                         android:id="@+id/title_files"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintStart_toStartOf="parent"
-
                         app:layout_constraintTop_toTopOf="parent"
                         android:textSize="22sp"
                         android:text="@string/title_files"
-                        android:textColor="@color/colorPrimaryDark"
-                        />
+                        android:textColor="@color/colorPrimaryDark" />
 
                     <ImageView
                         android:id="@+id/image_files"
@@ -210,8 +215,8 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:contentDescription="@string/void_string"
-                        app:srcCompat="@drawable/ic_collapse_down_black_24dp"
-                        android:animateLayoutChanges="true"/>
+                        app:srcCompat="@{taskViewModel.getFilesVisible() ? @drawable/ic_collapse_up_black_24dp : @drawable/ic_collapse_down_black_24dp}"
+                        android:animateLayoutChanges="true" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/list_file"
@@ -220,7 +225,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/title_files"
-                         />
+                        android:visibility="@{taskViewModel.getFilesVisible() ? View.VISIBLE : View.GONE}"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -341,4 +346,4 @@
         android:onClick="onActionClick"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+</layout>

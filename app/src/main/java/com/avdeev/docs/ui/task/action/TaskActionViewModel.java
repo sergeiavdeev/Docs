@@ -3,7 +3,7 @@ package com.avdeev.docs.ui.task.action;
 import android.app.Application;
 
 import com.avdeev.docs.core.DocAppModel;
-import com.avdeev.docs.core.network.pojo.Task;
+import com.avdeev.docs.core.network.pojo.AppTask;
 import com.avdeev.docs.core.network.NetworkService;
 import com.avdeev.docs.core.network.pojo.CommonResponse;
 import com.avdeev.docs.core.network.pojo.TaskActionRequest;
@@ -13,7 +13,7 @@ import retrofit2.Response;
 
 public class TaskActionViewModel extends DocAppModel {
 
-    private Task task;
+    private AppTask task;
     private String comment;
 
     public TaskActionViewModel(Application app) {
@@ -29,7 +29,7 @@ public class TaskActionViewModel extends DocAppModel {
         this.comment = comment;
     }
 
-    public TaskActionViewModel setTask(Task task) {
+    public TaskActionViewModel setTask(AppTask task) {
         this.task = task;
         return this;
     }

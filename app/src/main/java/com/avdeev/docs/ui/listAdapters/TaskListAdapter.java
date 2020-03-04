@@ -62,10 +62,10 @@ public class TaskListAdapter extends BasePagedAdapter<TaskWithFiles> {
 
             author.setText(task.author);
 
-            long dateDue = task.dateDue;
+            long dateDue = task.date_due;
 
             if (dateDue > 0) {
-                date_due.setText(BaseDocument.dateFromLong(task.dateDue));
+                date_due.setText(BaseDocument.dateFromLong(task.date_due));
             } else {
                 date_due.setText("");
             }
