@@ -2,7 +2,6 @@ package com.avdeev.docs.core.commonViewModels;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -10,11 +9,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.avdeev.docs.core.DocAppModel;
 import com.avdeev.docs.core.database.entity.File;
 import com.avdeev.docs.core.network.NetworkService;
-import com.avdeev.docs.core.network.pojo.AppFile;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.ui.listAdapters.FileListAdapter;
 
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
@@ -38,7 +35,7 @@ public class FileListViewModel extends DocAppModel {
         return fileListAdapter;
     }
 
-    public void init(List<AppFile> files, ItemClickListener itemClickListener) {
+    public void init(List<File> files, ItemClickListener itemClickListener) {
 
         updateFiles(files);
         FileListAdapter adapter = new FileListAdapter(getApplication().getApplicationContext(), files);
@@ -46,16 +43,16 @@ public class FileListViewModel extends DocAppModel {
         fileListAdapter.setValue(adapter);
     }
 
-    public void downloadFile(final AppFile appFile) {
+    public void downloadFile(final File appFile) {
 
         appFile.setDownloading(true);
         final FileListAdapter adapter = fileListAdapter.getValue();
         adapter.notifyDataSetChanged();
         Context context = getContext();
-        String fileName = appFile.getId() + "." + appFile.getType();
+        String fileName = appFile.id + "." + appFile.type;
 
         NetworkService.getInstance().getApi()
-                .getFile(appFile.getId())
+                .getFile(appFile.id)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -115,14 +112,14 @@ public class FileListViewModel extends DocAppModel {
         }
     }
 
-    public void updateFiles(List<AppFile> files) {
+    public void updateFiles(List<File> files) {
 
         Context context = getApplication().getApplicationContext();
 
         for (int i = 0; i < files.size(); i++) {
 
-            AppFile file = files.get(i);
-            String fileName = file.getId() + "." + file.getType();
+            File file = files.get(i);
+            String fileName = file.id + "." + file.type;
 
             java.io.File jFile = new java.io.File(context.getFilesDir(), fileName);
 

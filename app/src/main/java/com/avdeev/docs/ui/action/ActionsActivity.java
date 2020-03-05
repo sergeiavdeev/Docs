@@ -7,17 +7,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.network.pojo.Action;
-import com.avdeev.docs.core.ActionRequest;
 import com.avdeev.docs.ui.listAdapters.ActionListAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ActionsActivity extends AppCompatActivity {
 
@@ -27,12 +27,18 @@ public class ActionsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_action);
 
+        String ownerType = getIntent().getStringExtra("ownerType");
+        String ownerId = getIntent().getStringExtra("ownerId");
+        String actionType = getIntent().getStringExtra("actionType");
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getIntent().getStringExtra("caption"));
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
-        ActionsViewModel actionsViewModel = ViewModelProviders.of(this).get(ActionsViewModel.class);
+        ActionsViewModel actionsViewModel = ViewModelProvider.AndroidViewModelFactory
+                .getInstance(getApplication()).create(ActionsViewModel.class)
+                .init(actionType, ownerId, ownerType);
 
         final RecyclerView actionList = findViewById(R.id.action_list);
         actionList.setLayoutManager(new LinearLayoutManager(this));
@@ -40,9 +46,9 @@ public class ActionsActivity extends AppCompatActivity {
 
         final SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh);
 
-        actionsViewModel.getActions().observe(this, new Observer<ArrayList<Action>>() {
+        actionsViewModel.getActions().observe(this, new Observer<List<Action>>() {
             @Override
-            public void onChanged(ArrayList<Action> actions) {
+            public void onChanged(List<Action> actions) {
                 actionList.setAdapter(new ActionListAdapter(getBaseContext(), actions));
             }
         });
@@ -55,24 +61,11 @@ public class ActionsActivity extends AppCompatActivity {
             }
         });
 
+        refreshLayout.setOnRefreshListener(()->{
+            actionsViewModel.updateActions();
+        });
 
-        ActionRequest request;
-
-        if (getIntent().getBooleanExtra("task", false)) {
-
-            request = new ActionRequest(
-                    getIntent().getStringExtra("request"),
-                    getIntent().getStringExtra("type"),
-                    getIntent().getStringExtra("id"),
-                    true);
-        } else {
-
-            request = new ActionRequest(getIntent().getStringExtra("request"),
-                    getIntent().getStringExtra("type"),
-                    getIntent().getStringExtra("id"));
-        }
-
-        actionsViewModel.updateActions(request);
+        actionsViewModel.updateActions();
     }
 
     @Override

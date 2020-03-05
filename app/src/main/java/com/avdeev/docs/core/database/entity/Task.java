@@ -6,8 +6,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.avdeev.docs.core.network.pojo.AppTask;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -36,18 +34,19 @@ public class Task extends Object implements Serializable {
         this.title = title;
     }
 
-    public static Task create(AppTask task) {
-        Task newTask = new Task(task.getId(), task.getTitle());
-        newTask.author = task.getAuthor();
-        newTask.priority = task.getPriority();
-        newTask.type = task.getType();
-        newTask.number = task.getNumber();
-        newTask.assignee = task.getAssignee();
-        newTask.document_type = task.getDocument_type();
-        newTask.description = task.getDescription();
-        newTask.date_due = task.getDate_due();
-        newTask.date = task.getDate();
-        newTask.updated_at = task.getUpdated_at();
+
+    public static Task create(Task task) {
+        Task newTask = new Task(task.id, task.title);
+        newTask.author = task.author;
+        newTask.priority = task.priority;
+        newTask.type = task.type;
+        newTask.number = task.number;
+        newTask.assignee = task.assignee;
+        newTask.document_type = task.document_type;
+        newTask.description = task.description;
+        newTask.date_due = task.date_due;
+        newTask.date = task.date;
+        newTask.updated_at = task.updated_at;
 
         return newTask;
     }

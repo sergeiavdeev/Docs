@@ -2,9 +2,8 @@ package com.avdeev.docs.core.database.entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-
-import com.avdeev.docs.core.network.pojo.AppFile;
 
 import java.io.Serializable;
 
@@ -17,16 +16,37 @@ public class File extends Object implements Serializable {
     public String type;
     public long size;
 
+    @Ignore
+    private boolean downloading;
+
+    @Ignore
+    private boolean exist;
+
     public File(String id, String name) {
-        //this.taskId = taskId;
         this.id = id;
         this.name = name;
     }
 
-    public static File create(AppFile appFile) {
-        File newFile = new File(appFile.getId(), appFile.getName());
-        newFile.type = appFile.getType();
-        newFile.size = appFile.getSize();
+    public static File create(File appFile) {
+        File newFile = new File(appFile.id, appFile.name);
+        newFile.type = appFile.type;
+        newFile.size = appFile.size;
         return newFile;
+    }
+
+    public void setDownloading(boolean downloading) {
+        this.downloading = downloading;
+    }
+
+    public boolean isDownloading() {
+        return downloading;
+    }
+
+    public void setExist(boolean exist) {
+        this.exist = exist;
+    }
+
+    public boolean isExist() {
+        return exist;
     }
 }

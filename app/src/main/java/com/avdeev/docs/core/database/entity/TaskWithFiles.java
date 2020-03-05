@@ -4,9 +4,6 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
-import com.avdeev.docs.core.network.pojo.AppFile;
-import com.avdeev.docs.core.network.pojo.AppTask;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +16,7 @@ public class TaskWithFiles extends Object implements Serializable {
     )
     public List<File> files;
 
+    /*
     public static TaskWithFiles create(AppTask task) {
         TaskWithFiles taskWithFiles = new TaskWithFiles();
         taskWithFiles.task = Task.create(task);
@@ -27,14 +25,14 @@ public class TaskWithFiles extends Object implements Serializable {
             taskWithFiles.files.add(File.create(appFile));
         }
         return taskWithFiles;
-    }
+    }*/
 
     public static TaskWithFiles create(Task task) {
         TaskWithFiles taskWithFiles = new TaskWithFiles();
-        taskWithFiles.task = task;
+        taskWithFiles.task = Task.create(task);
         taskWithFiles.files = new ArrayList<>();
         for (File file :task.files) {
-            taskWithFiles.files.add(file);
+            taskWithFiles.files.add(File.create(file));
         }
         return taskWithFiles;
     }
@@ -52,7 +50,6 @@ public class TaskWithFiles extends Object implements Serializable {
                 this.task.date_due == task.task.date_due &&
                 this.task.date == task.task.date &&
                 this.task.updated_at == task.task.updated_at;
-
     }
 
     public static DiffUtil.ItemCallback<TaskWithFiles> DIFF_UTIL = new DiffUtil.ItemCallback<TaskWithFiles>() {

@@ -2,6 +2,8 @@ package com.avdeev.docs.core.network.pojo;
 
 import android.database.Cursor;
 
+import com.avdeev.docs.core.database.entity.File;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,7 +22,7 @@ public class Document extends BaseDocument {
     private long updated_at;
     private long date;
 
-    private List<AppFile> appFiles;
+    private List<File> files;
 
     public Document(String id, String title, String author) {
 
@@ -31,7 +33,7 @@ public class Document extends BaseDocument {
         type = "";
         updated_at = 0;
         date = 0;
-        appFiles = new ArrayList<>();
+        files = new ArrayList<>();
     }
 
     public Document(@NotNull Document document) {
@@ -43,7 +45,7 @@ public class Document extends BaseDocument {
         number = document.getNumber();
         date = document.getDate();
         updated_at = document.getUpdated_at();
-        appFiles = new ArrayList<>();
+        files = new ArrayList<>();
     }
 
     public Document(@NotNull Cursor cursor) {
@@ -55,7 +57,7 @@ public class Document extends BaseDocument {
         type = cursor.getString(cursor.getColumnIndex("type"));
         updated_at = cursor.getLong(cursor.getColumnIndex("updated_at"));
         date = cursor.getLong(cursor.getColumnIndex("date"));
-        appFiles = new ArrayList<>();
+        files = new ArrayList<>();
     }
 
     public String getAuthor() {
@@ -94,12 +96,10 @@ public class Document extends BaseDocument {
         return department;
     }
 
-    public List<AppFile> getAppFiles() {
-        return appFiles;
-    }
 
-    public void setAppFiles(ArrayList<AppFile> appFiles) {
-        this.appFiles = appFiles;
+
+    public void setFiles(List<File> files) {
+        this.files = files;
     }
 
     public void fromJson(JSONObject object) {
@@ -117,7 +117,7 @@ public class Document extends BaseDocument {
             for (int i = 0; i < jsonFiles.length(); i++) {
                 JSONObject file = jsonFiles.getJSONObject(i);
 
-                appFiles.add(new AppFile(file));
+                //appFiles.add(new AppFile(file));
             }
 
         } catch (Exception e) {

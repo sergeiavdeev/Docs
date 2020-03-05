@@ -12,8 +12,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.avdeev.docs.R;
+import com.avdeev.docs.core.database.entity.Task;
 import com.avdeev.docs.core.network.pojo.BaseDocument;
-import com.avdeev.docs.core.network.pojo.AppTask;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +31,7 @@ public class TaskActionActivity extends AppCompatActivity {
 
         //setContentView(R.layout.activity_task_action);
 
-        AppTask task = (AppTask)getIntent().getExtras().getSerializable("task");
+        Task task = (Task)getIntent().getExtras().getSerializable("task");
         action = getIntent().getStringExtra("action");
 
         initActionBar(task);
@@ -56,12 +56,12 @@ public class TaskActionActivity extends AppCompatActivity {
         });
     }
 
-    private void initActionBar(AppTask task) {
+    private void initActionBar(Task task) {
 
         //Ознакомление Утверждение Рассмотрение Исполнение
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getActionTitle(task.getType()));
-        actionBar.setSubtitle(task.getType() + " №" + task.getNumber() + " от " + BaseDocument.dateFromLong(task.getDate()));
+        actionBar.setTitle(getActionTitle(task.type));
+        actionBar.setSubtitle(task.type + " №" + task.number + " от " + BaseDocument.dateFromLong(task.date));
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
     }

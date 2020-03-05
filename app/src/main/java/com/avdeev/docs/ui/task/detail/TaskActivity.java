@@ -25,9 +25,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.avdeev.docs.BuildConfig;
 import com.avdeev.docs.R;
+import com.avdeev.docs.core.database.entity.File;
 import com.avdeev.docs.core.database.entity.Task;
 import com.avdeev.docs.core.database.entity.TaskWithFiles;
-import com.avdeev.docs.core.network.pojo.AppFile;
 import com.avdeev.docs.core.network.pojo.BaseDocument;
 
 import com.avdeev.docs.core.commonViewModels.FileListViewModel;
@@ -110,7 +110,7 @@ public class TaskActivity extends AppCompatActivity {
         });
 
         taskViewModel.setTask(taskWithFiles.task);
-        fileListViewModel.init(AppFile.createList(taskWithFiles.files), createClickListener());
+        fileListViewModel.init(taskWithFiles.files, createClickListener());
     }
 
     @Override
@@ -134,11 +134,10 @@ public class TaskActivity extends AppCompatActivity {
         Task task = taskViewModel.getTask().getValue();
 
         Intent intent = new Intent(this, ActionsActivity.class);
-        intent.putExtra("id", task.id);
-        intent.putExtra("type", "inbox");
-        intent.putExtra("caption", "История");
-        intent.putExtra("request", "history");
-        intent.putExtra("task", true);
+        intent.putExtra("ownerId", task.id);
+        intent.putExtra("ownerType", "task");
+        intent.putExtra("actionType", "history");
+
         startActivity(intent);
     }
 
@@ -147,8 +146,8 @@ public class TaskActivity extends AppCompatActivity {
     private ItemClickListener createClickListener() {
         return (Object object) -> {
 
-            AppFile appFile = (AppFile)object;
-            if (!appFile.isExitst()) {
+            File appFile = (File)object;
+            if (!appFile.isExist()) {
                 fileListViewModel.downloadFile(appFile);
             } else {
                 previewFile(appFile);
@@ -156,9 +155,9 @@ public class TaskActivity extends AppCompatActivity {
         };
     }
 
-    private void previewFile(@NotNull AppFile appFile) {
+    private void previewFile(@NotNull File appFile) {
 
-        String fileName = appFile.getId() + "." + appFile.getType();
+        String fileName = appFile.id + "." + appFile.type;
 
         java.io.File oFile = new java.io.File(getApplicationContext().getFilesDir(), fileName);
         oFile.setReadable(true, false);

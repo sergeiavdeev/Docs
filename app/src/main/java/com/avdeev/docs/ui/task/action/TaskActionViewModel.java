@@ -3,7 +3,7 @@ package com.avdeev.docs.ui.task.action;
 import android.app.Application;
 
 import com.avdeev.docs.core.DocAppModel;
-import com.avdeev.docs.core.network.pojo.AppTask;
+import com.avdeev.docs.core.database.entity.Task;
 import com.avdeev.docs.core.network.NetworkService;
 import com.avdeev.docs.core.network.pojo.CommonResponse;
 import com.avdeev.docs.core.network.pojo.TaskActionRequest;
@@ -13,7 +13,7 @@ import retrofit2.Response;
 
 public class TaskActionViewModel extends DocAppModel {
 
-    private AppTask task;
+    private Task task;
     private String comment;
 
     public TaskActionViewModel(Application app) {
@@ -29,7 +29,7 @@ public class TaskActionViewModel extends DocAppModel {
         this.comment = comment;
     }
 
-    public TaskActionViewModel setTask(AppTask task) {
+    public TaskActionViewModel setTask(Task task) {
         this.task = task;
         return this;
     }
@@ -40,7 +40,7 @@ public class TaskActionViewModel extends DocAppModel {
 
         NetworkService.getInstance("https://sed.rudn.ru/BGU_DEMO/hs/DGU_APP_Mobile_Client/")
                 .getApi()
-                .postTaskAction(new TaskActionRequest(task.getId(), action, comment))
+                .postTaskAction(new TaskActionRequest(task.id, action, comment))
                 .enqueue(new Callback<CommonResponse>() {
                     @Override
                     public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {

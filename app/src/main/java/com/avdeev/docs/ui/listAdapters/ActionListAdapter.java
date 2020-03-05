@@ -8,10 +8,11 @@ import com.avdeev.docs.core.network.pojo.Action;
 import com.avdeev.docs.core.network.pojo.BaseDocument;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ActionListAdapter extends BaseAdapter<Action> {
 
-    public ActionListAdapter(Context context, ArrayList<Action> list) {
+    public ActionListAdapter(Context context, List<Action> list) {
         super(context, list);
     }
 

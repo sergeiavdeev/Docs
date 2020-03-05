@@ -8,15 +8,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.database.entity.File;
-import com.avdeev.docs.core.network.pojo.AppFile;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class FileListAdapter extends BaseAdapter<AppFile> {
+public class FileListAdapter extends BaseAdapter<File> {
 
-    public FileListAdapter(@NotNull Context context, List<AppFile> files) {
+    public FileListAdapter(@NotNull Context context, List<File> files) {
         super(context, files);
     }
 
@@ -31,10 +30,9 @@ public class FileListAdapter extends BaseAdapter<AppFile> {
     }
 
     @Override
-    protected AppFile copyObject(AppFile file) {
-        return AppFile.create(file);
+    protected File copyObject(File file) {
+        return File.create(file);
     }
-
 
     protected class FileHolder extends BaseHolder {
 
@@ -56,27 +54,20 @@ public class FileListAdapter extends BaseAdapter<AppFile> {
         }
 
         @Override
-        void bind(@NotNull AppFile file) {
+        void bind(@NotNull File file) {
 
-            fileName.setText(file.getName());
-            fileSize.setText(Long.toString(file.getSize()) + " KB");
+            fileName.setText(file.name);
+            fileSize.setText(Long.toString(file.size) + " KB");
+            fileIcon.setImageResource(getFileIcon(file.type));
 
-            fileIcon.setImageResource(getFileIcon(file.getType()));
-
-
-            if (file.isExitst()) {
-
+            if (file.isExist()) {
                 downloadIcon.setImageResource(R.drawable.ic_file_view_black_24dp);
             } else {
-
                 downloadIcon.setImageResource(R.drawable.a_ic_file_download);
-
                 if (file.isDownloading()) {
-
                     Drawable drawer = downloadIcon.getDrawable();
                     ((Animatable)drawer).start();
                 } else {
-
                     Drawable drawer = downloadIcon.getDrawable();
                     ((Animatable)drawer).stop();
                 }
@@ -87,12 +78,22 @@ public class FileListAdapter extends BaseAdapter<AppFile> {
 
             int result = R.mipmap.ic_txt;
 
-            if (type.equals("xls") || type.equals("xlsx") || type.equals("csv")) {
+            if (type.equals("xls") || type.equals("xlsx")) {
                 result = R.mipmap.ic_xls;
             } else if (type.equals("doc") || type.equals("docx")) {
                 result = R.mipmap.ic_doc;
             } else if (type.equals("pdf")) {
                 result = R.mipmap.ic_pdf;
+            } else if (type.equals("jpg")) {
+                result = R.mipmap.ic_jpg;
+            } else if (type.equals("png")) {
+                result = R.mipmap.ic_png;
+            } else if (type.equals("csv")) {
+                result = R.mipmap.ic_csv;
+            } else if (type.equals("png")) {
+                result = R.mipmap.ic_png;
+            } else if (type.equals("html") || type.equals("htm")) {
+                result = R.mipmap.ic_html;
             }
 
             return result;

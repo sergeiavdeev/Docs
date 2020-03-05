@@ -8,15 +8,12 @@ import android.util.Log;
 
 import com.avdeev.docs.core.network.pojo.Action;
 import com.avdeev.docs.core.network.pojo.Document;
-import com.avdeev.docs.core.network.pojo.AppFile;
-import com.avdeev.docs.core.network.pojo.AppTask;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.FileOutputStream;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,7 +42,7 @@ public class AppUser {
     private ArrayList<Document> docsIn;
     private ArrayList<Document> docsOut;
     private ArrayList<Document> docsInner;
-    private ArrayList<AppTask> taskList;
+    //private ArrayList<AppTask> taskList;
 
     public AppUser(Context context) {
 
@@ -57,7 +54,7 @@ public class AppUser {
         docsIn = new ArrayList<>();
         docsOut = new ArrayList<>();
         docsInner = new ArrayList<>();
-        taskList = new ArrayList<>();
+        //taskList = new ArrayList<>();
 
         apiPath = "https://sed.rudn.ru/BGU_DEMO/hs/DGU_APP_Mobile_Client/";
 
@@ -266,6 +263,7 @@ public class AppUser {
         return docsInner;
     }
 
+    /*
     public ArrayList<AppTask> getTaskList() throws Exception {
 
         if (taskList.size() == 0) {
@@ -295,7 +293,7 @@ public class AppUser {
 
         return taskList;
     }
-
+    */
     public int updateDocList(String type) {
 
         int addRows = 0;
@@ -728,6 +726,7 @@ public class AppUser {
         return actions;
     }
 
+    /*
     public String getFile(@NotNull AppFile appFile) throws Exception {
 
         String fileName = appFile.getId() + "." + appFile.getType();
@@ -764,4 +763,5 @@ public class AppUser {
 
         return fileName;
     }
+    */
 }

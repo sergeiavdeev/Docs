@@ -8,7 +8,6 @@ import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
 import com.avdeev.docs.core.database.entity.Task;
-import com.avdeev.docs.core.network.pojo.AppTask;
 import com.avdeev.docs.core.DocAppModel;
 import com.avdeev.docs.core.database.DocDatabase;
 import com.avdeev.docs.core.database.dao.Tasks;

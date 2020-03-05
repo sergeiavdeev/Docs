@@ -3,6 +3,7 @@ package com.avdeev.docs.core.network;
 import com.avdeev.docs.core.network.pojo.CommonResponse;
 import com.avdeev.docs.core.network.pojo.DocumentResponse;
 import com.avdeev.docs.core.network.pojo.DocumentsResponse;
+import com.avdeev.docs.core.network.pojo.HistoryResponse;
 import com.avdeev.docs.core.network.pojo.Login;
 import com.avdeev.docs.core.network.pojo.TaskActionRequest;
 import com.avdeev.docs.core.network.pojo.TasksResponse;
@@ -33,4 +34,10 @@ public interface JsonDocApi {
 
     @GET("files")
     Call<ResponseBody>getFile(@Query("id") String id);
+
+    @GET("history")
+    Call<HistoryResponse>getHistory(@Query("idtask") String taskId);
+
+    @GET("history")
+    Call<HistoryResponse> getHistory(@Query("id") String id, @Query("chapter") String chapter);
 }

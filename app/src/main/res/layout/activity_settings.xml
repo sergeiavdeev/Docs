@@ -40,6 +40,6 @@
             android:text="@string/title_save"
             app:layout_constraintTop_toBottomOf="@+id/apiUrl"
             android:layout_marginTop="15dp"
-            android:onClick="@{settingsViewModel.onSaveClick}"/>
+            android:onClick="@{settingsViewModel::onSaveClick}"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
