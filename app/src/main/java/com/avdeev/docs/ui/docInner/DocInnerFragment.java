@@ -32,10 +32,6 @@ public class DocInnerFragment extends DocFragment {
     private DocInnerViewModel docInnerViewModel;
 
 
-    public static DocInnerFragment newInstance() {
-        return new DocInnerFragment();
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {

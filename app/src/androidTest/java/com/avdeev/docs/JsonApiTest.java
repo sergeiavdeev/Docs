@@ -3,6 +3,7 @@ package com.avdeev.docs;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.avdeev.docs.core.AppUser;
+import com.avdeev.docs.core.database.entity.DocumentInbox;
 import com.avdeev.docs.core.network.NetworkService;
 import com.avdeev.docs.core.network.pojo.DocumentsResponse;
 
@@ -36,11 +37,11 @@ public class JsonApiTest {
     @Test
     public void getDocList() {
 
-        Response<DocumentsResponse> r;
+        Response<DocumentsResponse<DocumentInbox>> r;
         try {
             r = NetworkService.getInstance()
                     .getApi()
-                    .getDocuments("inbox", 0)
+                    .getDocumentsInbox(0)
                     .execute();
         } catch (Exception e) {
             r = null;

@@ -1,81 +1,59 @@
 package com.avdeev.docs.ui.docIn;
 
 import android.app.Application;
-import android.content.Context;
-
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
 import com.avdeev.docs.core.DocAppModel;
-import com.avdeev.docs.core.network.pojo.Document;
-import com.avdeev.docs.ui.listAdapters.DocListAdapter;
+import com.avdeev.docs.core.database.DocDatabase;
+import com.avdeev.docs.core.database.dao.DocInbox;
+import com.avdeev.docs.core.database.entity.DocumentInbox;
+import com.avdeev.docs.core.network.NetworkService;
+import com.avdeev.docs.core.network.pojo.DocumentsResponse;
 
-import java.util.ArrayList;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DocInViewModel extends DocAppModel {
 
-    private MutableLiveData<DocListAdapter> docListAdapter;
+    private DocInbox docInboxDao;
+    public LiveData<PagedList<DocumentInbox>> docList;
 
     public DocInViewModel(Application app) {
         super(app);
-        docListAdapter = new MutableLiveData<>();
-        docListAdapter.setValue(new DocListAdapter(getContext(), new ArrayList<>()));
+        docInboxDao = DocDatabase.getInstance().inbox();
+        docList = new LivePagedListBuilder<>(docInboxDao.documentsByDate(""), 50).build();
     }
 
-    public LiveData<DocListAdapter> getDocListAdapter() {
-        return docListAdapter;
+    public void search(LifecycleOwner lifecycleOwner, String search) {
+
+        docList.removeObservers(lifecycleOwner);
+        docList = new LivePagedListBuilder<>(docInboxDao.documentsByDate(search), 50).build();
     }
 
-    public void loadList() {
-
-        new DocListLoader().execute();
-    }
-
-    public void updateList() {
-
-        new DocListUpdater().execute();
-    }
-
-    public void search(String searchText) {
-        //wait.setValue(true);
+    public void updateFromNetwork() {
         setWait(true);
-        DocListAdapter adapter = docListAdapter.getValue();
-        adapter.getFilter().filter(searchText);
-        //wait.setValue(false);
-        setWait(false);
-    }
 
-    private class DocListLoader extends BaseAsyncTask<ArrayList<Document>> {
+        NetworkService.getInstance().getApi()
+                .getDocumentsInbox( 0)
+                .enqueue(new Callback<DocumentsResponse<DocumentInbox>>() {
+                    @Override
+                    public void onResponse(Call<DocumentsResponse<DocumentInbox>> call, Response<DocumentsResponse<DocumentInbox>> response) {
+                        setWait(false);
+                        if (response.isSuccessful()) {
+                            DocDatabase.executor.execute(()->{
+                                DocDatabase.getInstance().inbox().add(response.body().documents);
+                            });
+                        }
+                    }
 
-        @Override
-        protected ArrayList<Document> process() {
-
-            ArrayList<Document> documents = appUser.getDocInList();
-            if (documents.size() == 0) {
-                appUser.updateDocList("inbox");
-                documents = appUser.getDocInList();
-            }
-            return documents;
-        }
-
-        @Override
-        protected void onPostProcess(ArrayList<Document> documentList, Context context) {
-            docListAdapter.setValue(DocListAdapter.create(context, documentList));
-        }
-    }
-
-    private class DocListUpdater extends BaseAsyncTask<ArrayList<Document>> {
-
-        @Override
-        protected ArrayList<Document> process() {
-
-            appUser.updateDocList("inbox");
-            return appUser.getDocInList();
-        }
-
-        @Override
-        protected void onPostProcess(ArrayList<Document> documentList, Context context) {
-            docListAdapter.setValue(DocListAdapter.create(context, documentList));
-        }
+                    @Override
+                    public void onFailure(Call<DocumentsResponse<DocumentInbox>> call, Throwable t) {
+                        setWait(false);
+                        t.printStackTrace();
+                    }
+                });
     }
 }

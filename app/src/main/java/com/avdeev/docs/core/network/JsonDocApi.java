@@ -1,5 +1,8 @@
 package com.avdeev.docs.core.network;
 
+import com.avdeev.docs.core.database.entity.DocumentInbox;
+import com.avdeev.docs.core.database.entity.DocumentInner;
+import com.avdeev.docs.core.database.entity.DocumentOutbox;
 import com.avdeev.docs.core.network.pojo.CommonResponse;
 import com.avdeev.docs.core.network.pojo.DocumentResponse;
 import com.avdeev.docs.core.network.pojo.DocumentsResponse;
@@ -20,8 +23,14 @@ public interface JsonDocApi {
     @POST("auth")
     Call<CommonResponse> auth(@Body Login login);
 
-    @GET("documents")
-    Call<DocumentsResponse> getDocuments(@Query("chapter") String chapter, @Query("timestamp") long timestamp);
+    @GET("documents?chapter=inbox")
+    Call<DocumentsResponse<DocumentInbox>> getDocumentsInbox(@Query("timestamp") long timestamp);
+
+    @GET("documents?chapter=outbox")
+    Call<DocumentsResponse<DocumentOutbox>> getDocumentsOutbox(@Query("timestamp") long timestamp);
+
+    @GET("documents?chapter=internal")
+    Call<DocumentsResponse<DocumentInner>> getDocumentsInternal(@Query("timestamp") long timestamp);
 
     @GET("documents/details")
     Call<DocumentResponse> getDocument(@Query("chapter") String chapter, @Query("id") String id);

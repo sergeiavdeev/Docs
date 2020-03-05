@@ -19,6 +19,7 @@ import com.avdeev.docs.core.DocFragment;
 import com.avdeev.docs.core.network.pojo.Document;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.ui.docDetail.DocDetailActivity;
+import com.avdeev.docs.ui.listAdapters.DocInboxListAdapter;
 import com.avdeev.docs.ui.listAdapters.DocListAdapter;
 
 import org.jetbrains.annotations.Contract;
@@ -27,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 public class DocInFragment extends DocFragment {
 
     private DocInViewModel docInViewModel;
-    private DocListAdapter listAdapter;
+    private DocInboxListAdapter listAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -44,14 +45,10 @@ public class DocInFragment extends DocFragment {
 
         listView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        docInViewModel.getDocListAdapter().observe(getViewLifecycleOwner(), new Observer<DocListAdapter>() {
-            @Override
-            public void onChanged(DocListAdapter docListAdapter) {
+        listAdapter = new DocInboxListAdapter(getContext());
+        listAdapter.setOnItemClickListener(createClickListener());
 
-                docListAdapter.setOnItemClickListener(createClickListener());
-                listView.setAdapter(docListAdapter);
-            }
-        });
+        listView.setAdapter(listAdapter);
 
         docInViewModel.isWaiting().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
@@ -61,22 +58,29 @@ public class DocInFragment extends DocFragment {
             }
         });
 
+        docInViewModel.docList.observe(getViewLifecycleOwner(), (pagedList) -> {
+            listAdapter.submitList(pagedList);
+        });
+
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
 
-                docInViewModel.updateList();
+                docInViewModel.updateFromNetwork();
             }
         });
 
-        docInViewModel.loadList();
+        docInViewModel.updateFromNetwork();
 
         return root;
     }
 
     @Override
     public void onSearch(String searchText) {
-        docInViewModel.search(searchText);
+        docInViewModel.search(this, searchText);
+        docInViewModel.docList.observe(getViewLifecycleOwner(), (pagedList) -> {
+            listAdapter.submitList(pagedList);
+        });
     }
 
     @NotNull

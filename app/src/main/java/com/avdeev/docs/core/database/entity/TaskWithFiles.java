@@ -38,8 +38,7 @@ public class TaskWithFiles extends Object implements Serializable {
     }
 
     public boolean equals(TaskWithFiles task) {
-        return this.task.id.equals(task.task.id)&&
-                this.task.title.equals(task.task.title)&&
+        return  this.task.title.equals(task.task.title)&&
                 this.task.author.equals(task.task.author)&&
                 this.task.priority == task.task.priority &&
                 this.task.type.equals(task.task.type)&&
