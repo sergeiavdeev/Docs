@@ -15,6 +15,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.databinding.BindingMethod;
+import androidx.databinding.BindingMethods;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,11 +30,17 @@ import com.avdeev.docs.core.network.pojo.BaseDocument;
 import com.avdeev.docs.core.network.pojo.Document;
 import com.avdeev.docs.core.commonViewModels.FileListViewModel;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
+import com.avdeev.docs.databinding.ActivityDocDetailBinding;
 import com.avdeev.docs.ui.action.ActionsActivity;
 import com.avdeev.docs.ui.listAdapters.FileListAdapter;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
+@BindingMethods({
+        @BindingMethod(type = android.widget.ImageView.class,
+                attribute = "app:srcCompat",
+                method = "setImageDrawable") })
 
 public class DocDetailActivity extends AppCompatActivity {
 
@@ -44,68 +53,31 @@ public class DocDetailActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_doc_detail);
-
-        doc = (Document)getIntent().getExtras().getSerializable("id");
+        doc = (Document)getIntent().getExtras().getSerializable("document");
         docType = getIntent().getStringExtra("type");
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getIntent().getStringExtra("caption"));
-        actionBar.setSubtitle(doc.getType() + " №" + doc.getNumber() + " от " + BaseDocument.dateFromLong(doc.getUpdated_at()));
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        initActionBar();
 
         docViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(DocDetailViewModel.class);
         docViewModel.setDocument(doc);
 
+        ActivityDocDetailBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_doc_detail);
+        binding.setDocViewModel(docViewModel);
+        binding.setLifecycleOwner(this);
+
         fileListViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(FileListViewModel.class);
 
-        final TextView title = findViewById(R.id.title);
-        final TextView status = findViewById(R.id.status);
-        final TextView description = findViewById(R.id.description);
-        final TextView author = findViewById(R.id.author);
-        final TextView recipient = findViewById(R.id.recipient);
-        final TextView signer = findViewById(R.id.signer);
-        final TextView number = findViewById(R.id.number);
-        final TextView date = findViewById(R.id.date);
+
         final RecyclerView fileList = findViewById(R.id.list_file);
-        final ImageView fileArrow = findViewById(R.id.image_files);
         final ImageView moreArrow = findViewById(R.id.image_more);
         final LinearLayout moreLayout = findViewById(R.id.more_buttons);
 
         fileList.setLayoutManager(new LinearLayoutManager(this));
 
-        docViewModel.getDocument().observe(this, new Observer<Document>() {
-            @Override
-            public void onChanged(Document document) {
-
-                title.setText(document.getTitle());
-                status.setText(document.getStatus());
-                description.setText(document.getDescription());
-                author.setText(document.getAuthor());
-                recipient.setText(document.getRecipient());
-                signer.setText(document.getSigner());
-                number.setText(document.getNumber());
-                date.setText(BaseDocument.dateFromLong(document.getDate()));
-                //fileListViewModel.init(document.getFiles(), createClickListener());
-                //fileList.setAdapter(fileListViewModel.);
-            }
-        });
-
-        docViewModel.getFileVisible().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean visible) {
-
-                if (visible) {
-                    fileList.setVisibility(View.VISIBLE);
-                    fileArrow.setImageResource(R.drawable.ic_collapse_up_black_24dp);
-                } else {
-                    fileList.setVisibility(View.GONE);
-                    fileArrow.setImageResource(R.drawable.ic_collapse_down_black_24dp);
-                }
-            }
+        docViewModel.getDocument().observe(this, (Document document) -> {
+            fileListViewModel.init(document.files, createClickListener());
         });
 
         docViewModel.getMoreVisible().observe(this, new Observer<Boolean>() {
@@ -122,15 +94,11 @@ public class DocDetailActivity extends AppCompatActivity {
             }
         });
 
-        fileListViewModel.getFileListAdapter().observe(this, new Observer<FileListAdapter>() {
-            @Override
-            public void onChanged(FileListAdapter fileListAdapter) {
-                fileList.setAdapter(fileListAdapter);
-            }
+        fileListViewModel.getFileListAdapter().observe(this, (FileListAdapter fileListAdapter) -> {
+            fileList.setAdapter(fileListAdapter);
         });
 
         docViewModel.updateDocument(docType);
-        //fileListViewModel.init(task.getFiles(), createClickListener());
     }
 
     @Override
@@ -142,47 +110,54 @@ public class DocDetailActivity extends AppCompatActivity {
                 finish();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(getIntent().getStringExtra("caption"));
+        actionBar.setSubtitle(doc.type + " №" + doc.number + " от " + BaseDocument.dateFromLong(doc.updated_at));
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
     }
 
     public void onHistoryClick(View view) {
 
         Intent intent = new Intent(this, ActionsActivity.class);
-        intent.putExtra("id", doc.getId());
-        intent.putExtra("type", docType);
+        intent.putExtra("ownerId", doc.id);
+        intent.putExtra("ownerType", docType);
+        intent.putExtra("actionType", "history");
         intent.putExtra("caption", "История");
-        intent.putExtra("request", "history");
         startActivity(intent);
     }
 
     public void onVisaClick(View view) {
 
         Intent intent = new Intent(this, ActionsActivity.class);
-        intent.putExtra("id", doc.getId());
-        intent.putExtra("type", docType);
+        intent.putExtra("ownerId", doc.id);
+        intent.putExtra("ownerType", docType);
+        intent.putExtra("actionType", "visas");
         intent.putExtra("caption", "Визы");
-        intent.putExtra("request", "visas");
         startActivity(intent);
     }
 
     public void onResolutionClick(View view) {
 
         Intent intent = new Intent(this, ActionsActivity.class);
-        intent.putExtra("id", doc.getId());
-        intent.putExtra("type", docType);
+        intent.putExtra("ownerId", doc.id);
+        intent.putExtra("ownerType", docType);
+        intent.putExtra("actionType", "resolutions");
         intent.putExtra("caption", "Резолюции");
-        intent.putExtra("request", "resolutions");
         startActivity(intent);
     }
 
     public void onMailerClick(View view) {
 
         Intent intent = new Intent(this, ActionsActivity.class);
-        intent.putExtra("id", doc.getId());
-        intent.putExtra("type", docType);
-        intent.putExtra("caption", "Рассылка");
-        intent.putExtra("request", "mailing");
+        intent.putExtra("ownerId", doc.id);
+        intent.putExtra("ownerType", docType);
+        intent.putExtra("actionType", "mailing");
+        intent.putExtra("caption", "Рассылки");
         startActivity(intent);
     }
 
@@ -200,11 +175,10 @@ public class DocDetailActivity extends AppCompatActivity {
     @Contract(value = " -> new", pure = true)
     private ItemClickListener createClickListener() {
 
-        return new ItemClickListener() {
+        return new ItemClickListener<File>() {
             @Override
-            public void onItemClick(Object object) {
+            public void onItemClick(File file) {
 
-                File file = (File)object;
                 if (!file.isExist()) {
                     fileListViewModel.downloadFile(file);
                 } else {

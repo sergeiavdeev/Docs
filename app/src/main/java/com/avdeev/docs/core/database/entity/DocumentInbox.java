@@ -15,7 +15,7 @@ public class DocumentInbox {
     public String author;
     public String type;
     public String number;
-    @ColumnInfo(name = "updated_at") public long updatedAt;
+    public long updated_at;
     public long date;
 
     public DocumentInbox(String id, String title) {
@@ -29,7 +29,7 @@ public class DocumentInbox {
                 author.equals(documentInbox.author)&&
                 type.equals(documentInbox.type)&&
                 number.equals(documentInbox.number)&&
-                updatedAt == documentInbox.updatedAt&&
+                updated_at == documentInbox.updated_at&&
                 date == documentInbox.date;
     }
 

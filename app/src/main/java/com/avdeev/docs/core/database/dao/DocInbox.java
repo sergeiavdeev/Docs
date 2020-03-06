@@ -33,4 +33,10 @@ public abstract class DocInbox {
             "number LIKE '%' || :search || '%' " +
             "ORDER BY updated_at DESC")
     public abstract DataSource.Factory<Integer, DocumentInbox>documentsByDate(String search);
+
+    @Query("SELECT COUNT(id) FROM DocumentInbox")
+    public abstract long getCount();
+
+    @Query("SELECT MAX(updated_at) FROM DocumentInbox")
+    public abstract long getLastUpdateTime();
 }

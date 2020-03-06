@@ -3,347 +3,339 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View" />
+
         <import type="com.avdeev.docs.core.network.pojo.BaseDocument" />
+
         <variable
             name="taskViewModel"
             type="com.avdeev.docs.ui.task.detail.TaskDetailViewModel" />
     </data>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:orientation="vertical">
-
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="5dp">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="80dp"
-            android:animateLayoutChanges="true">
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingBottom="5dp">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/title_card"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_margin="5dp"
-                >
+                android:animateLayoutChanges="true"
+                android:paddingBottom="80dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingTop="5dp"
-                    android:padding="5dp"
-                    >
-
-                    <TextView
-                        android:id="@+id/title_task"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:textSize="22sp"
-                        android:text="@string/title_task_one"
-                        android:textColor="@color/colorPrimaryDark"
-                        />
-
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/title_task"
-                        android:textSize="18sp"
-                        android:text="@{taskViewModel.getTask().title}"
-                        android:textColor="@color/colorPrimaryDark"
-                        />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/description_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title_card"
-                android:layout_margin="5dp"
-                >
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingTop="5dp"
-                    android:padding="5dp"
-                    >
-
-                    <TextView
-                        android:id="@+id/type"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="@{taskViewModel.getTask().type}"
-                        android:textSize="22sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:textColor="@color/colorPrimaryDark"/>
-
-                    <TextView
-                        android:id="@+id/description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/type"
-                        android:textSize="18sp"
-                        android:textColor="@color/colorPrimary"
-                        android:text="@{taskViewModel.getTask().description}" />
-
-                    <TextView
-                        android:id="@+id/title_author"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/description"
-                        android:textSize="18sp"
-                        android:text="@string/title_author"
-                        android:textColor="@color/colorPrimaryDark"/>
-
-                    <TextView
-                        android:id="@+id/author"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@{taskViewModel.getTask().author}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/title_author"
-                        app:layout_constraintTop_toBottomOf="@id/description"
-                        android:textSize="18sp"
-                        android:textColor="@color/colorPrimary"
-                        android:gravity="end" />
-
-                    <TextView
-                        android:id="@+id/title_executor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/author"
-                        android:textSize="18sp"
-                        android:text="@string/title_executor"
-                        android:textColor="@color/colorPrimaryDark"/>
-
-                    <TextView
-                        android:id="@+id/executor"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@{taskViewModel.getTask().assignee}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/title_executor"
-                        app:layout_constraintTop_toBottomOf="@id/author"
-                        android:textSize="18sp"
-                        android:textColor="@color/colorPrimary"
-                        android:gravity="end" />
-
-                    <TextView
-                        android:id="@+id/title_date_due"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/executor"
-                        android:textSize="18sp"
-                        android:text="@string/title_date_due"
-                        android:textColor="@color/colorPrimaryDark"/>
-
-                    <TextView
-                        android:id="@+id/date_due"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@{BaseDocument.dateFromLong(taskViewModel.getTask().date_due)}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/title_date_due"
-                        app:layout_constraintTop_toBottomOf="@id/executor"
-                        android:textSize="18sp"
-                        android:textColor="@color/colorPrimary"
-                        android:gravity="end"
-                        />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/files_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/description_card"
-                android:layout_margin="5dp"
-                android:onClick="onFilesClick"
-                >
-
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/title_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:padding="5dp"
-                    android:animateLayoutChanges="true">
+                    android:layout_margin="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/title_files"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:textSize="22sp"
-                        android:text="@string/title_files"
-                        android:textColor="@color/colorPrimaryDark" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="5dp"
+                        android:paddingTop="5dp">
 
-                    <ImageView
-                        android:id="@+id/image_files"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:contentDescription="@string/void_string"
-                        app:srcCompat="@{taskViewModel.getFilesVisible() ? @drawable/ic_collapse_up_black_24dp : @drawable/ic_collapse_down_black_24dp}"
-                        android:animateLayoutChanges="true" />
+                        <TextView
+                            android:id="@+id/title_task"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_task_one"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="22sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/list_file"
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{taskViewModel.getTask().title}"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/title_task" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/description_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/title_card">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="5dp"
+                        android:paddingTop="5dp">
+
+                        <TextView
+                            android:id="@+id/type"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="@{taskViewModel.getTask().type}"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="22sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{taskViewModel.getTask().description}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/type" />
+
+                        <TextView
+                            android:id="@+id/title_author"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_author"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/description" />
+
+                        <TextView
+                            android:id="@+id/author"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:text="@{taskViewModel.getTask().author}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/title_author"
+                            app:layout_constraintTop_toBottomOf="@id/description" />
+
+                        <TextView
+                            android:id="@+id/title_executor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_executor"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/author" />
+
+                        <TextView
+                            android:id="@+id/executor"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:text="@{taskViewModel.getTask().assignee}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/title_executor"
+                            app:layout_constraintTop_toBottomOf="@id/author" />
+
+                        <TextView
+                            android:id="@+id/title_date_due"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_date_due"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/executor" />
+
+                        <TextView
+                            android:id="@+id/date_due"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:text="@{BaseDocument.dateFromLong(taskViewModel.getTask().date_due)}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/title_date_due"
+                            app:layout_constraintTop_toBottomOf="@id/executor" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/files_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:onClick="onFilesClick"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/description_card">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/title_files"
-                        android:visibility="@{taskViewModel.getFilesVisible() ? View.VISIBLE : View.GONE}"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
+                        android:animateLayoutChanges="true"
+                        android:padding="5dp"
+                        android:paddingTop="5dp">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+                        <TextView
+                            android:id="@+id/title_files"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_files"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="22sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="invisible"
-        android:onClick="onCancelClick"
-        app:fabSize="mini"
-        app:layout_constraintBottom_toTopOf="@id/floatingActionAply"
-        app:layout_constraintEnd_toEndOf="@+id/floatingActionAply"
-        app:layout_constraintStart_toStartOf="@+id/floatingActionAply"
-        app:srcCompat="@drawable/ic_fab_cancel_24dp"
-        />
+                        <ImageView
+                            android:id="@+id/image_files"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:animateLayoutChanges="true"
+                            android:contentDescription="@string/void_string"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@{taskViewModel.getFilesVisible() ? @drawable/ic_collapse_up_black_24dp : @drawable/ic_collapse_down_black_24dp}" />
 
-    <TextView
-        android:id="@+id/text_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/fab_text_background"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:padding="5dp"
-        android:text="@string/title_cancel"
-        android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@id/floatingActionCancel"
-        app:layout_constraintEnd_toStartOf="@id/floatingActionCancel"
-        app:layout_constraintTop_toTopOf="@id/floatingActionCancel" />
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/list_file"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="@{taskViewModel.getFilesVisible() ? View.VISIBLE : View.GONE}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/title_files" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionAply"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="invisible"
-        android:onClick="onApplyClick"
-        app:fabSize="mini"
-        app:layout_constraintBottom_toTopOf="@id/floatingActionHistory"
-        app:layout_constraintEnd_toEndOf="@+id/floatingActionHistory"
-        app:layout_constraintStart_toStartOf="@+id/floatingActionHistory"
-        app:srcCompat="@drawable/ic_fab_check_24dp"
-        />
-    <TextView
-        android:id="@+id/text_apply"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_apply"
-        app:layout_constraintTop_toTopOf="@id/floatingActionAply"
-        app:layout_constraintBottom_toBottomOf="@id/floatingActionAply"
-        app:layout_constraintEnd_toStartOf="@id/floatingActionAply"
-        android:layout_marginEnd="10dp"
-        android:visibility="invisible"
-        android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
-        android:background="@drawable/fab_text_background"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:padding="5dp"
-        />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionHistory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="invisible"
-        android:onClick="onHistoryClick"
-        app:fabSize="mini"
-        app:layout_constraintBottom_toTopOf="@id/floatingActionButton"
-        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton"
-        app:layout_constraintStart_toStartOf="@+id/floatingActionButton"
-        app:srcCompat="@drawable/ic_fab_history_24dp"
-        />
-    <TextView
-        android:id="@+id/text_history"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_history"
-        app:layout_constraintTop_toTopOf="@id/floatingActionHistory"
-        app:layout_constraintBottom_toBottomOf="@id/floatingActionHistory"
-        app:layout_constraintEnd_toStartOf="@id/floatingActionHistory"
-        android:layout_marginEnd="10dp"
-        android:visibility="invisible"
-        android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
-        android:background="@drawable/fab_text_background"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:padding="5dp"
-        />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onCancelClick"
+            android:visibility="invisible"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@id/floatingActionAply"
+            app:layout_constraintEnd_toEndOf="@+id/floatingActionAply"
+            app:layout_constraintStart_toStartOf="@+id/floatingActionAply"
+            app:srcCompat="@drawable/ic_fab_cancel_24dp" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_margin="@dimen/fab_margin"
-        android:backgroundTint="@color/colorPrimaryDark"
-        app:srcCompat="@drawable/ic_fab_add_24dp"
-        app:fabSize="normal"
-        android:onClick="onActionClick"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/text_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/fab_text_background"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:padding="5dp"
+            android:text="@string/title_cancel"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/floatingActionCancel"
+            app:layout_constraintEnd_toStartOf="@id/floatingActionCancel"
+            app:layout_constraintTop_toTopOf="@id/floatingActionCancel" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionAply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onApplyClick"
+            android:visibility="invisible"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@id/floatingActionHistory"
+            app:layout_constraintEnd_toEndOf="@+id/floatingActionHistory"
+            app:layout_constraintStart_toStartOf="@+id/floatingActionHistory"
+            app:srcCompat="@drawable/ic_fab_check_24dp" />
+
+        <TextView
+            android:id="@+id/text_apply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/fab_text_background"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:padding="5dp"
+            android:text="@string/title_apply"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/floatingActionAply"
+            app:layout_constraintEnd_toStartOf="@id/floatingActionAply"
+            app:layout_constraintTop_toTopOf="@id/floatingActionAply" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onHistoryClick"
+            android:visibility="invisible"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@id/floatingActionButton"
+            app:layout_constraintEnd_toEndOf="@+id/floatingActionButton"
+            app:layout_constraintStart_toStartOf="@+id/floatingActionButton"
+            app:srcCompat="@drawable/ic_fab_history_24dp" />
+
+        <TextView
+            android:id="@+id/text_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/fab_text_background"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:padding="5dp"
+            android:text="@string/title_history"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/floatingActionHistory"
+            app:layout_constraintEnd_toStartOf="@id/floatingActionHistory"
+            app:layout_constraintTop_toTopOf="@id/floatingActionHistory" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onActionClick"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_fab_add_24dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

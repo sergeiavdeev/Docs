@@ -16,6 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.DocFragment;
+import com.avdeev.docs.core.database.entity.DocumentInbox;
 import com.avdeev.docs.core.network.pojo.Document;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.ui.docDetail.DocDetailActivity;
@@ -87,12 +88,12 @@ public class DocInFragment extends DocFragment {
     @Contract(value = " -> new", pure = true)
     private ItemClickListener createClickListener() {
 
-        return new ItemClickListener() {
+        return new ItemClickListener<DocumentInbox>() {
             @Override
-            public void onItemClick(Object object) {
+            public void onItemClick(DocumentInbox documentInbox) {
 
                 Intent intent = new Intent(getActivity(), DocDetailActivity.class);
-                intent.putExtra("id", (Document)object);
+                intent.putExtra("document", Document.create(documentInbox));
                 intent.putExtra("type", "inbox");
                 intent.putExtra("caption", "Входящие");
                 startActivity(intent);

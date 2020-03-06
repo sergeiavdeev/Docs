@@ -21,4 +21,10 @@ public interface DocOutbox {
 
     @Query("DELETE FROM DocumentOutbox")
     void clear();
+
+    @Query("SELECT COUNT(id) FROM DocumentOutbox")
+    long getCount();
+
+    @Query("SELECT MAX(updated_at) FROM DocumentOutbox")
+    long getLastUpdateTime();
 }

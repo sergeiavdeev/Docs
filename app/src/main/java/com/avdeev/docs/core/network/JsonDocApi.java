@@ -6,7 +6,7 @@ import com.avdeev.docs.core.database.entity.DocumentOutbox;
 import com.avdeev.docs.core.network.pojo.CommonResponse;
 import com.avdeev.docs.core.network.pojo.DocumentResponse;
 import com.avdeev.docs.core.network.pojo.DocumentsResponse;
-import com.avdeev.docs.core.network.pojo.HistoryResponse;
+import com.avdeev.docs.core.network.pojo.ActionsResponse;
 import com.avdeev.docs.core.network.pojo.Login;
 import com.avdeev.docs.core.network.pojo.TaskActionRequest;
 import com.avdeev.docs.core.network.pojo.TasksResponse;
@@ -45,8 +45,17 @@ public interface JsonDocApi {
     Call<ResponseBody>getFile(@Query("id") String id);
 
     @GET("history")
-    Call<HistoryResponse>getHistory(@Query("idtask") String taskId);
+    Call<ActionsResponse>getHistory(@Query("idtask") String taskId);
 
     @GET("history")
-    Call<HistoryResponse> getHistory(@Query("id") String id, @Query("chapter") String chapter);
+    Call<ActionsResponse> getHistory(@Query("iddocument") String id, @Query("chapter") String chapter);
+
+    @GET("visas")
+    Call<ActionsResponse> getVisas(@Query("iddocument") String id, @Query("chapter") String chapter);
+
+    @GET("resolutions")
+    Call<ActionsResponse> getResolutions(@Query("iddocument") String id, @Query("chapter") String chapter);
+
+    @GET("mailing")
+    Call<ActionsResponse> getMailing(@Query("iddocument") String id, @Query("chapter") String chapter);
 }

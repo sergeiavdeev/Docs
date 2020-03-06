@@ -12,7 +12,7 @@ public class DocumentOutbox {
     public String author;
     public String type;
     public String number;
-    @ColumnInfo(name = "updated_at") public long updatedAt;
+    public long updated_at;
     public long date;
 
     public DocumentOutbox(String id, String title) {

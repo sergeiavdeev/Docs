@@ -137,7 +137,7 @@ public class TaskActivity extends AppCompatActivity {
         intent.putExtra("ownerId", task.id);
         intent.putExtra("ownerType", "task");
         intent.putExtra("actionType", "history");
-
+        intent.putExtra("caption", "История");
         startActivity(intent);
     }
 

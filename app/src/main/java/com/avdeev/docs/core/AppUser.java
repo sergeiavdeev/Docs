@@ -182,6 +182,7 @@ public class AppUser {
         return result;
     }
 
+    /*
     public ArrayList<Document> getDocInList() {
 
         if (docsIn.size() > 0) {
@@ -262,7 +263,7 @@ public class AppUser {
 
         return docsInner;
     }
-
+    */
     /*
     public ArrayList<AppTask> getTaskList() throws Exception {
 
@@ -294,6 +295,7 @@ public class AppUser {
         return taskList;
     }
     */
+    /*
     public int updateDocList(String type) {
 
         int addRows = 0;
@@ -512,6 +514,7 @@ public class AppUser {
 
         return addRows;
     }
+    */
 
     @NotNull
     private String getHex(@NotNull byte [] bytes) {

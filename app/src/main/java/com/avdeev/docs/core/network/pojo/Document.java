@@ -2,6 +2,9 @@ package com.avdeev.docs.core.network.pojo;
 
 import android.database.Cursor;
 
+import com.avdeev.docs.core.database.entity.DocumentInbox;
+import com.avdeev.docs.core.database.entity.DocumentInner;
+import com.avdeev.docs.core.database.entity.DocumentOutbox;
 import com.avdeev.docs.core.database.entity.File;
 
 import org.jetbrains.annotations.NotNull;
@@ -12,116 +15,58 @@ import java.util.List;
 
 public class Document extends BaseDocument {
 
-    private String author;
-    private String number;
-    private String type;
-    private String status;
-    private String recipient;
-    private String signer;
-    private String department;
-    private long updated_at;
-    private long date;
+    public long created_at;
+    public String description;
+    public String addressee;
+    public String status;
+    public String signee;
+    public String department;
 
-    private List<File> files;
+    public List<File> files;
 
-    public Document(String id, String title, String author) {
-
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        number = "";
-        type = "";
-        updated_at = 0;
-        date = 0;
+    public Document() {
+        super();
+        created_at = 0;
+        addressee = "";
+        signee = "";
+        department = "";
         files = new ArrayList<>();
     }
 
-    public Document(@NotNull Document document) {
-
-        id = document.getId();
-        title = document.getTitle();
-        author = document.getAuthor();
-        type = document.getType();
-        number = document.getNumber();
-        date = document.getDate();
-        updated_at = document.getUpdated_at();
-        files = new ArrayList<>();
+    public static Document create(DocumentInbox doc) {
+        Document newDoc = new Document();
+        newDoc.id = doc.id;
+        newDoc.title = doc.title;
+        newDoc.author = doc.author;
+        newDoc.type = doc.type;
+        newDoc.number = doc.number;
+        newDoc.updated_at = doc.updated_at;
+        newDoc.date = doc.date;
+        return newDoc;
     }
 
-    public Document(@NotNull Cursor cursor) {
-
-        id = cursor.getString(cursor.getColumnIndex("id"));
-        title = cursor.getString(cursor.getColumnIndex("title"));
-        author = cursor.getString(cursor.getColumnIndex("author"));
-        number = cursor.getString(cursor.getColumnIndex("number"));
-        type = cursor.getString(cursor.getColumnIndex("type"));
-        updated_at = cursor.getLong(cursor.getColumnIndex("updated_at"));
-        date = cursor.getLong(cursor.getColumnIndex("date"));
-        files = new ArrayList<>();
+    public static Document create(DocumentOutbox doc) {
+        Document newDoc = new Document();
+        newDoc.id = doc.id;
+        newDoc.title = doc.title;
+        newDoc.author = doc.author;
+        newDoc.type = doc.type;
+        newDoc.number = doc.number;
+        newDoc.updated_at = doc.updated_at;
+        newDoc.date = doc.date;
+        return newDoc;
     }
 
-    public String getAuthor() {
-        return author;
+    public static Document create(DocumentInner doc) {
+        Document newDoc = new Document();
+        newDoc.id = doc.id;
+        newDoc.title = doc.title;
+        newDoc.author = doc.author;
+        newDoc.type = doc.type;
+        newDoc.number = doc.number;
+        newDoc.updated_at = doc.updated_at;
+        newDoc.date = doc.date;
+        return newDoc;
     }
 
-    public String getNumber() {
-        return number;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public long getUpdated_at() {
-        return updated_at;
-    }
-
-    public long getDate() {
-        return date;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public String getRecipient() {
-        return recipient;
-    }
-
-    public String getSigner() {
-        return signer;
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
-
-
-    public void setFiles(List<File> files) {
-        this.files = files;
-    }
-
-    public void fromJson(JSONObject object) {
-
-        try {
-            date = object.getLong("date");
-            description = object.getString("description");
-            recipient = object.getString("addressee");
-            status = object.getString("status");
-            signer = object.getString("signee");
-            department = object.getString("department");
-
-            JSONArray jsonFiles = object.getJSONArray("files");
-
-            for (int i = 0; i < jsonFiles.length(); i++) {
-                JSONObject file = jsonFiles.getJSONObject(i);
-
-                //appFiles.add(new AppFile(file));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

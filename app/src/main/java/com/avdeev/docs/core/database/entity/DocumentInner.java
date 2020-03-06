@@ -12,7 +12,7 @@ public class DocumentInner {
     public String author;
     public String type;
     public String number;
-    @ColumnInfo(name = "updated_at") public long updatedAt;
+    public long updated_at;
     public long date;
 
     public DocumentInner(String id, String title) {

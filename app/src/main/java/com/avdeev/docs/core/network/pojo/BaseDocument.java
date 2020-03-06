@@ -8,38 +8,17 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 public class BaseDocument extends Object implements Serializable {
-    protected String id;
-    protected String title;
-    protected String description;
+
+    public String id;
+    public String title;
+    public String author;
+    public String type;
+    public String number;
+    public long updated_at;
+    public long date;
 
     public BaseDocument() {
-        id = "";
-        title = "";
-        description = "";
-    }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     @NotNull

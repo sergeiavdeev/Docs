@@ -7,7 +7,13 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.avdeev.docs.core.DocAppModel;
+import com.avdeev.docs.core.network.NetworkService;
 import com.avdeev.docs.core.network.pojo.Document;
+import com.avdeev.docs.core.network.pojo.DocumentResponse;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DocDetailViewModel extends DocAppModel {
 
@@ -19,7 +25,7 @@ public class DocDetailViewModel extends DocAppModel {
         super(app);
 
         document = new MutableLiveData<>();
-        document.setValue(new Document("", "", ""));
+        document.setValue(new Document());
 
         filesVisible = new MutableLiveData<>();
         filesVisible.setValue(false);
@@ -47,24 +53,23 @@ public class DocDetailViewModel extends DocAppModel {
 
     public void updateDocument(final String type) {
 
-        wait.setValue(true);
+        setWait(true);
+        NetworkService.getInstance().getApi()
+                .getDocument(type, document.getValue().id)
+                .enqueue(new Callback<DocumentResponse>() {
+                    @Override
+                    public void onResponse(Call<DocumentResponse> call, Response<DocumentResponse> response) {
+                        setWait(false);
+                        if (response.isSuccessful()) {
+                            document.setValue(response.body().document);
+                        }
+                    }
 
-        new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] objects) {
-
-                return appUser.updateDocument(document.getValue(), type);
-            }
-
-            @Override
-            protected void onPostExecute(Object result) {
-                super.onPostExecute(result);
-
-                wait.setValue(false);
-                document.setValue((Document)result);
-            }
-
-        }.execute();
+                    @Override
+                    public void onFailure(Call<DocumentResponse> call, Throwable t) {
+                        setWait(false);
+                    }
+                });
     }
 
     public void changeFileVisible() {

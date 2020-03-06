@@ -21,4 +21,10 @@ public interface DocInner {
 
     @Query("DELETE FROM DocumentInner")
     void clear();
+
+    @Query("SELECT COUNT(id) FROM DocumentInner")
+    long getCount();
+
+    @Query("SELECT MAX(updated_at) FROM DocumentInner")
+    long getLastUpdateTime();
 }

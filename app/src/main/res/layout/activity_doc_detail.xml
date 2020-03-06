@@ -1,399 +1,516 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.avdeev.docs.core.network.pojo.BaseDocument" />
+
+        <variable
+            name="docViewModel"
+            type="com.avdeev.docs.ui.docDetail.DocDetailViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="80dp"
-        android:animateLayoutChanges="true">
+        android:layout_height="match_parent">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/title_card"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_margin="5dp"
-            >
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="5dp"
-                android:padding="5dp"
-                >
-
-                <TextView
-                    android:id="@+id/title_doc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:textSize="22sp"
-                    android:text="@string/title_doc"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:layout_marginBottom="5dp"
-                    />
-
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/title_doc"
-                    android:textSize="18sp"
-                    android:text="@string/void_string"
-                    android:textColor="@color/colorPrimaryDark"
-                    />
-
-                <TextView
-                    android:id="@+id/title_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/title"
-                    android:textSize="18sp"
-                    android:text="@string/title_reg_number"
-                    android:paddingTop="5dp"
-                    android:textColor="@color/colorPrimaryDark"/>
-
-                <TextView
-                    android:id="@+id/number"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/void_string"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/title_number"
-                    app:layout_constraintTop_toBottomOf="@id/title"
-                    android:textSize="18sp"
-                    android:textColor="@color/colorPrimary"
-                    android:paddingTop="5dp"
-                    android:gravity="end" />
-
-                <TextView
-                    android:id="@+id/title_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/number"
-                    android:textSize="18sp"
-                    android:text="@string/title_reg_date"
-                    android:paddingTop="5dp"
-                    android:textColor="@color/colorPrimaryDark"/>
-
-                <TextView
-                    android:id="@+id/date"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/void_string"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/title_date"
-                    app:layout_constraintTop_toBottomOf="@id/number"
-                    android:textSize="18sp"
-                    android:paddingTop="5dp"
-                    android:textColor="@color/colorPrimary"
-                    android:gravity="end" />
-
-                <TextView
-                    android:id="@+id/title_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/date"
-                    android:textSize="18sp"
-                    android:paddingTop="5dp"
-                    android:text="@string/title_status"
-                    android:textColor="@color/colorPrimaryDark"/>
-
-                <TextView
-                    android:id="@+id/status"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/void_string"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/title_date"
-                    app:layout_constraintTop_toBottomOf="@id/date"
-                    android:textSize="18sp"
-                    android:paddingTop="5dp"
-                    android:textColor="@color/colorPrimary"
-                    android:gravity="end" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/description_card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title_card"
-            android:layout_margin="5dp"
-            >
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="5dp"
-                android:padding="5dp"
-                >
-
-                <TextView
-                    android:id="@+id/title_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:textSize="22sp"
-                    android:text="@string/title_description"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:layout_marginBottom="5dp"
-                    />
-
-                <TextView
-                    android:id="@+id/description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/title_description"
-                    android:textSize="18sp"
-                    android:text="@string/void_string"
-                    android:textColor="@color/colorPrimaryDark"
-                    />
-
-                <TextView
-                    android:id="@+id/title_author"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/description"
-                    android:textSize="18sp"
-                    android:text="@string/title_author"
-                    android:paddingTop="5dp"
-                    android:textColor="@color/colorPrimaryDark"/>
-
-                <TextView
-                    android:id="@+id/author"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/void_string"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/title_author"
-                    app:layout_constraintTop_toBottomOf="@id/description"
-                    android:textSize="18sp"
-                    android:paddingTop="5dp"
-                    android:textColor="@color/colorPrimary"
-                    android:gravity="end" />
-
-                <TextView
-                    android:id="@+id/title_recipient"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/author"
-                    android:textSize="18sp"
-                    android:text="@string/title_recipient"
-                    android:paddingTop="5dp"
-                    android:textColor="@color/colorPrimaryDark"/>
-
-                <TextView
-                    android:id="@+id/recipient"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/void_string"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/title_recipient"
-                    app:layout_constraintTop_toBottomOf="@id/author"
-                    android:textSize="18sp"
-                    android:paddingTop="5dp"
-                    android:textColor="@color/colorPrimary"
-                    android:gravity="end" />
-
-                <TextView
-                    android:id="@+id/title_signer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/recipient"
-                    android:textSize="18sp"
-                    android:text="@string/title_signer"
-                    android:paddingTop="5dp"
-                    android:textColor="@color/colorPrimaryDark"/>
-
-                <TextView
-                    android:id="@+id/signer"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/void_string"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/title_signer"
-                    app:layout_constraintTop_toBottomOf="@id/recipient"
-                    android:textSize="18sp"
-                    android:paddingTop="5dp"
-                    android:textColor="@color/colorPrimary"
-                    android:gravity="end" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/files_card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/description_card"
-            android:layout_margin="5dp"
-            android:onClick="onFilesClick"
-            >
+            android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:padding="5dp"
                 android:animateLayoutChanges="true"
-                >
+                android:paddingBottom="80dp">
 
-                <TextView
-                    android:id="@+id/title_files"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:textSize="22sp"
-                    android:text="@string/title_files"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:layout_marginBottom="5dp" />
-
-                <ImageView
-                    android:id="@+id/image_files"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:contentDescription="@string/void_string"
-                    app:srcCompat="@drawable/ic_collapse_down_black_24dp"
-                    android:animateLayoutChanges="true"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/list_file"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/title_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_margin="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/title_files"
-                    />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="5dp"
+                        android:paddingTop="5dp">
+
+                        <TextView
+                            android:id="@+id/title_doc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="@string/title_doc"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="22sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{docViewModel.document.title}"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/title_doc" />
+
+                        <TextView
+                            android:id="@+id/title_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:text="@string/title_reg_number"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/title" />
+
+                        <TextView
+                            android:id="@+id/number"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:paddingTop="5dp"
+                            android:text="@{docViewModel.document.number}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/title_number"
+                            app:layout_constraintTop_toBottomOf="@id/title" />
+
+                        <TextView
+                            android:id="@+id/title_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:text="@string/title_reg_date"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/number" />
+
+                        <TextView
+                            android:id="@+id/date"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:paddingTop="5dp"
+                            android:text="@{BaseDocument.dateFromLong(docViewModel.document.date)}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/title_date"
+                            app:layout_constraintTop_toBottomOf="@id/number" />
+
+                        <TextView
+                            android:id="@+id/title_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:text="@string/title_status"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/date" />
+
+                        <TextView
+                            android:id="@+id/status"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:paddingTop="5dp"
+                            android:text="@{docViewModel.document.status}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/title_date"
+                            app:layout_constraintTop_toBottomOf="@id/date" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/description_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/title_card">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="5dp"
+                        android:paddingTop="5dp">
+
+                        <TextView
+                            android:id="@+id/title_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="@string/title_description"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="22sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{docViewModel.document.description}"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/title_description" />
+
+                        <TextView
+                            android:id="@+id/title_author"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:text="@string/title_author"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/description" />
+
+                        <TextView
+                            android:id="@+id/author"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:paddingTop="5dp"
+                            android:text="@{docViewModel.document.author}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/title_author"
+                            app:layout_constraintTop_toBottomOf="@id/description" />
+
+                        <TextView
+                            android:id="@+id/title_recipient"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:text="@string/title_recipient"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/author" />
+
+                        <TextView
+                            android:id="@+id/recipient"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:paddingTop="5dp"
+                            android:text="@{docViewModel.document.addressee}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/title_recipient"
+                            app:layout_constraintTop_toBottomOf="@id/author" />
+
+                        <TextView
+                            android:id="@+id/title_signer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:text="@string/title_signer"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/recipient" />
+
+                        <TextView
+                            android:id="@+id/signer"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:paddingTop="5dp"
+                            android:text="@{docViewModel.document.signee}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/title_signer"
+                            app:layout_constraintTop_toBottomOf="@id/recipient" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/files_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:onClick="onFilesClick"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/description_card">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
+                        android:padding="5dp"
+                        android:paddingTop="5dp">
+
+                        <TextView
+                            android:id="@+id/title_files"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+
+                            android:text="@string/title_files"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="22sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/image_files"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:animateLayoutChanges="true"
+                            android:contentDescription="@string/void_string"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@{docViewModel.getFileVisible() ? @drawable/ic_collapse_up_black_24dp : @drawable/ic_collapse_down_black_24dp}" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/list_file"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="@{docViewModel.getFileVisible() ? View.VISIBLE : View.GONE}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/title_files" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/more_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:onClick="onMoreClick"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/files_card"
+                    android:visibility="gone">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:paddingTop="5dp">
+
+                        <TextView
+                            android:id="@+id/title_more"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="@string/title_more"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="22sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/image_more"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/void_string"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_collapse_down_black_24dp" />
+
+                        <LinearLayout
+                            android:id="@+id/more_buttons"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/title_more">
+
+                            <Button
+                                android:id="@+id/button_history"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:onClick="onHistoryClick"
+                                android:text="@string/title_history"
+                                android:textColor="@color/colorPrimary"
+                                tools:ignore="MissingConstraints">
+
+                            </Button>
+
+                            <Button
+                                android:id="@+id/button_visa"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:onClick="onVisaClick"
+                                android:text="@string/title_visa"
+                                android:textColor="@color/colorPrimary"
+                                app:layout_constraintTop_toBottomOf="@id/button_history"
+                                tools:ignore="MissingConstraints">
+
+                            </Button>
+
+                            <Button
+                                android:id="@+id/button_resolution"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:onClick="onResolutionClick"
+                                android:text="@string/title_resolution"
+                                android:textColor="@color/colorPrimary"
+                                app:layout_constraintTop_toBottomOf="@id/button_visa"
+                                tools:ignore="MissingConstraints">
+
+                            </Button>
+
+                            <Button
+                                android:id="@+id/button_mailer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:onClick="onMailerClick"
+                                android:text="@string/title_mailer"
+                                android:textColor="@color/colorPrimary"
+                                app:layout_constraintTop_toBottomOf="@id/button_resolution"
+                                tools:ignore="MissingConstraints">
+
+                            </Button>
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/more_card"
-            android:layout_width="match_parent"
+        </ScrollView>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionCancel"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onCancelClick"
+            android:visibility="invisible"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@id/floatingActionAply"
+            app:layout_constraintEnd_toEndOf="@+id/floatingActionAply"
+            app:layout_constraintStart_toStartOf="@+id/floatingActionAply"
+            app:srcCompat="@drawable/ic_fab_cancel_24dp" />
+
+        <TextView
+            android:id="@+id/text_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/fab_text_background"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:padding="5dp"
+            android:text="@string/title_cancel"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/floatingActionCancel"
+            app:layout_constraintEnd_toStartOf="@id/floatingActionCancel"
+            app:layout_constraintTop_toTopOf="@id/floatingActionCancel" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionAply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onApplyClick"
+            android:visibility="invisible"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@id/floatingActionHistory"
+            app:layout_constraintEnd_toEndOf="@+id/floatingActionHistory"
+            app:layout_constraintStart_toStartOf="@+id/floatingActionHistory"
+            app:srcCompat="@drawable/ic_fab_check_24dp" />
+
+        <TextView
+            android:id="@+id/text_apply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/fab_text_background"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:padding="5dp"
+            android:text="@string/title_apply"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/floatingActionAply"
+            app:layout_constraintEnd_toStartOf="@id/floatingActionAply"
+            app:layout_constraintTop_toTopOf="@id/floatingActionAply" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onHistoryClick"
+            android:visibility="invisible"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@id/floatingActionButton"
+            app:layout_constraintEnd_toEndOf="@+id/floatingActionButton"
+            app:layout_constraintStart_toStartOf="@+id/floatingActionButton"
+            app:srcCompat="@drawable/ic_fab_history_24dp" />
+
+        <TextView
+            android:id="@+id/text_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/fab_text_background"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:padding="5dp"
+            android:text="@string/title_history"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/floatingActionHistory"
+            app:layout_constraintEnd_toStartOf="@id/floatingActionHistory"
+            app:layout_constraintTop_toTopOf="@id/floatingActionHistory" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onActionClick"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/files_card"
-            android:layout_margin="5dp"
-            android:onClick="onMoreClick"
-            >
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:padding="5dp" >
-
-                <TextView
-                    android:id="@+id/title_more"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:textSize="22sp"
-                    android:text="@string/title_more"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:layout_marginBottom="5dp" />
-
-                <ImageView
-                    android:id="@+id/image_more"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:contentDescription="@string/void_string"
-                    app:srcCompat="@drawable/ic_collapse_down_black_24dp" />
-
-                <LinearLayout android:orientation="vertical"
-                    android:id="@+id/more_buttons"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/title_more" >
-
-                <Button
-                    android:id="@+id/button_history"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:ignore="MissingConstraints"
-                    android:text="@string/title_history"
-                    android:textColor="@color/colorPrimary"
-                    android:onClick="onHistoryClick">
-
-                </Button>
-
-                <Button
-                    android:id="@+id/button_visa"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/button_history"
-                    tools:ignore="MissingConstraints"
-                    android:text="@string/title_visa"
-                    android:textColor="@color/colorPrimary"
-                    android:onClick="onVisaClick">
-
-                </Button>
-
-                <Button
-                    android:id="@+id/button_resolution"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/button_visa"
-                    tools:ignore="MissingConstraints"
-                    android:text="@string/title_resolution"
-                    android:textColor="@color/colorPrimary"
-                    android:onClick="onResolutionClick">
-
-                </Button>
-
-                <Button
-                    android:id="@+id/button_mailer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/button_resolution"
-                    tools:ignore="MissingConstraints"
-                    android:text="@string/title_mailer"
-                    android:textColor="@color/colorPrimary"
-                    android:onClick="onMailerClick">
-
-                </Button>
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-
+            app:srcCompat="@drawable/ic_fab_add_24dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</ScrollView>
+</layout>

@@ -32,7 +32,7 @@ public class DocListAdapter extends BaseAdapter<Document> {
 
     @Override
     protected Document copyObject(Document object) {
-        return new Document(object);
+        return new Document();
     }
 
     @Override
@@ -41,13 +41,13 @@ public class DocListAdapter extends BaseAdapter<Document> {
         boolean result = false;
 
 
-
+        /*
         if (document.getTitle().toUpperCase().contains(text) ||
             document.getAuthor().toUpperCase().contains(text) ||
             document.getNumber().toUpperCase().contains(text)) {
 
             result = true;
-        }
+        }*/
 
         return result;
     }
@@ -60,8 +60,8 @@ public class DocListAdapter extends BaseAdapter<Document> {
         @Override
         protected void bind(Document document) {
 
-            nameView.setText(document.getTitle());
-            authorView.setText(document.getAuthor());
+            //nameView.setText(document.getTitle());
+            //authorView.setText(document.getAuthor());
         }
 
         public DocHolder(View view) {
