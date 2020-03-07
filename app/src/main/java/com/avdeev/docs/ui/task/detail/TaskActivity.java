@@ -44,7 +44,7 @@ import org.jetbrains.annotations.NotNull;
 
 @BindingMethods({
         @BindingMethod(type = android.widget.ImageView.class,
-                attribute = "app:srcCompat",
+                attribute = "srcCompat",
                 method = "setImageDrawable") })
 
 public class TaskActivity extends AppCompatActivity {
