@@ -28,17 +28,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AppDoc app = (AppDoc)getApplication();
-
-        if (!app.getAppUser().isAuth()) {
+        if (!AppUser.isAuth()) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
 
         NetworkService.getInstance(AppUser.getApiUrl())
-                .setPasswordHash(AppUser.getHash())
-                .setAuthKey(AppUser.getKey());
+                .setPasswordHash(AppUser.getPasswordHash())
+                .setAuthKey(AppUser.getDeviceKey());
 
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);

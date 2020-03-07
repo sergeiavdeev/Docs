@@ -2,7 +2,7 @@ package com.avdeev.docs.core.network.pojo;
 
 import org.json.JSONObject;
 
-public class Action extends Object {
+public class Action {
 
     private long date;
     private String person;

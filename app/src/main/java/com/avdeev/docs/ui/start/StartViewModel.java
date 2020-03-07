@@ -33,7 +33,7 @@ public class StartViewModel extends DocAppModel {
                 db.user().add(new User("", ""));
                 user = db.user().getOne();
             }
-            AppUser.setKey(user.key);
+            AppUser.setDeviceKey(user.key);
             AppUser.setApiUrl(user.apiUrl);
             AppUser.setHash(user.hash);
             AppUser.setAuth(user.hash.length()>0);

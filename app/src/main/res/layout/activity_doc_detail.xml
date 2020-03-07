@@ -404,23 +404,23 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionCancel"
+            android:id="@+id/floatingActionMailing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:backgroundTint="@color/colorPrimaryDark"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onCancelClick"
+            android:onClick="onMailerClick"
             android:visibility="invisible"
             app:fabSize="mini"
-            app:layout_constraintBottom_toTopOf="@id/floatingActionAply"
-            app:layout_constraintEnd_toEndOf="@+id/floatingActionAply"
-            app:layout_constraintStart_toStartOf="@+id/floatingActionAply"
-            app:srcCompat="@drawable/ic_fab_cancel_24dp" />
+            app:layout_constraintBottom_toTopOf="@id/floatingActionResolution"
+            app:layout_constraintEnd_toEndOf="@+id/floatingActionResolution"
+            app:layout_constraintStart_toStartOf="@+id/floatingActionResolution"
+            app:srcCompat="@drawable/ic_fab_mailing_24dp" />
 
         <TextView
-            android:id="@+id/text_cancel"
+            android:id="@+id/text_mailing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
@@ -431,28 +431,60 @@
             android:textColor="@color/colorPrimary"
             android:textSize="18sp"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@id/floatingActionCancel"
-            app:layout_constraintEnd_toStartOf="@id/floatingActionCancel"
-            app:layout_constraintTop_toTopOf="@id/floatingActionCancel" />
+            app:layout_constraintBottom_toBottomOf="@id/floatingActionMailing"
+            app:layout_constraintEnd_toStartOf="@id/floatingActionMailing"
+            app:layout_constraintTop_toTopOf="@id/floatingActionMailing" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionAply"
+            android:id="@+id/floatingActionResolution"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:backgroundTint="@color/colorPrimaryDark"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onApplyClick"
+            android:onClick="onResolutionClick"
+            android:visibility="invisible"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@id/floatingActionVisas"
+            app:layout_constraintEnd_toEndOf="@+id/floatingActionVisas"
+            app:layout_constraintStart_toStartOf="@+id/floatingActionVisas"
+            app:srcCompat="@drawable/ic_fab_resolutions_24dp" />
+
+        <TextView
+            android:id="@+id/text_resolution"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/fab_text_background"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:padding="5dp"
+            android:text="@string/title_cancel"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/floatingActionResolution"
+            app:layout_constraintEnd_toStartOf="@id/floatingActionResolution"
+            app:layout_constraintTop_toTopOf="@id/floatingActionResolution" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionVisas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onVisaClick"
             android:visibility="invisible"
             app:fabSize="mini"
             app:layout_constraintBottom_toTopOf="@id/floatingActionHistory"
             app:layout_constraintEnd_toEndOf="@+id/floatingActionHistory"
             app:layout_constraintStart_toStartOf="@+id/floatingActionHistory"
-            app:srcCompat="@drawable/ic_fab_check_24dp" />
+            app:srcCompat="@drawable/ic_fab_visas_24dp" />
 
         <TextView
-            android:id="@+id/text_apply"
+            android:id="@+id/text_visas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
@@ -463,9 +495,9 @@
             android:textColor="@color/colorPrimary"
             android:textSize="18sp"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@id/floatingActionAply"
-            app:layout_constraintEnd_toStartOf="@id/floatingActionAply"
-            app:layout_constraintTop_toTopOf="@id/floatingActionAply" />
+            app:layout_constraintBottom_toBottomOf="@id/floatingActionVisas"
+            app:layout_constraintEnd_toStartOf="@id/floatingActionVisas"
+            app:layout_constraintTop_toTopOf="@id/floatingActionVisas" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingActionHistory"

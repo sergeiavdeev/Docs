@@ -41,34 +41,43 @@ public class TaskViewModel extends DocAppModel {
     public void updateTasksFromNetwork() {
 
         setWait(true);
+        DocDatabase db = DocDatabase.getInstance();
+        DocDatabase.executor.execute(() -> {
+            long lastUpdateTime = db.task().getLastUpdateTime();
+            NetworkService.getInstance()
+                    .getApi()
+                    .getTasks(lastUpdateTime)
+                    .enqueue(new Callback<TasksResponse>() {
 
-        NetworkService.getInstance()
-                .getApi()
-                .getTasks()
-                .enqueue(new Callback<TasksResponse>() {
-                    @Override
-                    public void onResponse(Call<TasksResponse> call, Response<TasksResponse> response) {
-                        setWait(false);
-                        List<Task> tasks = response.body().tasks;
-
-                        if (tasks != null) {
-
-                            for (Task task:tasks) {
-
-                                TaskWithFiles taskWithFiles = TaskWithFiles.create(task);
-
-                                DocDatabase db = DocDatabase.getInstance();
-                                DocDatabase.executor.execute(() -> {
-                                    db.task().add(taskWithFiles);
-                                });
+                        @Override
+                        public void onResponse(Call<TasksResponse> call, Response<TasksResponse> response) {
+                            setWait(false);
+                            List<Task> tasks = response.body().tasks;
+                            if (tasks != null) {
+                                addTasksToDatabase(tasks);
                             }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<TasksResponse> call, Throwable t) {
-                        setWait(false);
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<TasksResponse> call, Throwable t) {
+                            setWait(false);
+                        }
+                    });
+        });
+    }
+
+    private void addTasksToDatabase(List<Task> tasks) {
+
+        DocDatabase db = DocDatabase.getInstance();
+        for (Task task:tasks) {
+            TaskWithFiles taskWithFiles = TaskWithFiles.create(task);
+            DocDatabase.executor.execute(() -> {
+                db.task().add(taskWithFiles);
+            });
+        }
+
+        if (tasks.size() >= NetworkService.API_PAGE_SIZE) {
+            updateTasksFromNetwork();
+        }
     }
 }

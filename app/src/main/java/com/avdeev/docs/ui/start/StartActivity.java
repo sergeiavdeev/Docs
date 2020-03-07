@@ -14,8 +14,6 @@ import com.avdeev.docs.ui.settings.SettingsActivity;
 
 public class StartActivity extends AppCompatActivity {
 
-    private StartViewModel startViewModel;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +22,7 @@ public class StartActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_start);
 
-        startViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(StartViewModel.class);
+        StartViewModel startViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(StartViewModel.class);
 
         startViewModel.isComplete().observe(this, (Boolean complete) -> {
             if (complete) {

@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskWithFiles extends Object implements Serializable {
+public class TaskWithFiles implements Serializable {
     @Embedded public Task task;
     @Relation(
         parentColumn = "id",

@@ -71,4 +71,7 @@ public abstract class Tasks {
             "number LIKE '%' || :search || '%' " +
             "ORDER BY updated_at DESC")
     public abstract DataSource.Factory<Integer, TaskWithFiles>taskByDate(String search);
+
+    @Query("SELECT MAX(updated_at) FROM Task")
+    public abstract long getLastUpdateTime();
 }

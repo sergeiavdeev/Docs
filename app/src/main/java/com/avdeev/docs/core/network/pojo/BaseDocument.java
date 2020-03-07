@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.Calendar;
 
-public class BaseDocument extends Object implements Serializable {
+public class BaseDocument implements Serializable {
 
     public String id;
     public String title;

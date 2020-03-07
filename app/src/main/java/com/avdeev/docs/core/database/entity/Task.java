@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Task extends Object implements Serializable {
+public class Task implements Serializable {
     @PrimaryKey @NonNull
     public String id;
 

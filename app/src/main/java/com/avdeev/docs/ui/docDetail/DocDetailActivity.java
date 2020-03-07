@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,6 +35,7 @@ import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.databinding.ActivityDocDetailBinding;
 import com.avdeev.docs.ui.action.ActionsActivity;
 import com.avdeev.docs.ui.listAdapters.FileListAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -48,6 +51,8 @@ public class DocDetailActivity extends AppCompatActivity {
     private String docType;
     DocDetailViewModel docViewModel;
     FileListViewModel fileListViewModel;
+    Animation fab_clock, fab_anticlock, fab_open, fab_close;
+    FloatingActionButton fab, fab_history, fab_mailing, fab_resolution, fab_visas;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,8 +61,6 @@ public class DocDetailActivity extends AppCompatActivity {
         doc = (Document)getIntent().getExtras().getSerializable("document");
         docType = getIntent().getStringExtra("type");
 
-        initActionBar();
-
         docViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(DocDetailViewModel.class);
         docViewModel.setDocument(doc);
@@ -65,6 +68,9 @@ public class DocDetailActivity extends AppCompatActivity {
         ActivityDocDetailBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_doc_detail);
         binding.setDocViewModel(docViewModel);
         binding.setLifecycleOwner(this);
+
+        initActionBar();
+        initFab();
 
         fileListViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(FileListViewModel.class);
@@ -94,6 +100,14 @@ public class DocDetailActivity extends AppCompatActivity {
             }
         });
 
+        docViewModel.isFabOpen().observe(this, (Boolean open) -> {
+            if (open) {
+                openFab();
+            } else {
+                closeFab();
+            }
+        });
+
         fileListViewModel.getFileListAdapter().observe(this, (FileListAdapter fileListAdapter) -> {
             fileList.setAdapter(fileListAdapter);
         });
@@ -119,6 +133,10 @@ public class DocDetailActivity extends AppCompatActivity {
         actionBar.setSubtitle(doc.type + " №" + doc.number + " от " + BaseDocument.dateFromLong(doc.updated_at));
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
+    }
+
+    public void onActionClick(View view) {
+        docViewModel.changeFabOpen();
     }
 
     public void onHistoryClick(View view) {
@@ -212,5 +230,52 @@ public class DocDetailActivity extends AppCompatActivity {
     private Uri getFileUri(java.io.File file) {
 
         return FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID, file);
+    }
+
+    private void initFab() {
+        fab = findViewById(R.id.floatingActionButton);
+        fab_history = findViewById(R.id.floatingActionHistory);
+        fab_resolution = findViewById(R.id.floatingActionResolution);
+        fab_mailing = findViewById(R.id.floatingActionMailing);
+        fab_visas = findViewById(R.id.floatingActionVisas);
+
+        fab_history.setClickable(false);
+        fab_resolution.setClickable(false);
+        fab_mailing.setClickable(false);
+        fab_visas.setClickable(false);
+
+        fab_clock = AnimationUtils.loadAnimation(this, R.anim.fab_rotate_clock);
+        fab_anticlock = AnimationUtils.loadAnimation(this, R.anim.fab_rotate_anticlock);
+        fab_open = AnimationUtils.loadAnimation(this, R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(this, R.anim.fab_close);
+    }
+
+    private void openFab() {
+        fab.startAnimation(fab_clock);
+        fab_history.startAnimation(fab_open);
+        fab_resolution.startAnimation(fab_open);
+        fab_visas.startAnimation(fab_open);
+        fab_mailing.startAnimation(fab_open);
+
+        fab_history.setClickable(true);
+        fab_resolution.setClickable(true);
+        fab_visas.setClickable(true);
+        fab_mailing.setClickable(true);
+    }
+
+    private void closeFab() {
+
+        if (fab_history.isClickable()) {
+            fab.startAnimation(fab_anticlock);
+            fab_history.startAnimation(fab_close);
+            fab_resolution.startAnimation(fab_close);
+            fab_visas.startAnimation(fab_close);
+            fab_mailing.startAnimation(fab_close);
+
+            fab_history.setClickable(false);
+            fab_resolution.setClickable(false);
+            fab_visas.setClickable(false);
+            fab_mailing.setClickable(false);
+        }
     }
 }

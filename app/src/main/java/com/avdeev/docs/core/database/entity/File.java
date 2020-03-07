@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 import java.io.Serializable;
 
 @Entity
-public class File extends Object implements Serializable {
+public class File implements Serializable {
     @PrimaryKey (autoGenerate = true) public long _id;
     public String id;
     @ColumnInfo(name = "task_id") public String taskId;

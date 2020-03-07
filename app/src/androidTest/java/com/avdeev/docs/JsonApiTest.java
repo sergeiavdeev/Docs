@@ -25,12 +25,12 @@ public class JsonApiTest {
         AppUser.setApiUrl("https://sed.rudn.ru/BGU_DEMO/hs/DGU_APP_Mobile_Client/");
         //AppUser.setHash("5b2eb333802480cff356377f725f7b76b9dfc1f9");
         AppUser.setHash("erter");
-        AppUser.setKey("7533ea90-6538-4f3b-8542-8130a193ad66");
+        AppUser.setDeviceKey("7533ea90-6538-4f3b-8542-8130a193ad66");
         AppUser.setAuth(true);
 
         NetworkService.getInstance(AppUser.getApiUrl())
-                .setAuthKey(AppUser.getKey())
-                .setPasswordHash(AppUser.getHash());
+                .setAuthKey(AppUser.getDeviceKey())
+                .setPasswordHash(AppUser.getPasswordHash());
 
     }
 

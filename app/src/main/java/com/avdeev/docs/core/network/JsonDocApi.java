@@ -41,6 +41,9 @@ public interface JsonDocApi {
     @GET("tasks")
     Call<TasksResponse> getTasks();
 
+    @GET("tasks")
+    Call<TasksResponse> getTasks(@Query("timestamp") long lastUpdateTime);
+
     @GET("files")
     Call<ResponseBody>getFile(@Query("id") String id);
 

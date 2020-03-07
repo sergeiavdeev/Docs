@@ -63,7 +63,7 @@ public abstract class BasePagedAdapter<T> extends PagedListAdapter<T, BasePagedA
 
         private void clear() {
 
-        };
+        }
 
         public BaseHolder(View view) {
             super(view);

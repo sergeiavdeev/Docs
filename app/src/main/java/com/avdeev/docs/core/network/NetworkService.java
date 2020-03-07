@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Date;
 import okhttp3.Interceptor;
@@ -22,6 +23,8 @@ public class NetworkService {
     private Retrofit retrofit;
     private String authKey;
     private String passwordHash;
+
+    public static final int API_PAGE_SIZE = 5000;
 
     private NetworkService() {
 
@@ -79,7 +82,7 @@ public class NetworkService {
         MessageDigest pHash;
         try {
             pHash = MessageDigest.getInstance("SHA-1");
-            pHash.update(password.getBytes("UTF-8"));
+            pHash.update(password.getBytes(StandardCharsets.UTF_8));
             this.passwordHash = getHex(pHash.digest());
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,9 +96,9 @@ public class NetworkService {
         MessageDigest hash;
         try {
             hash = MessageDigest.getInstance("SHA-1");
-            hash.update(authKey.getBytes("UTF-8"));
-            hash.update(date.getBytes("UTF-8"));
-            hash.update(passwordHash.getBytes("UTF-8"));
+            hash.update(authKey.getBytes(StandardCharsets.UTF_8));
+            hash.update(date.getBytes(StandardCharsets.UTF_8));
+            hash.update(passwordHash.getBytes(StandardCharsets.UTF_8));
             token = getHex(hash.digest());
         } catch (Exception e) {
             e.printStackTrace();

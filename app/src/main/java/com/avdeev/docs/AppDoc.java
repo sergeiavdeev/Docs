@@ -12,9 +12,6 @@ import com.avdeev.docs.core.network.NetworkService;
 
 public class AppDoc extends Application {
 
-    private Context context;
-    private AppUser appUser;
-
     public AppDoc() {
 
         super();
@@ -23,16 +20,6 @@ public class AppDoc extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        context = getBaseContext();
-
-        DocDatabase.getInstance(context);
-
-        appUser = new AppUser(context);
+        DocDatabase.getInstance(getBaseContext());
     }
-
-    public AppUser getAppUser() {
-        return appUser;
-    }
-
 }

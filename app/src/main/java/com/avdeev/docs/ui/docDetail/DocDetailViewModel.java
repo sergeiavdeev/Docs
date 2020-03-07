@@ -20,18 +20,15 @@ public class DocDetailViewModel extends DocAppModel {
     protected MutableLiveData<Document> document;
     private MutableLiveData<Boolean> filesVisible;
     private MutableLiveData<Boolean> moreVisible;
+    private MutableLiveData<Boolean> fabOpen;
 
     public DocDetailViewModel(Application app) {
         super(app);
 
-        document = new MutableLiveData<>();
-        document.setValue(new Document());
-
-        filesVisible = new MutableLiveData<>();
-        filesVisible.setValue(false);
-
-        moreVisible = new MutableLiveData<>();
-        moreVisible.setValue(false);
+        document = new MutableLiveData<>(new Document());
+        filesVisible = new MutableLiveData<>(false);
+        moreVisible = new MutableLiveData<>(false);
+        fabOpen = new MutableLiveData<>(false);
     }
 
     public void setDocument(Document document) {
@@ -49,6 +46,10 @@ public class DocDetailViewModel extends DocAppModel {
 
     public LiveData<Boolean> getMoreVisible() {
         return moreVisible;
+    }
+
+    public LiveData<Boolean>isFabOpen() {
+        return fabOpen;
     }
 
     public void updateDocument(final String type) {
@@ -82,5 +83,10 @@ public class DocDetailViewModel extends DocAppModel {
 
         boolean visible = moreVisible.getValue();
         moreVisible.setValue(!visible);
+    }
+
+    public void changeFabOpen() {
+        Boolean open = fabOpen.getValue();
+        fabOpen.setValue(!open);
     }
 }

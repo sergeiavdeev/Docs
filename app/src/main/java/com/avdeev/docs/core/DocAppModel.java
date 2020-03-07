@@ -17,14 +17,12 @@ public class DocAppModel extends AndroidViewModel {
     protected MutableLiveData<Boolean> error;
     protected MutableLiveData<Boolean> complete;
     protected MutableLiveData<String> errorMessage;
-    protected AppUser appUser;
     protected int waitCount;
 
     public DocAppModel(Application app) {
         super(app);
 
-        appUser = ((AppDoc)app).getAppUser();
-        auth = new MutableLiveData<>(appUser.isAuth());
+        auth = new MutableLiveData<>(AppUser.isAuth());
         wait = new MutableLiveData<>(false);
         error = new MutableLiveData<>(false);
         errorMessage = new MutableLiveData<>("");
@@ -64,35 +62,11 @@ public class DocAppModel extends AndroidViewModel {
                     waitCount --;
                 }
             }
-            wait.setValue(waitCount > 0);
+            wait.postValue(waitCount > 0);
         }
     }
 
     protected Context getContext() {
         return getApplication().getBaseContext();
-    }
-
-    protected abstract class BaseAsyncTask<T> extends AsyncTask {
-
-        protected abstract T process();
-
-        protected abstract void onPostProcess(T object, Context context);
-
-        @Override
-        protected T doInBackground(Object[] objects) {
-            return process();
-        }
-
-        @Override
-        protected void onPreExecute() {
-            setWait(true);
-        }
-
-        @Override
-        protected void onPostExecute(Object object) {
-            super.onPostExecute(object);
-            onPostProcess((T)object, getApplication().getBaseContext());
-            setWait(false);
-        }
     }
 }

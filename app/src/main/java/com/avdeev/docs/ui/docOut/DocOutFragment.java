@@ -16,10 +16,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.avdeev.docs.R;
 import com.avdeev.docs.core.DocFragment;
+import com.avdeev.docs.core.database.entity.DocumentOutbox;
 import com.avdeev.docs.core.network.pojo.Document;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.ui.docDetail.DocDetailActivity;
-import com.avdeev.docs.ui.listAdapters.DocListAdapter;
+import com.avdeev.docs.ui.listAdapters.DocOutboxListAdapter;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -27,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 public class DocOutFragment extends DocFragment {
 
     private DocOutViewModel docOutViewModel;
+    private DocOutboxListAdapter listAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -43,12 +45,12 @@ public class DocOutFragment extends DocFragment {
         //final ProgressBar progressBar = root.findViewById(R.id.progress_bar);
         final SwipeRefreshLayout refreshLayout = root.findViewById(R.id.refresh);
 
-        docOutViewModel.getDocListAdapter().observe(getViewLifecycleOwner(), new Observer<DocListAdapter>() {
-            @Override
-            public void onChanged(DocListAdapter docListAdapter) {
-                docListAdapter.setOnItemClickListener(createClickListener());
-                listView.setAdapter(docListAdapter);
-            }
+        listAdapter = new DocOutboxListAdapter(getContext());
+        listAdapter.setOnItemClickListener(createClickListener());
+        listView.setAdapter(listAdapter);
+
+        docOutViewModel.docList.observe(getViewLifecycleOwner(), (paggedList) -> {
+            listAdapter.submitList(paggedList);
         });
 
         docOutViewModel.isWaiting().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
@@ -63,31 +65,33 @@ public class DocOutFragment extends DocFragment {
             @Override
             public void onRefresh() {
 
-                docOutViewModel.updateList();
+                docOutViewModel.updateFromNetwork();
            }
         });
 
-        docOutViewModel.getList();
+        docOutViewModel.updateFromNetwork();
 
         return root;
     }
 
     @Override
     public void onSearch(String searchText) {
-
-        docOutViewModel.search(searchText);
+        docOutViewModel.search(getViewLifecycleOwner(), searchText);
+        docOutViewModel.docList.observe(getViewLifecycleOwner(), (pagedList) -> {
+            listAdapter.submitList(pagedList);
+        });
     }
 
     @NotNull
     @Contract(value = " -> new", pure = true)
     private ItemClickListener createClickListener() {
 
-        return new ItemClickListener() {
+        return new ItemClickListener<DocumentOutbox>() {
             @Override
-            public void onItemClick(Object object) {
+            public void onItemClick(DocumentOutbox documentOutbox) {
 
                 Intent intent = new Intent(getActivity(), DocDetailActivity.class);
-                intent.putExtra("id", (Document)object);
+                intent.putExtra("document", Document.create(documentOutbox));
                 intent.putExtra("type", "outbox");
                 intent.putExtra("caption", "Исходящие");
                 startActivity(intent);

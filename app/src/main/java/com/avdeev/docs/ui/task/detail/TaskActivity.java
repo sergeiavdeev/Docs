@@ -77,7 +77,6 @@ public class TaskActivity extends AppCompatActivity {
 
         fab = findViewById(R.id.floatingActionButton);
         fab_history = findViewById(R.id.floatingActionHistory);
-        fab_aply = findViewById(R.id.floatingActionHistory);
         fab_aply = findViewById(R.id.floatingActionAply);
         fab_cancel = findViewById(R.id.floatingActionCancel);
         fabTextApply = findViewById(R.id.text_apply);

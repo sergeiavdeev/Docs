@@ -12,6 +12,8 @@ import com.avdeev.docs.core.database.entity.DocumentInbox;
 import com.avdeev.docs.core.network.NetworkService;
 import com.avdeev.docs.core.network.pojo.DocumentsResponse;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,25 +37,36 @@ public class DocInViewModel extends DocAppModel {
 
     public void updateFromNetwork() {
         setWait(true);
-
-        NetworkService.getInstance().getApi()
-                .getDocumentsInbox( 0)
-                .enqueue(new Callback<DocumentsResponse<DocumentInbox>>() {
-                    @Override
-                    public void onResponse(Call<DocumentsResponse<DocumentInbox>> call, Response<DocumentsResponse<DocumentInbox>> response) {
-                        setWait(false);
-                        if (response.isSuccessful()) {
-                            DocDatabase.executor.execute(()->{
-                                DocDatabase.getInstance().inbox().add(response.body().documents);
-                            });
+        DocDatabase db = DocDatabase.getInstance();
+        DocDatabase.executor.execute(() -> {
+            long lastUpdateTime = db.inbox().getLastUpdateTime();
+            NetworkService.getInstance().getApi()
+                    .getDocumentsInbox(lastUpdateTime)
+                    .enqueue(new Callback<DocumentsResponse<DocumentInbox>>() {
+                        @Override
+                        public void onResponse(Call<DocumentsResponse<DocumentInbox>> call, Response<DocumentsResponse<DocumentInbox>> response) {
+                            setWait(false);
+                            if (response.isSuccessful()) {
+                                addDocsToDatabase(response.body().documents);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<DocumentsResponse<DocumentInbox>> call, Throwable t) {
-                        setWait(false);
-                        t.printStackTrace();
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<DocumentsResponse<DocumentInbox>> call, Throwable t) {
+                            setWait(false);
+                            t.printStackTrace();
+                        }
+                    });
+        });
+    }
+
+    private void addDocsToDatabase(List<DocumentInbox> documents) {
+        DocDatabase db = DocDatabase.getInstance();
+        DocDatabase.executor.execute(()->{
+            db.inbox().add(documents);
+            if (documents.size() >= NetworkService.API_PAGE_SIZE) {
+                updateFromNetwork();
+            }
+        });
     }
 }

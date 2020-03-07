@@ -27,7 +27,7 @@ public class LoginViewModel extends DocAppModel {
     public void auth() {
         setWait(true);
         NetworkService.getInstance(AppUser.getApiUrl())
-                .setAuthKey(AppUser.getKey())
+                .setAuthKey(AppUser.getDeviceKey())
                 .setPasswordHashFromPassword(password)
                 .getApi()
                 .auth(new Login(login))
@@ -37,7 +37,7 @@ public class LoginViewModel extends DocAppModel {
                         setWait(false);
                         CommonResponse r = response.body();
                         if (r.getSuccess() == 1) {
-                            appUser.setAuth(true);
+                            AppUser.setAuth(true);
                             saveUserToDatabase();
                         } else {
                             error.setValue(true);
@@ -58,7 +58,7 @@ public class LoginViewModel extends DocAppModel {
     private void saveUserToDatabase() {
         DocDatabase db = DocDatabase.getInstance();
         DocDatabase.executor.execute(() -> {
-            db.user().add(new User(AppUser.getHash(), AppUser.getApiUrl()));
+            db.user().add(new User(AppUser.getPasswordHash(), AppUser.getApiUrl()));
             complete.postValue(true);
             auth.postValue(true);
         });

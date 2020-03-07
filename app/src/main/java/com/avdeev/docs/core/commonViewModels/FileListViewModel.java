@@ -2,20 +2,16 @@ package com.avdeev.docs.core.commonViewModels;
 
 import android.app.Application;
 import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
 import com.avdeev.docs.core.DocAppModel;
 import com.avdeev.docs.core.database.entity.File;
 import com.avdeev.docs.core.network.NetworkService;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.ui.listAdapters.FileListAdapter;
-
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;

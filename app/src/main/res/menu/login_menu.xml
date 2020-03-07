@@ -8,6 +8,6 @@
         android:icon="@drawable/ic_settigs_black_24dp"
         android:title="@string/title_settings"
         android:onClick="onClickSettings"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 
 </menu>

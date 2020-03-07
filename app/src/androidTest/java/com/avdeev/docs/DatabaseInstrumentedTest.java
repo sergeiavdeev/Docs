@@ -39,7 +39,7 @@ public class DatabaseInstrumentedTest {
     @Before
     public void init() {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        db = Room.databaseBuilder(appContext, DocDatabase.class, "docs").build();
+        db = Room.inMemoryDatabaseBuilder(appContext, DocDatabase.class).build();
 
     }
 
@@ -86,22 +86,7 @@ public class DatabaseInstrumentedTest {
     @Test
     public void docInFull() {
 
-        db.inbox().add(new DocumentInbox("1", "Жопа"));
-        db.inbox().add(new DocumentInbox("2", "Ручка"));
 
-        assertEquals(db.inbox().getAll().size(), 2);
-        assertEquals(db.inbox().getAll().get(0).title, "Жопа");
-        assertEquals(db.inbox().getAll().get(1).title, "Ручка");
-
-        db.inbox().add(new DocumentInbox("2", "Жопа с ручкой"));
-        assertEquals(db.inbox().getAll().size(), 2);
-        assertEquals(db.inbox().getAll().get(1).title, "Жопа с ручкой");
-
-        db.inbox().delete("1");
-        assertEquals(db.inbox().getAll().get(0).id, "2");
-
-        db.inbox().clear();
-        assertEquals(db.inbox().getAll().size(), 0);
     }
 
     @Test
@@ -171,12 +156,19 @@ public class DatabaseInstrumentedTest {
         assertEquals(tasks.get(0).task.title, "Task2");
         assertEquals(tasks.get(0).files.size(), 3);
 
+        long count = db.task().getLastUpdateTime();
+        assertTrue(count > 0);
+
+
         db.task().delete("1");
         tasks = db.task().getAll();
         assertEquals(tasks.size(), 0);
 
         db.task().clear();
         assertEquals(db.task().getAll().size(), 0);
+
+        count = db.task().getLastUpdateTime();
+        assertEquals(count, 0);
     }
 
     @After
