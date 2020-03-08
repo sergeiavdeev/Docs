@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import android.view.View;
@@ -116,6 +117,13 @@ public class DocDetailActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.document_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
@@ -149,6 +157,10 @@ public class DocDetailActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onHistoryClick(MenuItem item) {
+        onHistoryClick(item.getActionView());
+    }
+
     public void onVisaClick(View view) {
 
         Intent intent = new Intent(this, ActionsActivity.class);
@@ -157,6 +169,10 @@ public class DocDetailActivity extends AppCompatActivity {
         intent.putExtra("actionType", "visas");
         intent.putExtra("caption", "Визы");
         startActivity(intent);
+    }
+
+    public void onVisaClick(MenuItem item) {
+        onVisaClick(item.getActionView());
     }
 
     public void onResolutionClick(View view) {
@@ -169,6 +185,10 @@ public class DocDetailActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onResolutionClick(MenuItem item) {
+        onResolutionClick(item.getActionView());
+    }
+
     public void onMailerClick(View view) {
 
         Intent intent = new Intent(this, ActionsActivity.class);
@@ -177,6 +197,10 @@ public class DocDetailActivity extends AppCompatActivity {
         intent.putExtra("actionType", "mailing");
         intent.putExtra("caption", "Рассылки");
         startActivity(intent);
+    }
+
+    public void onMailerClick(MenuItem item) {
+        onMailerClick(item.getActionView());
     }
 
     public void onFilesClick(View view) {

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:icon="@drawable/ic_more_balck_24dp"
+        android:title="@string/title_exit"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/menu_history"
+                android:icon="@drawable/ic_fab_history_24dp"
+                android:title="@string/title_history"
+                android:onClick="onHistoryClick"
+                app:showAsAction="never"
+                />
+            <item
+                android:id="@+id/menu_visas"
+                android:icon="@drawable/ic_fab_visas_24dp"
+                android:title="@string/title_visa"
+                android:onClick="onVisaClick"
+                app:showAsAction="never"
+                />
+            <item
+                android:id="@+id/menu_resolutions"
+                android:icon="@drawable/ic_fab_resolutions_24dp"
+                android:title="@string/title_resolution"
+                android:onClick="onResolutionClick"
+                app:showAsAction="never"
+                />
+            <item
+                android:id="@+id/menu_mailing"
+                android:icon="@drawable/ic_fab_mailing_24dp"
+                android:title="@string/title_mailer"
+                android:onClick="onMailerClick"
+                app:showAsAction="never"
+                />
+
+        </menu>
+    </item>
+
+</menu>
