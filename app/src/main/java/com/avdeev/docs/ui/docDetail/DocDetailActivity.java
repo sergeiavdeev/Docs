@@ -66,16 +66,16 @@ public class DocDetailActivity extends AppCompatActivity {
                 .getInstance(getApplication()).create(DocDetailViewModel.class);
         docViewModel.setDocument(doc);
 
+        fileListViewModel = ViewModelProvider.AndroidViewModelFactory
+                .getInstance(getApplication()).create(FileListViewModel.class);
+
         ActivityDocDetailBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_doc_detail);
         binding.setDocViewModel(docViewModel);
+        binding.setFileListViewModel(fileListViewModel);
         binding.setLifecycleOwner(this);
 
         initActionBar();
         initFab();
-
-        fileListViewModel = ViewModelProvider.AndroidViewModelFactory
-                .getInstance(getApplication()).create(FileListViewModel.class);
-
 
         final RecyclerView fileList = findViewById(R.id.list_file);
         final ImageView moreArrow = findViewById(R.id.image_more);

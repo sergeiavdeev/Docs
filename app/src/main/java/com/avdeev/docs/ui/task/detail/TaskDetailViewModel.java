@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.avdeev.docs.R;
 import com.avdeev.docs.core.DocAppModel;
 import com.avdeev.docs.core.database.entity.Task;
 
@@ -21,7 +22,6 @@ public class TaskDetailViewModel extends DocAppModel {
         task = new MutableLiveData<>();
         filesVisible = new MutableLiveData<>(false);
         fabOpen = new MutableLiveData<>(false);
-        filesVisible.setValue(false);
     }
 
     public LiveData<Task> getTask() {

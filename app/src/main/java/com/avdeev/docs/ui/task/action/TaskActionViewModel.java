@@ -3,6 +3,7 @@ package com.avdeev.docs.ui.task.action;
 import android.app.Application;
 
 import com.avdeev.docs.core.DocAppModel;
+import com.avdeev.docs.core.database.DocDatabase;
 import com.avdeev.docs.core.database.entity.Task;
 import com.avdeev.docs.core.network.NetworkService;
 import com.avdeev.docs.core.network.pojo.CommonResponse;
@@ -38,7 +39,7 @@ public class TaskActionViewModel extends DocAppModel {
 
         setWait(true);
 
-        NetworkService.getInstance("https://sed.rudn.ru/BGU_DEMO/hs/DGU_APP_Mobile_Client/")
+        NetworkService.getInstance()
                 .getApi()
                 .postTaskAction(new TaskActionRequest(task.id, action, comment))
                 .enqueue(new Callback<CommonResponse>() {
@@ -47,9 +48,11 @@ public class TaskActionViewModel extends DocAppModel {
                         setWait(false);
                         CommonResponse r = response.body();
 
-                        if (r.getSuccess() == 1) {
+                        if (response.isSuccessful() && r.success == 1) {
                             deleteTask();
-                            complete.setValue(true);
+                        } else {
+                            error.setValue(true);
+                            errorMessage.setValue("Ошибка работы с интернет");
                         }
                     }
 
@@ -61,6 +64,10 @@ public class TaskActionViewModel extends DocAppModel {
     }
 
     private void deleteTask() {
-
+        DocDatabase db = DocDatabase.getInstance();
+        DocDatabase.executor.execute(() -> {
+            db.task().delete(task.id);
+            complete.postValue(true);
+        });
     }
 }

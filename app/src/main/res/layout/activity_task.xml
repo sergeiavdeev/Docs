@@ -11,6 +11,9 @@
         <variable
             name="taskViewModel"
             type="com.avdeev.docs.ui.task.detail.TaskDetailViewModel" />
+        <variable
+            name="fileListViewModel"
+            type="com.avdeev.docs.core.commonViewModels.FileListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -171,8 +174,6 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/title_date_due"
                             app:layout_constraintTop_toBottomOf="@id/executor" />
-
-
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -184,7 +185,9 @@
                     android:onClick="onFilesClick"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/description_card">
+                    app:layout_constraintTop_toBottomOf="@id/description_card"
+                    android:visibility="@{fileListViewModel.filesCount > 0 ? View.VISIBLE : View.GONE}"
+                    >
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -197,7 +200,7 @@
                             android:id="@+id/title_files"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/title_files"
+                            android:text="@{fileListViewModel.filesTitle}"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="22sp"
                             app:layout_constraintStart_toStartOf="parent"

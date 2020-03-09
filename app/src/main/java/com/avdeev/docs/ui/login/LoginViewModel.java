@@ -36,7 +36,7 @@ public class LoginViewModel extends DocAppModel {
                     public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
                         setWait(false);
                         CommonResponse r = response.body();
-                        if (r.getSuccess() == 1) {
+                        if (r.success == 1) {
                             AppUser.setAuth(true);
                             saveUserToDatabase();
                         } else {

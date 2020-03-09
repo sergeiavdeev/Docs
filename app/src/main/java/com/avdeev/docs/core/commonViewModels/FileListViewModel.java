@@ -4,8 +4,11 @@ import android.app.Application;
 import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import com.avdeev.docs.R;
 import com.avdeev.docs.core.DocAppModel;
 import com.avdeev.docs.core.database.entity.File;
+import com.avdeev.docs.core.database.entity.Task;
 import com.avdeev.docs.core.network.NetworkService;
 import com.avdeev.docs.core.interfaces.ItemClickListener;
 import com.avdeev.docs.ui.listAdapters.FileListAdapter;
@@ -20,15 +23,27 @@ import retrofit2.Response;
 public class FileListViewModel extends DocAppModel {
 
     private MutableLiveData<FileListAdapter> fileListAdapter;
+    private MutableLiveData<String> filesTitle;
+    private MutableLiveData<Integer> filesCount;
 
     public FileListViewModel(Application app) {
         super(app);
 
         fileListAdapter = new MutableLiveData<>();
+        filesTitle = new MutableLiveData<>("");
+        filesCount = new MutableLiveData<>(0);
     }
 
     public LiveData<FileListAdapter> getFileListAdapter() {
         return fileListAdapter;
+    }
+
+    public LiveData<String> getFilesTitle() {
+        return filesTitle;
+    }
+
+    public LiveData<Integer> getFilesCount() {
+        return filesCount;
     }
 
     public void init(List<File> files, ItemClickListener itemClickListener) {
@@ -36,6 +51,8 @@ public class FileListViewModel extends DocAppModel {
         updateFiles(files);
         FileListAdapter adapter = new FileListAdapter(getApplication().getApplicationContext(), files);
         adapter.setOnItemClickListener(itemClickListener);
+        filesTitle.setValue(getFilesTitle(files));
+        filesCount.setValue(files.size());
         fileListAdapter.setValue(adapter);
     }
 
@@ -121,5 +138,11 @@ public class FileListViewModel extends DocAppModel {
 
             file.setExist(jFile.exists());
         }
+    }
+
+    private String getFilesTitle(List<File> files) {
+
+        String title = getContext().getString(R.string.title_files) + " (" + files.size()  + ")";
+        return title;
     }
 }

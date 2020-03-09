@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -68,12 +69,13 @@ public class TaskActivity extends AppCompatActivity {
 
         taskViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(TaskDetailViewModel.class);
-        ActivityTaskBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_task);
-        binding.setTaskViewModel(taskViewModel);
-        binding.setLifecycleOwner(this);
-
         fileListViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(FileListViewModel.class);
+
+        ActivityTaskBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_task);
+        binding.setTaskViewModel(taskViewModel);
+        binding.setFileListViewModel(fileListViewModel);
+        binding.setLifecycleOwner(this);
 
         fab = findViewById(R.id.floatingActionButton);
         fab_history = findViewById(R.id.floatingActionHistory);
@@ -113,8 +115,19 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NotNull MenuItem item) {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.task_amenu, menu);
+        MenuItem cancelItem = menu.findItem(R.id.menu_cancel);
+        if (taskWithFiles.task.type.equals("Утверждение")) {
+            cancelItem.setVisible(true);
+        }
+        MenuItem applyItem = menu.findItem(R.id.menu_apply);
+        applyItem.setTitle(getActionTitle());
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NotNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
@@ -124,7 +137,6 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     public void onFilesClick(View view) {
-
         taskViewModel.changeFileVisible();
     }
 
@@ -138,6 +150,10 @@ public class TaskActivity extends AppCompatActivity {
         intent.putExtra("actionType", "history");
         intent.putExtra("caption", "История");
         startActivity(intent);
+    }
+
+    public void onHistoryClick(MenuItem item) {
+        onHistoryClick(item.getActionView());
     }
 
     @NotNull
@@ -175,7 +191,6 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     private Uri getFileUri(java.io.File file) {
-
         return FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID, file);
     }
 
@@ -199,11 +214,19 @@ public class TaskActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onApplyClick(MenuItem item) {
+        onApplyClick(item.getActionView());
+    }
+
     public void onCancelClick(View view) {
         Intent intent = new Intent(this, TaskActionActivity.class);
         intent.putExtra("task", taskWithFiles.task);
         intent.putExtra("action", TaskActionRequest.ACTION_NO);
         startActivity(intent);
+    }
+
+    public void onCancelClick(MenuItem item) {
+        onCancelClick(item.getActionView());
     }
 
     private void openFab() {
@@ -216,10 +239,6 @@ public class TaskActivity extends AppCompatActivity {
             fab_cancel.startAnimation(fab_open);
             fab_cancel.setClickable(true);
         }
-
-        //fabTextHistory.setVisibility(View.VISIBLE);
-        //fabTextApply.setVisibility(View.VISIBLE);
-        //fabTextCancel.setVisibility(View.VISIBLE);
     }
 
     private void closeFab() {
@@ -238,5 +257,21 @@ public class TaskActivity extends AppCompatActivity {
             //fabTextApply.setVisibility(View.INVISIBLE);
             //fabTextCancel.setVisibility(View.INVISIBLE);
         }
+    }
+
+    private String getActionTitle() {
+
+        String type = taskWithFiles.task.type;
+
+        String title = "Ознакомиться";
+
+        if (type.equals("Рассмотрение")) {
+            title = "Рассмотреть";
+        } else if (type.equals("Исполнение")) {
+            title = "Исполнить";
+        } else if (type.equals("Утверждение")) {
+            title = "Утвердить";
+        }
+        return title;
     }
 }
