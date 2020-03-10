@@ -303,6 +303,7 @@
             android:clickable="true"
             android:focusable="true"
             android:onClick="onHistoryClick"
+            android:tooltipText="@string/title_history"
             android:visibility="invisible"
             app:fabSize="mini"
             app:layout_constraintBottom_toTopOf="@id/floatingActionButton"
